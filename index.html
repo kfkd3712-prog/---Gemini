@@ -1,732 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko"><head><script data-bard-client-injected="true">(function(firebaseConfig, initialAuthToken, appId) {
-        window.__firebase_config = firebaseConfig;
-        window.__initial_auth_token = initialAuthToken;
-        window.__app_id = appId;
-            })("\n{\n  \"apiKey\": \"AIzaSyCqyCcs2R2e7AegGjvFAwG98wlamtbHvZY\",\n  \"authDomain\": \"bard-frontend.firebaseapp.com\",\n  \"projectId\": \"bard-frontend\",\n  \"storageBucket\": \"bard-frontend.firebasestorage.app\",\n  \"messagingSenderId\": \"175205271074\",\n  \"appId\": \"1:175205271074:web:2b7bd4d34d33bf38e6ec7b\"\n}\n","eyJhbGciOiJSUzI1NiIsImtpZCI6IjExNjRiNzdiNDMzZDdhMDAyMWI4NjE4YjhjYTU3ZTMyZGI5MWUxMTMiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BiYXJkLWZyb250ZW5kLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eXRvb2xraXQuZ29vZ2xlYXBpcy5jb20vZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiIxNDM4MTE4MjUwNTc3MzAyMzU2OSIsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLWZic3ZjQGJhcmQtZnJvbnRlbmQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJjbGFpbXMiOnsiYXBwSWQiOiJjX2IwM2FiODE5ZmU4ZmU3ODhfaW5kZXguaHRtbC05MTEifSwiZXhwIjoxNzk0OTA1MjU0LCJpYXQiOjE3OTQ5MDE2NTQsImFsZyI6IlJTMjU2In0.bzKuBbU34pEi-cYXvDE1Mn43Qe-tX4kmQFDDgc4qgLKOPaD7se9_g34w6KByu8m59nRnf87HfNGctAIV0hpzrBPSERLWz5hkEXE08tyK3IVaCxZ6QRrbY3jUcqCTwZPDFZEFIVM4u_wtbnBHpIXI4-SSJJh9OGA24ZWQ8Kea0RP54pQTntgJ-7xKKUufamYz6Uq6uwj6PGjYtusGq-cxheyoWDS4gRp2JwKFc0ROexmICUZexVRjdMh0Qg7moMBKgP9QOqTC3Pvcov2iYQw5yJfyEAj0oCuxLyT0g8Lr07oOevA9MPL6_-YfB2ZTFYWzL27NaNlikme2t6EBSHdqcA","c_b03ab819fe8fe788_index.html-911")</script><script data-bard-client-injected="true">
-  document.addEventListener('input', (event) => {
-    if (event.target && (event.target.isContentEditable || event.target.hasAttribute('contenteditable'))) {
-      const clonedDoc = document.cloneNode(true);
-      const injectedScripts = clonedDoc.querySelectorAll('[data-bard-client-injected="true"]');
-      injectedScripts.forEach(el => el.remove());
-      window.parent.postMessage({
-        type: 'inlineEdit',
-        html: '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML
-      }, '*');
-    }
-  });
-</script><script data-bard-client-injected="true">(function(){'use strict';window.addEventListener("message",a=>{a.data&&a.data.type==="SUPPLEMENTAL_DATA_UPDATE"&&window.dispatchEvent(new CustomEvent("supplementaldataupdate",{detail:a.data.data}))});}).call(this);
-</script><script data-bard-client-injected="true">(function() {
-  const SCROLL_KEYS = new Set([
-    'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
-    ' ', 'Spacebar', 'PageUp', 'PageDown', 'Home', 'End',
-  ]);
-  const HORIZONTAL_KEYS = new Set(['ArrowLeft', 'ArrowRight']);
-
-  function isTextEntryTarget(target) {
-    if (!target) return false;
-    const tagName = target.tagName;
-    return tagName === 'INPUT' || tagName === 'TEXTAREA' ||
-        tagName === 'SELECT' || target.isContentEditable === true;
-  }
-
-  // An element absorbs the key only if it both overflows on the axis being
-  // scrolled and is configured to scroll on that axis. The cheap dimension
-  // test runs first because getComputedStyle forces a style recalc, and this
-  // runs on every keypress. Each axis is read from its own longhand: the
-  // 'overflow' shorthand serializes as two values when the axes differ, which
-  // is the common 'overflow-x: hidden; overflow-y: auto' pane.
-  function canScroll(node, horizontal) {
-    const overflows = horizontal ? node.scrollWidth > node.clientWidth
-                                 : node.scrollHeight > node.clientHeight;
-    if (!overflows) return false;
-    const style = window.getComputedStyle(node);
-    const overflow = horizontal ? style.overflowX : style.overflowY;
-    return overflow === 'auto' || overflow === 'scroll';
-  }
-
-  // Walks up from the event target so nested scrollers keep their behavior.
-  // <body> is included because pages that pin the root height make it the
-  // scroll container.
-  function hasScrollableAncestor(target, horizontal) {
-    let node = target;
-    while (node && node !== document.documentElement) {
-      if (canScroll(node, horizontal)) return true;
-      node = node.parentElement;
-    }
-    return false;
-  }
-
-  function rootCanScroll(horizontal) {
-    const scroller = document.scrollingElement || document.documentElement;
-    if (!scroller) return false;
-    // Tolerate a pixel of rounding so subpixel layouts do not look scrollable.
-    return horizontal ? scroller.scrollWidth > window.innerWidth + 1
-                      : scroller.scrollHeight > window.innerHeight + 1;
-  }
-
-  window.addEventListener('keydown', function(event) {
-    if (!SCROLL_KEYS.has(event.key)) return;
-    if (event.defaultPrevented) return;
-    // Alt and Meta turn arrows into browser history navigation, and Ctrl is
-    // reserved for shortcuts, so none of them are scroll intent.
-    if (event.altKey || event.metaKey || event.ctrlKey) return;
-
-    const target = event.target;
-    if (isTextEntryTarget(target)) return;
-
-    // Anything that can still absorb the scroll gets to keep it.
-    const horizontal = HORIZONTAL_KEYS.has(event.key);
-    if (rootCanScroll(horizontal)) return;
-    if (hasScrollableAncestor(target, horizontal)) return;
-
-    event.preventDefault();
-  }, {capture: true, passive: false});
-})();</script><script data-bard-client-injected="true">(function() {
-  // Ensure this script is executed only once
-  if (window.firebaseAuthBridgeScriptLoaded) {
-    return;
-  }
-  window.firebaseAuthBridgeScriptLoaded = true;
-
-  let nextTokenPromiseId = 0;
-
-  // Stores { resolve, reject } for ongoing token requests
-  const pendingTokenPromises = {};
-
-  // Listen for messages from the Host Application
-  window.addEventListener('message', function(event) {
-
-    const messageData = event.data;
-
-  if (messageData && messageData.type === 'RESOLVE_NEW_FIREBASE_TOKEN') {
-      const { success, token, error, promiseId } = messageData ?? {};
-      if (pendingTokenPromises[promiseId]) {
-        if (success) {
-          pendingTokenPromises[promiseId].resolve(token);
-        } else {
-          pendingTokenPromises[promiseId].reject(new Error(error || 'Token refresh failed from host.'));
-        }
-        delete pendingTokenPromises[promiseId];
-      }
-    }
-  });
-
-  // Expose a function for the Generated App to request a new Firebase token
-  window.requestNewFirebaseToken = function() {
-    const currentPromiseId = nextTokenPromiseId++;
-    const promise = new Promise((resolve, reject) => {
-      pendingTokenPromises[currentPromiseId] = { resolve, reject };
-    });
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({
-        type: 'REQUEST_NEW_FIREBASE_TOKEN',
-        promiseId: currentPromiseId
-      }, '*');
-    } else {
-      pendingTokenPromises[currentPromiseId].reject(new Error('No parent window to request token from.'));
-      delete pendingTokenPromises[currentPromiseId];
-    }
-    return promise;
-  };
-})();</script><script data-bard-client-injected="true">
-let realOriginalGetUserMedia = null;
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  realOriginalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-}
-
-(function() {
-  if (navigator.mediaDevices && navigator.mediaDevices.__proto__) {
-    try {
-      Object.defineProperty(navigator.mediaDevices.__proto__, 'getUserMedia', {
-        get: function() {
-          return undefined; // Or throw an error
-        },
-        configurable: false
-      });
-    } catch (error) {
-      console.error("Error defining prototype getter:", error);
-    }
-  }
-})();
-
-(function() {
-  const pendingMediaResolvers = {};
-  let nextMediaPromiseId = 0;
-
-  function requestMediaPermissions(constraints) {
-    const mediaPromiseId = nextMediaPromiseId++;
-    const promise = new Promise((resolve, reject) => {
-      pendingMediaResolvers[mediaPromiseId] = (granted) => {
-        delete pendingMediaResolvers[mediaPromiseId];
-        resolve(granted);
-      };
-    });
-
-    window.parent.postMessage({
-      type: 'requestMediaPermission',
-      constraints: constraints,
-      promiseId: mediaPromiseId,
-    }, '*');
-
-    return promise;
-  }
-
-  let originalGetUserMedia = realOriginalGetUserMedia;
-
-  function interceptGetUserMedia() {
-    if (navigator.mediaDevices) {
-      Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
-        value: function(constraints) {
-          return requestMediaPermissions(constraints).then((granted) => {
-            if (granted) {
-              if (originalGetUserMedia) {
-                return originalGetUserMedia(constraints);
-              } else {
-                throw new Error("Original getUserMedia not available.");
-              }
-            } else {
-              throw new DOMException('Permission denied', 'NotAllowedError');
-            }
-          });
-        },
-        writable: false,
-        configurable: false
-      });
-    }
-  }
-
-  interceptGetUserMedia();
-
-  const observer = new MutationObserver(function(mutationsList, observer) {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'reconfigured' && mutation.name === 'getUserMedia' && mutation.object === navigator.mediaDevices) {
-        interceptGetUserMedia();
-      } else if (mutation.type === 'attributes' && mutation.attributeName === 'getUserMedia' && mutation.target === navigator.mediaDevices) {
-        interceptGetUserMedia();
-      } else if (mutation.type === 'childList' && mutation.addedNodes) {
-        mutation.addedNodes.forEach(node => {
-          if (node === navigator.mediaDevices) {
-            interceptGetUserMedia();
-          }
-        });
-      }
-    }
-  });
-
-  function interceptSpeechRecognition() {
-    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
-      return;
-    }
-
-    const OriginalSpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    const SpeechRecognitionWrapper = function(...args) {
-      const recognizer = new OriginalSpeechRecognition(...args);
-      const originalStart = recognizer.start.bind(recognizer);
-
-      recognizer.start = function() {
-        requestMediaPermissions({ audio: true }).then(granted => {
-          if (granted) {
-            originalStart();
-          } else {
-            const errorEvent = new SpeechRecognitionErrorEvent('error');
-            errorEvent.error = 'not-allowed'; // This is the standard error for permission denial.
-            recognizer.dispatchEvent(errorEvent);
-          }
-        });
-      };
-
-      return recognizer;
-    };
-
-    SpeechRecognitionWrapper.prototype = OriginalSpeechRecognition.prototype;
-    SpeechRecognitionWrapper.prototype.constructor = SpeechRecognitionWrapper;
-
-    if (window.SpeechRecognition) {
-      window.SpeechRecognition = SpeechRecognitionWrapper;
-    }
-    if (window.webkitSpeechRecognition) {
-      window.webkitSpeechRecognition = SpeechRecognitionWrapper;
-    }
-  }
-
-  interceptSpeechRecognition();
-
-  window.addEventListener('message', function(event) {
-    if (event.data) {
-      if (event.data.type === 'resolveMediaPermission') {
-        const { promiseId, granted } = event.data;
-        if (pendingMediaResolvers[promiseId]) {
-          pendingMediaResolvers[promiseId](granted);
-        }
-      }
-    }
-  });
-
-})();</script><script ws-interception-config="{&quot;parentOrigin&quot;:&quot;https://gemini.google.com&quot;,&quot;proxiedDomains&quot;:[]}" data-bard-client-injected="true">(function(){'use strict';var u=typeof Object.defineProperties=="function"?Object.defineProperty:function(b,d,e){if(b==Array.prototype||b==Object.prototype)return b;b[d]=e.value;return b};function v(b){b=["object"==typeof globalThis&&globalThis,b,"object"==typeof window&&window,"object"==typeof self&&self,"object"==typeof global&&global];for(var d=0;d<b.length;++d){var e=b[d];if(e&&e.Math==Math)return e}throw Error("Cannot find global object");}var w=v(this);
-function y(b,d){if(d)a:{var e=w;b=b.split(".");for(var h=0;h<b.length-1;h++){var k=b[h];if(!(k in e))break a;e=e[k]}b=b[b.length-1];h=e[b];d=d(h);d!=h&&d!=null&&u(e,b,{configurable:!0,writable:!0,value:d})}}function z(b){function d(h){return b.next(h)}function e(h){return b.throw(h)}return new Promise(function(h,k){function m(n){n.done?h(n.value):Promise.resolve(n.value).then(d,e).then(m,k)}m(b.next())})}y("globalThis",function(b){return b||w});/*
-
- Copyright The Closure Library Authors.
- SPDX-License-Identifier: Apache-2.0
-*/
-function A(b,d){function e(){}e.prototype=d.prototype;b.j=d.prototype;b.prototype=new e;b.prototype.constructor=b;b.h=function(h,k,m){for(var n=Array(arguments.length-2),p=2;p<arguments.length;p++)n[p-2]=arguments[p];return d.prototype[k].apply(h,n)}};function B(b,d,e="*"){function h(a){if(typeof a==="string")return F.encode(a).buffer;if(a instanceof ArrayBuffer)return a.slice(0);if(ArrayBuffer.isView(a))return a.buffer.slice(a.byteOffset,a.byteOffset+a.byteLength);throw Error("Invalid data type");}function k(a){a=h(a);var f={type:"send",data:new Uint8Array(a)},g;(g=r)==null||g.postMessage(f,[a])}function m(){if(!r)throw Error("Data port not captured yet.");r.onmessage=a=>{if(a.data.type==="message"){a=new MessageEvent("message",{data:G.decode(a.data.data)});
-let f;(f=c.onmessage)==null||f.call(c,a);c.dispatchEvent(a)}}}function n(){if(!t)throw Error("Control port not captured yet.");t.onmessage=a=>{switch(a.data.type){case "open":l=1;var f=new Event("open"),g;(g=c.onopen)==null||g.call(c,f);c.dispatchEvent(f);q.forEach(H=>{k(H)});q=[];break;case "close":g=a.data;l=3;g=new CloseEvent("close",{code:g.code,reason:g.reason,wasClean:g.wasClean});(f=c.onclose)==null||f.call(c,g);c.dispatchEvent(g);break;case "error":l=3;f=new Event("error");let x;(x=c.onerror)==
-null||x.call(c,f);c.dispatchEvent(f)}}}function p(a){return z(function*(){var f=new MessageChannel;t=f.port1;var g=new MessageChannel;r=g.port1;n();m();window.parent.postMessage({type:"websocket_open",portOrdering:["control","data"],url:b,protocols:a||[],connectionId:I},e,[f.port2,g.port2])}())}var c=Reflect.construct(EventTarget,[],new.target);c.CONNECTING=0;c.OPEN=1;c.CLOSING=2;c.CLOSED=3;c.url=b;c.binaryType="arraybuffer";c.protocol="";c.i="";var l=0,t=null,r=null,q=[],F=new TextEncoder,G=new TextDecoder;
-c.onopen=null;c.onmessage=null;c.onclose=null;c.onerror=null;Object.defineProperty(c,"readyState",{get:()=>l,enumerable:!0,configurable:!0});Object.defineProperty(c,"bufferedAmount",{get:()=>{var a=0;q.forEach(f=>{a+=typeof f==="string"?f.length:f.byteLength});return a},enumerable:!0,configurable:!0});var I=function(){var a;return((a=globalThis.crypto)==null?0:a.randomUUID)?globalThis.crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,f=>{var g=Math.random()*16|0;return(f===
-"x"?g:g&3|8).toString(16)})}();c.send=a=>{if(l===1)a instanceof Blob?a.arrayBuffer().then(f=>{k(f)}):k(a);else if(l===0)if(typeof a==="string")q.push(a);else if(a instanceof ArrayBuffer||ArrayBuffer.isView(a))q.push(h(a));else throw Error("Sending Blob is not supported before the connection is open.");else console.debug("WebSocket send called in CLOSING or CLOSED state; ignored.")};c.close=(a=1E3,f="")=>{if(l!==2&&l!==3){l=2;a={type:"close",code:a,reason:f,wasClean:a===1E3};var g;(g=t)==null||g.postMessage(a)}};
-Promise.resolve().then(()=>p(d));return c}A(B,EventTarget);var C=document.currentScript,D=C==null?void 0:C.getAttribute("ws-interception-config");if(!D)throw Error("WebSocket Interceptor: Missing ws-interception-config attribute in the script tag.");var E=JSON.parse(D);if(!E.parentOrigin||typeof E.parentOrigin!=="string")throw Error("WebSocket Interceptor: Invalid parentOrigin in ws-interception-config");
-(function(b){var d=Object.getOwnPropertyDescriptor(window,"WebSocket");if(!d||d.writable||d.configurable)d=Object.assign(function(e,h){try{let k=(new URL(e)).hostname;if(b.proxiedDomains.some(m=>k===m||k.endsWith(`.${m}`)))return new B(e,h,b.parentOrigin)}catch(k){throw window.parent.postMessage({type:"websocket_blocked",url:e,reason:"blocked_invalid_url"},b.parentOrigin),new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");}window.parent.postMessage({type:"websocket_blocked",
-url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");},{CONNECTING:0,OPEN:1,CLOSING:2,CLOSED:3}),Object.defineProperty(window,"WebSocket",{value:d,writable:!1,configurable:!1})})({proxiedDomains:E.proxiedDomains||[],parentOrigin:E.parentOrigin});}).call(this);
-</script><script data-bard-client-injected="true">((function(modelInformation) {
-  const originalFetch = window.fetch;
-  // TODO: b/421908508 - Move these out of the script and match all generative AI model calls.
-  let googleLlmBaseApiUrls = [
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':streamGenerateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predictLongRunning',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageEditModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageTransformModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predictLongRunning',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.ttsModelName + ':generateContent',
-  ];
-  modelInformation.deprecatedTextModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-    );
-  });
-  modelInformation.deprecatedImageModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predict',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predictLongRunning',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-    );
-  });
-  modelInformation.deprecatedGenerateImageModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-    );
-  });
-  modelInformation.deprecatedImageTransformModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-    );
-  });
-
-  const pendingFetchResolvers = {};
-  let nextPromiseId = 0;
-
-  function handleStringInput(input, optionsArgument) {
-    const actualUrl = input;
-    const fetchCallArgs = [actualUrl, optionsArgument];
-    const effectiveOptions = optionsArgument || {};
-    const bodyForApiKeyCheck = effectiveOptions.body;
-    const bodyForPostMessage = effectiveOptions.body;
-    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
-  }
-
-  function handleRequestInput(input, optionsArgument) {
-    const actualUrl = input.url;
-    const fetchCallArgs = [input, optionsArgument];
-    const effectiveOptions = { method: input.method, headers: new Headers(input.headers) };
-    let bodyForApiKeyCheck;
-    let bodyForPostMessage;
-
-    if (optionsArgument) {
-      if (optionsArgument.method) effectiveOptions.method = optionsArgument.method;
-      if (optionsArgument.headers) effectiveOptions.headers = new Headers(optionsArgument.headers);
-      if ('body' in optionsArgument) {
-        bodyForApiKeyCheck = optionsArgument.body;
-        bodyForPostMessage = optionsArgument.body;
-      } else {
-        bodyForApiKeyCheck = undefined;
-        bodyForPostMessage = input.body;
-      }
-    } else {
-      bodyForApiKeyCheck = undefined;
-      bodyForPostMessage = input.body;
-    }
-    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
-  }
-
-  window.fetch = function(input, optionsArgument) {
-    let actualUrl;
-    let fetchCallArgs;
-    let effectiveOptions = {};
-    let bodyForApiKeyCheck;
-    let bodyForPostMessage;
-
-    if (typeof input === 'string') {
-      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleStringInput(input, optionsArgument));
-    } else if (input instanceof Request) {
-      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleRequestInput(input, optionsArgument));
-    } else {
-      return originalFetch.apply(window, [input, optionsArgument]);
-    }
-
-    effectiveOptions.method = effectiveOptions.method || 'GET';
-    if (!effectiveOptions.headers) {
-      effectiveOptions.headers = new Headers();
-    }
-
-
-    if (typeof actualUrl === 'string' && googleLlmBaseApiUrls.some((url) => actualUrl.startsWith(url))) {
-      let apiKeyIsNull = true;
-
-      const regex = new RegExp("models/([^:]+)");
-      const modelNameMatch = actualUrl.match(regex);
-      const modelName = modelNameMatch ? modelNameMatch[1] : 'unspecified';
-
-
-      try {
-        const urlObject = new URL(actualUrl);  // Use URL object for robust parsing
-        const apiKeyParam = urlObject.searchParams.get('key');
-        if (apiKeyParam) {
-          apiKeyIsNull = false;
-        }
-      } catch (e) {
-        // Continue checks even if URL parsing fails
-      }
-
-      if (apiKeyIsNull && effectiveOptions.headers) {
-        const h = new Headers(effectiveOptions.headers);
-        const apiKeyHeaderValue = h.get('X-API-Key') || h.get('x-api-key');
-        if (apiKeyHeaderValue) {
-          apiKeyIsNull = false;
-          return originalFetch.apply(window, fetchCallArgs);
-        }
-      }
-
-      if (apiKeyIsNull && effectiveOptions.method && ['POST', 'PUT', 'PATCH'].includes(effectiveOptions.method.toUpperCase()) && typeof bodyForApiKeyCheck === 'string') {
-        try {
-          const bodyData = JSON.parse(bodyForApiKeyCheck);
-          if (bodyData && bodyData.apiKey) {
-            apiKeyIsNull = false;
-            return originalFetch.apply(window, fetchCallArgs);
-          }
-        } catch (e) {
-          // Ignore JSON parsing errors
-        }
-      }
-
-      if(apiKeyIsNull) {
-        const promiseId = nextPromiseId++;
-        const promise = new Promise((resolve) => {
-          pendingFetchResolvers[promiseId] = (resolvedResponse) => {
-            delete pendingFetchResolvers[promiseId];
-            resolve(resolvedResponse);
-          };
-        });
-
-        let serializedBodyForPostMessage;
-        if (typeof bodyForPostMessage === 'string' || bodyForPostMessage == null) {
-            serializedBodyForPostMessage = bodyForPostMessage;
-        } else if (bodyForPostMessage instanceof ReadableStream) {
-            serializedBodyForPostMessage = null;
-        } else {
-            try {
-                serializedBodyForPostMessage = JSON.stringify(bodyForPostMessage);
-            } catch (e) {
-                serializedBodyForPostMessage = null;
-            }
-        }
-
-        const messageOptions = {
-            method: effectiveOptions.method,
-            headers: Object.fromEntries(new Headers(effectiveOptions.headers).entries()),
-            body: serializedBodyForPostMessage
-        };
-
-        window.parent.postMessage({
-          type: 'requestFetch',
-          url: actualUrl,
-          modelName: modelName,
-          options: messageOptions,
-          promiseId: promiseId,
-        }, '*');
-
-        return promise;
-      }
-      return originalFetch.apply(window, fetchCallArgs);
-    }
-    return originalFetch.apply(window, fetchCallArgs);
-  };
-
-  window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'resolveFetch') {
-      const { promiseId, response } = event.data;
-      if (pendingFetchResolvers[promiseId]) {
-        try {
-          const reconstructedResponse = new Response(response.body, {
-            status: response.status,
-            statusText: response.statusText,
-            headers: new Headers(response.headers),
-          });
-          pendingFetchResolvers[promiseId](reconstructedResponse);
-        } catch (error) {
-          pendingFetchResolvers[promiseId](new Response(null, { status: 500, statusText: "Interceptor Response Reconstruction Error" }));
-        }
-      }
-    }
-  });
-
-}))({"textModelName":"gemini-3-flash-preview","imageModelName":"imagen-4.0-generate-001","imageEditModelName":"gemini-3.1-flash-image","imageTransformModelName":"gemini-3-pro-image","videoModelName":"veo-2.0-generate-001","ttsModelName":"gemini-2.5-flash-preview-tts","deprecatedTextModelNames":["gemini-2.0-flash","gemini-2.5-flash","gemini-2.5-flash-preview-04-17","gemini-2.5-flash-preview-05-20","gemini-2.5-flash-preview-09-2025"],"deprecatedImageModelNames":["imagen-3.0-generate-001","imagen-3.0-generate-002"],"deprecatedGenerateImageModelNames":["gemini-2.5-flash-image-preview","gemini-2.5-flash-image","gemini-3.1-flash-image-preview"],"deprecatedImageTransformModelNames":["gemini-3-pro-image-preview-11-2025"]})</script><script data-bard-client-injected="true">(function() {
-  function normalizeSlug(str) {
-    try {
-      return str
-        .trim()
-        .toLowerCase()
-        .replace(/[^p{L}p{N}s_-]/gu, '')
-        .replace(/s+/g, '-');
-    } catch (e) {
-      return str
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9s_-]/g, '')
-        .replace(/s+/g, '-');
-    }
-  }
-
-  function findTargetElement(hash) {
-    if (!hash || hash === '#') {
-      return null;
-    }
-    const rawId = hash.startsWith('#') ? hash.slice(1) : hash;
-    let decodedId = rawId;
-    try {
-      decodedId = decodeURIComponent(rawId);
-    } catch (e) {
-      // Ignore URI malformed errors.
-    }
-
-    // 1. Direct ID match (raw and decoded).
-    let target = document.getElementById(rawId) || document.getElementById(decodedId);
-    if (target) {
-      return target;
-    }
-
-    // 2. Name attribute match (<a name="...">).
-    try {
-      if (typeof CSS !== 'undefined' && CSS.escape) {
-        target =
-          document.querySelector('[name="' + CSS.escape(rawId) + '"]') ||
-          document.querySelector('[name="' + CSS.escape(decodedId) + '"]');
-      } else {
-        const namedElements = document.getElementsByName(rawId);
-        if (namedElements && namedElements.length > 0) {
-          return namedElements[0];
-        }
-      }
-    } catch (e) {
-      // Ignore querySelector syntax errors.
-    }
-    if (target) {
-      return target;
-    }
-
-    // 3. Match heading text by slug (for Markdown TOCs where headings lack explicit IDs).
-    const targetSlug = normalizeSlug(decodedId);
-    if (targetSlug) {
-      for (const heading of document.querySelectorAll('h1, h2, h3, h4, h5, h6')) {
-        if (normalizeSlug(heading.textContent || '') === targetSlug) {
-          return heading;
-        }
-      }
-    }
-
-    return null;
-  }
-
-  document.addEventListener('click', function(event) {
-    const target = event.target;
-    const anchor = target && typeof target.closest === 'function' ? target.closest('a') : null;
-    if (!anchor) {
-      return;
-    }
-
-    const href = anchor.getAttribute('href');
-    if (
-      !href ||
-      href.trim().toLowerCase().startsWith('javascript:') ||
-      anchor.hasAttribute('download')
-    ) {
-      return;
-    }
-
-    // Check if the link is an in-page hash / anchor link.
-    if (href.startsWith('#')) {
-      event.preventDefault();
-      const targetElement = findTargetElement(href);
-      if (targetElement) {
-        targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
-      }
-      return;
-    }
-
-    // Check if the URL has the same origin/pathname but with a hash.
-    try {
-      const url = new URL(anchor.href, window.location.href);
-      if (
-        url.hash &&
-        url.origin === window.location.origin &&
-        url.pathname === window.location.pathname
-      ) {
-        event.preventDefault();
-        const targetElement = findTargetElement(url.hash);
-        if (targetElement) {
-          targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
-        }
-        return;
-      }
-    } catch (e) {
-      // Fall through if URL parsing fails.
-    }
-
-    // For all external or full navigation links, prevent iframe-level navigation
-    // (which breaks in AGSA WebView or sandboxed iframes) and ensure they open
-    // safely in a new tab/window.
-    if (anchor.target !== '_blank') {
-      event.preventDefault();
-      window.open(anchor.href, '_blank', 'noopener,noreferrer');
-    }
-  }, {capture: true});
-})();</script><script data-bard-client-injected="true">(function(){'use strict';function a(){window.parent.postMessage({type:"interaction"},"*")}window.addEventListener("click",a,{capture:!0,passive:!0});window.addEventListener("touchstart",a,{capture:!0,passive:!0});window.addEventListener("keydown",a,{capture:!0,passive:!0});}).call(this);
-</script><script data-bard-client-injected="true">(function() {
-  const originalConsoleLog = console.log;
-  const originalConsoleError = console.error;
-
-    /**
-   * Normalizes an error event or a promise rejection reason into a structured error object.
-   * @param {*} errorEventOrReason The error object or reason.
-   * @return {object} Structured error data { message, name, stack }.
-   */
-  function getErrorObject(errorEventOrReason) {
-    if (errorEventOrReason instanceof Error) {
-      return {
-        message: errorEventOrReason.message,
-        name: errorEventOrReason.name,
-        stack: errorEventOrReason.stack,
-      };
-    }
-    // Fallback for non-Error objects.
-    try {
-      return {
-        message: JSON.stringify(errorEventOrReason),
-        name: 'UnknownErrorType',
-        stack: null,
-      };
-    } catch (e) {
-      return {
-        message: String(errorEventOrReason),
-        name: 'UnknownErrorTypeNonStringifiable',
-        stack: null,
-      };
-    }
-  }
-
-  /**
-   * Converts an array of arguments (from log/error) into a single string.
-   * Handles Error objects specially to include their message and stack.
-   * @param {Array<*>} args - Arguments passed to console methods.
-   * @return {string} A string representation of the arguments.
-   */
-  function stringifyArgs(args) {
-    return args
-      .map((arg) => {
-        if (arg instanceof Error) {
-          const {message, stack} = arg;
-          return `Error: ${message}${stack ? ('\nStack: ' + stack) : ''}`;
-        }
-        if (typeof arg === 'object' && arg !== null) {
-          try {
-            return JSON.stringify(arg);
-          } catch (error) {
-            return '[Circular Object]';
-          }
-        } else {
-          return String(arg);
-        }
-      })
-      .join(' ');
-  }
-
-  console.log = function(...args) {
-    const logString = stringifyArgs(args);
-    window.parent.postMessage({ type: 'log', message: logString }, '*');
-    originalConsoleLog.apply(console, args);
-  };
-
-  console.error = function(...args) {
-    let errorData;
-    if (args.length > 0 && args[0] instanceof Error) {
-      const err = args[0];
-      // If the first arg is an Error, capture its details.
-      errorData = {
-        type: 'error',
-        source: 'CONSOLE_ERROR',
-        ...getErrorObject(err),
-        rawArgsString: stringifyArgs(args.slice(1)),
-        timestamp: new Date().toISOString(),
-      };
-    } else {
-      // If not an Error object, treat all args as a general error message.
-      errorData = {
-        type: 'error',
-        source: 'CONSOLE_ERROR',
-        message: stringifyArgs(args),
-        name: 'ConsoleLoggedError',
-        stack: null,
-        timestamp: new Date().toISOString(),
-      };
-    }
-    window.parent.postMessage(errorData, '*');
-    originalConsoleError.apply(console, args);
-  };
-
-  // Listen for global unhandled synchronous errors.
-  window.addEventListener('error', function(event) {
-    const errorDetails = event.error ? getErrorObject(event.error) : {
-      message: event.message,
-      name: 'GlobalError',
-      stack: null,
-      filename: event.filename,
-      lineno: event.lineno,
-      colno: event.colno,
-    };
-
-    window.parent.postMessage({
-      type: 'error',
-      source: 'global',
-      ...errorDetails,
-      message: errorDetails.message || event.message,
-      timestamp: new Date().toISOString(),
-    }, '*');
-  });
-
-  // Listen for unhandled promise rejections (asynchronous errors).
-  window.addEventListener('unhandledrejection', function(event) {
-    const errorDetails = getErrorObject(event.reason);
-
-    window.parent.postMessage({
-      type: 'error',
-      source: 'unhandledrejection',
-      ...errorDetails,
-      message: errorDetails.message || 'Unhandled Promise Rejection',
-      timestamp: new Date().toISOString(),
-    }, '*');
-  });
-
-})();</script>
+<html lang="ko"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>홈 · My Workspace (개인 통합 대시보드)</title>
-  
+
   <!-- Font & Icons -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Square:wght@700;800&amp;display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -782,6 +59,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       text-decoration: none;
       color: var(--text-main);
       border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
     }
     .brand-icon {
       width: 32px;
@@ -902,6 +180,22 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       position: sticky;
       top: 0;
       z-index: 30;
+      flex-shrink: 0;
+    }
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .mobile-menu-btn {
+      display: none;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 5px 9px;
+      font-size: 13px;
+      color: var(--text-sub);
+      cursor: pointer;
     }
     .breadcrumb {
       font-size: 12.5px;
@@ -989,6 +283,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     .hero-buttons {
       display: flex;
       gap: 8px;
+      flex-wrap: wrap;
     }
     .btn {
       font-size: 12.5px;
@@ -1012,6 +307,11 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       border-color: var(--primary);
     }
     .btn.primary:hover { background: var(--primary-hover); }
+    .btn.sm {
+      padding: 5px 10px;
+      font-size: 11.5px;
+      border-radius: 6px;
+    }
 
     /* ================= KPIS ================= */
     .kpis-grid {
@@ -1087,6 +387,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       display: flex;
       gap: 6px;
       margin-bottom: 14px;
+      flex-wrap: wrap;
     }
     .cat-btn {
       padding: 6px 14px;
@@ -1112,9 +413,11 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       display: flex;
       gap: 8px;
       margin-bottom: 18px;
+      flex-wrap: wrap;
     }
     .filter-bar input[type="search"] {
       flex: 1;
+      min-width: 180px;
       padding: 8px 12px;
       border-radius: 8px;
       border: 1px solid var(--border-color);
@@ -1149,7 +452,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 195px;
+      min-height: 205px;
       transition: all 0.2s ease;
       position: relative;
     }
@@ -1211,6 +514,19 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       display: flex;
       justify-content: space-between;
       margin-bottom: 6px;
+      gap: 8px;
+    }
+    .proj-badges-inline {
+      display: flex;
+      gap: 8px;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .proj-badges-inline span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
     .progress-bar-wrap {
       width: 100%;
@@ -1282,9 +598,32 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     }
     .task-item:last-child { border-bottom: none; }
     .task-check { cursor: pointer; accent-color: var(--primary); }
-    .task-title { flex: 1; font-weight: 600; }
+    .task-title { flex: 1; font-weight: 600; cursor: pointer; }
     .task-title.done { text-decoration: line-through; color: #94a3b8; }
-    .task-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #f1f5f9; color: #64748b; font-weight: 700; }
+    .task-date-pill {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--primary);
+      background: #eff6ff;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .task-date-pill.overdue {
+      color: var(--accent-danger);
+      background: #fef2f2;
+    }
+    .task-tag {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      color: #64748b;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .task-tag:hover { background: #e2e8f0; color: var(--text-main); }
 
     /* Right Aside Cards */
     .aside-col { display: flex; flex-direction: column; gap: 18px; }
@@ -1310,6 +649,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       font-weight: 700;
       color: var(--primary);
       text-decoration: none;
+      cursor: pointer;
     }
 
     /* Deadlines List */
@@ -1319,7 +659,12 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       align-items: center;
       gap: 12px;
       font-size: 12px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 8px;
+      transition: background 0.15s;
     }
+    .deadline-item:hover { background: #f8fafc; }
     .date-box {
       width: 44px;
       height: 44px;
@@ -1347,7 +692,11 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       align-items: flex-start;
       gap: 10px;
       font-size: 11.5px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
     }
+    .doc-item:hover { background: #f8fafc; }
     .doc-type-icon {
       padding: 2px 6px;
       border-radius: 4px;
@@ -1356,9 +705,23 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       background: #fee2e2;
       color: #991b1b;
       margin-top: 2px;
+      flex-shrink: 0;
     }
-    .doc-info { flex: 1; }
-    .doc-name { font-weight: 700; color: var(--text-main); line-height: 1.3; }
+    .doc-type-icon.link-type {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    .doc-type-icon.note-type {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .doc-info { flex: 1; min-width: 0; }
+    .doc-name {
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.3;
+      word-break: break-word;
+    }
     .doc-meta { font-size: 10px; color: #94a3b8; margin-top: 2px; }
 
     /* Quick Start Callout */
@@ -1371,15 +734,169 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     .quickstart-card .eyebrow { font-size: 10px; font-weight: 800; color: var(--primary); letter-spacing: 0.05em; }
     .quickstart-card h3 { font-family: var(--font-heading); font-size: 15px; font-weight: 800; margin: 4px 0 6px; }
     .quickstart-card p { font-size: 11.5px; color: var(--text-sub); line-height: 1.5; margin-bottom: 12px; }
-    .quickstart-card a { font-size: 11.5px; font-weight: 800; color: var(--primary); text-decoration: none; }
+    .quickstart-card a { font-size: 11.5px; font-weight: 800; color: var(--primary); text-decoration: none; cursor: pointer; }
+
+    /* ================= CALENDAR VIEW ================= */
+    .calendar-view { display: none; }
+    .calendar-view.active { display: block; }
+    .dashboard-view.hidden { display: none; }
+
+    .calendar-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .cal-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .cal-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cal-month-title {
+      font-family: var(--font-heading);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .cal-nav-btns {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cal-legend {
+      display: flex;
+      gap: 12px;
+      font-size: 11px;
+      color: var(--text-sub);
+      font-weight: 700;
+    }
+    .cal-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 6px;
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--text-muted);
+    }
+    .cal-weekdays div:first-child { color: var(--accent-danger); }
+    .cal-weekdays div:last-child { color: var(--primary); }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+    .cal-cell {
+      min-height: 98px;
+      border: 1px solid #f1f5f9;
+      border-radius: 8px;
+      padding: 6px;
+      background: #ffffff;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .cal-cell:hover { border-color: #cbd5e1; background: #f8fafc; }
+    .cal-cell.other-month { background: #fafafa; color: #cbd5e1; }
+    .cal-cell.today { border-color: var(--primary); background: #eff6ff; }
+    .cal-cell.selected { box-shadow: 0 0 0 2px var(--primary); }
+
+    .cal-day-num {
+      font-size: 11.5px;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cal-day-num.sun { color: var(--accent-danger); }
+    .cal-day-num.sat { color: var(--primary); }
+    .cal-cell.other-month .cal-day-num { color: #cbd5e1; }
+
+    .cal-events-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      overflow: hidden;
+    }
+    .cal-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.3;
+    }
+    .cal-pill.deadline { background: #fee2e2; color: #991b1b; }
+    .cal-pill.task { background: #dbeafe; color: #1e40af; }
+    .cal-pill.done { background: #dcfce7; color: #166534; text-decoration: line-through; }
+
+    .cal-more {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding-left: 2px;
+    }
+
+    .cal-side-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .cal-detail-item {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      font-size: 12px;
+    }
+    .cal-detail-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      gap: 6px;
+    }
+    .cal-detail-title {
+      font-weight: 800;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .cal-detail-title:hover { color: var(--primary); text-decoration: underline; }
 
     /* ================= MODAL DIALOGS ================= */
     dialog {
       border: none;
       border-radius: 16px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.18);
-      max-width: 640px;
-      width: 90%;
+      max-width: 740px;
+      width: 92%;
       background: #ffffff;
       padding: 0;
       margin: auto;
@@ -1389,7 +906,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       backdrop-filter: blur(2px);
     }
     .dialog-head {
-      padding: 20px 24px;
+      padding: 18px 24px;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
@@ -1404,9 +921,9 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       color: #94a3b8;
     }
     .dialog-close:hover { color: var(--text-main); }
-    .dialog-body { padding: 24px; max-height: 70vh; overflow-y: auto; font-size: 13px; }
+    .dialog-body { padding: 20px 24px; max-height: 72vh; overflow-y: auto; font-size: 13px; }
     .dialog-foot {
-      padding: 16px 24px;
+      padding: 14px 24px;
       border-top: 1px solid var(--border-color);
       display: flex;
       justify-content: flex-end;
@@ -1416,15 +933,81 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       border-bottom-right-radius: 16px;
     }
 
-    .form-group { margin-bottom: 16px; }
+    .modal-tabs {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .modal-tab-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+    .modal-tab-btn.active {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .inline-add-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+    .inline-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .schedule-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border: 1px solid #f1f5f9;
+      border-radius: 8px;
+      background: #ffffff;
+      margin-bottom: 6px;
+    }
+    .schedule-row input[type="date"] {
+      font-size: 11px;
+      padding: 3px 6px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-sub);
+    }
+    .icon-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 4px;
+      font-size: 13px;
+    }
+    .icon-btn:hover { color: var(--accent-danger); }
+
+    .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
     .form-control {
       width: 100%;
-      padding: 9px 12px;
+      padding: 8px 11px;
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 12.5px;
       outline: none;
+      font-family: inherit;
     }
     .form-control:focus { border-color: var(--primary); }
 
@@ -1442,28 +1025,37 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
-      z-index: 100;
+      z-index: 200;
+      max-width: 90vw;
     }
     #toast.show { opacity: 1; pointer-events: auto; }
 
     /* Responsive */
     @media (max-width: 1024px) {
-      .home-layout { grid-template-columns: 1fr; }
+      .home-layout, .calendar-layout { grid-template-columns: 1fr; }
       .kpis-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 768px) {
-      .sidebar { display: none; }
+      .sidebar {
+        position: fixed;
+        left: -250px;
+        transition: left 0.2s ease;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+      }
+      .sidebar.open { left: 0; }
+      .mobile-menu-btn { display: inline-flex; align-items: center; gap: 6px; }
       .project-grid { grid-template-columns: 1fr; }
       main.content-area { padding: 18px; }
       .hero-heading { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .cal-cell { min-height: 70px; padding: 4px; }
     }
   </style>
 </head>
 <body>
 
   <!-- ================= SIDEBAR ================= -->
-  <aside class="sidebar">
-    <a class="brand" href="javascript:void(0)" onclick="filterCategory('all')">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="javascript:void(0)" onclick="navigateTo('dashboard', 'all')">
       <div class="brand-icon"><i class="fa-solid fa-shapes"></i></div>
       <div class="brand-title">
         My Workspace
@@ -1473,24 +1065,24 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
     <div class="nav-section">WORKSPACE</div>
     <ul class="nav-list">
-      <li><a class="nav-item active" onclick="filterCategory('all')"><i class="fa-solid fa-house"></i> <span>홈</span></a></li>
-      <li><a class="nav-item" onclick="filterCategory('work')"><i class="fa-solid fa-briefcase"></i> <span>업무 프로젝트</span></a></li>
-      <li><a class="nav-item" onclick="openUploadModal()"><i class="fa-solid fa-cloud-arrow-up"></i> <span>자료 업로드</span></a></li>
-      <li><a class="nav-item" onclick="filterCategory('study')"><i class="fa-solid fa-book-open"></i> <span>Study</span></a></li>
+      <li><a class="nav-item active" id="nav-home" onclick="navigateTo('dashboard', 'all')"><i class="fa-solid fa-house"></i> <span>홈</span></a></li>
+      <li><a class="nav-item" id="nav-work" onclick="navigateTo('dashboard', 'work')"><i class="fa-solid fa-briefcase"></i> <span>업무 프로젝트</span></a></li>
+      <li><a class="nav-item" id="nav-upload" onclick="openUploadModal()"><i class="fa-solid fa-cloud-arrow-up"></i> <span>자료 업로드</span></a></li>
+      <li><a class="nav-item" id="nav-study" onclick="navigateTo('dashboard', 'study')"><i class="fa-solid fa-book-open"></i> <span>Study</span></a></li>
     </ul>
 
-    <div class="nav-section">다음 개발</div>
+    <div class="nav-section">일정 · 확장</div>
     <ul class="nav-list">
-      <li><div class="nav-item future"><span class="flex items-center gap-2"><i class="fa-solid fa-sun"></i> 일상</span><span class="tag-badge">준비 중</span></div></li>
-      <li><a class="nav-item" onclick="scrollToDeadlines()"><i class="fa-solid fa-calendar-days"></i> <span>캘린더</span></a></li>
-      <li><div class="nav-item future"><span class="flex items-center gap-2"><i class="fa-solid fa-chart-pie"></i> 분석</span><span class="tag-badge">준비 중</span></div></li>
+      <li><a class="nav-item" id="nav-calendar" onclick="navigateTo('calendar')"><i class="fa-solid fa-calendar-days"></i> <span>캘린더</span></a></li>
+      <li><a class="nav-item" id="nav-life" onclick="navigateTo('dashboard', 'life')"><i class="fa-solid fa-sun"></i> <span>일상</span></a></li>
+      <li><div class="nav-item future"><span><i class="fa-solid fa-chart-pie"></i> 분석</span><span class="tag-badge">준비 중</span></div></li>
     </ul>
 
     <div class="sidebar-bottom">
       <div class="avatar">나</div>
       <div class="user-info">
         나의 워크스페이스
-        <small>직접 입력 · 파일 업로드</small>
+        <small>프로젝트 중심 일정 · 자료 관리</small>
       </div>
     </div>
   </aside>
@@ -1499,9 +1091,13 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
   <div class="workspace">
     <!-- Top Bar -->
     <header class="top-bar">
-      <span class="breadcrumb">나의 워크스페이스 <b>/</b> <strong>홈</strong></span>
+      <div class="top-left">
+        <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="메뉴 열기">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <span class="breadcrumb" id="breadcrumbDisplay">나의 워크스페이스 <b>/</b> <strong>홈</strong></span>
+      </div>
       <div class="header-actions">
-        <!-- Standalone Single HTML Download Button -->
         <button onclick="downloadSelfHtml()" class="btn-download-html" title="단일 index.html 파일 다운로드 및 코드 복사">
           <i class="fa-solid fa-floppy-disk"></i>
           <span>HTML 다운로드</span>
@@ -1512,122 +1108,308 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
     <!-- Main Content -->
     <main class="content-area">
-      <!-- Hero Heading -->
-      <section class="hero-heading">
-        <div>
-          <div class="eyebrow-date" id="currentDateDisplay">2026년 11월 17일 화요일</div>
-          <h1>오늘도, 하나씩 앞으로.</h1>
-          <p>진행 중인 프로젝트와 다음 일정을 한곳에서 확인하세요.</p>
-        </div>
-        <div class="hero-buttons">
-          <button class="btn" onclick="openUploadModal()"><i class="fa-solid fa-arrow-up-from-bracket"></i> 자료 업로드</button>
-          <button class="btn primary" onclick="openNewProjectModal()"><i class="fa-solid fa-plus"></i> 새 프로젝트</button>
-        </div>
-      </section>
 
-      <!-- KPIs -->
-      <section class="kpis-grid">
-        <div class="kpi-card">
-          <span>전체 프로젝트</span>
-          <strong id="kpiTotal">6</strong>
-          <small>저장된 프로젝트</small>
-        </div>
-        <div class="kpi-card blue">
-          <span>진행 중인 계획</span>
-          <strong id="kpiActive">6</strong>
-          <small>예정 · 진행 중 · 보류</small>
-        </div>
-        <div class="kpi-card red">
-          <span>마감일 지난 프로젝트</span>
-          <strong id="kpiOverdue">1</strong>
-          <small>완료 · 보관 제외</small>
-        </div>
-        <div class="kpi-card">
-          <span>보관 중인 자료</span>
-          <strong id="kpiDocs">0</strong>
-          <small>PPT · PDF 원본</small>
-        </div>
-      </section>
-
-      <!-- 2-Columns Home Layout -->
-      <div class="home-layout">
-        <!-- Left: Project Area -->
-        <section class="project-area">
-          <div class="section-header">
-            <div>
-              <span class="section-eyebrow">MY PROJECTS</span>
-              <h2>나의 프로젝트 <span id="projectCountDisplay" style="font-size: 16px; color: var(--text-muted); font-weight: normal;">0개</span></h2>
-            </div>
-            <div class="section-links">
-              <a href="javascript:void(0)" onclick="filterCategory('study')">공부 계획 ↗</a> · 
-              <a href="javascript:void(0)" onclick="openNewProjectModal()">업무 만들기 ↗</a>
-            </div>
+      <!-- ========== DASHBOARD VIEW ========== -->
+      <div class="dashboard-view" id="dashboardView">
+        <!-- Hero Heading -->
+        <section class="hero-heading">
+          <div>
+            <div class="eyebrow-date" id="currentDateDisplay">2026년 11월 17일 화요일</div>
+            <h1>오늘도, 하나씩 앞으로.</h1>
+            <p>진행 중인 프로젝트와 내부 일정·자료를 한곳에서 조율하세요.</p>
           </div>
-
-          <!-- Category Tabs -->
-          <div class="category-tabs" id="categoryTabs">
-            <button class="cat-btn" onclick="filterCategory('all')">전체</button>
-            <button class="cat-btn" onclick="filterCategory('work')">업무</button>
-            <button class="cat-btn selected" onclick="filterCategory('study')">Study</button>
-            <button class="cat-btn" onclick="filterCategory('life')">일상</button>
-          </div>
-
-          <!-- Filter & Search Bar -->
-          <div class="filter-bar">
-            <input type="search" id="searchInput" placeholder="프로젝트명, 목표, 소재, 태그 검색" oninput="renderProjects()">
-            <select id="statusFilter" onchange="renderProjects()">
-              <option value="all">모든 상태</option>
-              <option value="favorite">즐겨찾기</option>
-              <option value="예정">예정</option>
-              <option value="진행 중">진행 중</option>
-              <option value="보류">보류</option>
-              <option value="완료">완료</option>
-            </select>
-            <select id="sortFilter" onchange="renderProjects()">
-              <option value="fav">즐겨찾기 우선</option>
-              <option value="due">마감일순</option>
-              <option value="recent">최근 수정순</option>
-            </select>
-          </div>
-
-          <!-- Project Cards Grid -->
-          <div class="project-grid" id="projectCardsGrid"><div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--text-muted); background: #ffffff; border-radius: 12px; border: 1px dashed var(--border-color);">해당하는 프로젝트가 없습니다.</div></div>
-
-          <!-- Next Tasks Bottom Card -->
-          <div class="nexttasks-card">
-            <div class="head">
-              <h2>다음 할 일</h2>
-              <span class="badge-sub">등록된 작업 기준</span>
-            </div>
-            <div id="nextTasksContainer"><div class="task-item">
-          <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_1', 0)">
-          <span class="task-title ">부처별 2027 공고 동향 수집</span>
-          <span class="task-tag">정부 과제 신청</span>
-        </div><div class="task-item">
-          <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_1', 1)">
-          <span class="task-title ">수요조사서 제안서 사전 기획</span>
-          <span class="task-tag">정부 과제 신청</span>
-        </div><div class="task-item">
-          <input type="checkbox" class="task-check" checked="" onchange="toggleTaskDone('proj_2', 0)">
-          <span class="task-title done">웹이젤 플랫폼 연동 및 실증 테스트</span>
-          <span class="task-tag">한국재료연구원 AX 지원</span>
-        </div><div class="task-item">
-          <input type="checkbox" class="task-check" checked="" onchange="toggleTaskDone('proj_2', 1)">
-          <span class="task-title done">최종 결과 보고서 제출 완료</span>
-          <span class="task-tag">한국재료연구원 AX 지원</span>
-        </div></div>
+          <div class="hero-buttons">
+            <button class="btn" onclick="navigateTo('calendar')"><i class="fa-solid fa-calendar-days"></i> 캘린더 열기</button>
+            <button class="btn" onclick="openUploadModal()"><i class="fa-solid fa-arrow-up-from-bracket"></i> 자료 등록</button>
+            <button class="btn primary" onclick="openNewProjectModal()"><i class="fa-solid fa-plus"></i> 새 프로젝트</button>
           </div>
         </section>
 
-        <!-- Right Aside -->
-        <aside class="aside-col">
-          <!-- Upcoming Deadlines -->
-          <section class="aside-card" id="deadlinesCard">
-            <div class="card-head">
-              <h2>다가오는 마감</h2>
-              <a href="javascript:void(0)" onclick="filterCategory('all')" class="link">전체보기 ↗</a>
+        <!-- KPIs -->
+        <section class="kpis-grid">
+          <div class="kpi-card">
+            <span>전체 프로젝트</span>
+            <strong id="kpiTotal">6</strong>
+            <small>저장된 프로젝트</small>
+          </div>
+          <div class="kpi-card blue">
+            <span>진행 중인 계획</span>
+            <strong id="kpiActive">6</strong>
+            <small>예정 · 진행 중 · 보류</small>
+          </div>
+          <div class="kpi-card red">
+            <span>마감일 지난 프로젝트</span>
+            <strong id="kpiOverdue">1</strong>
+            <small>완료 · 보관 제외</small>
+          </div>
+          <div class="kpi-card">
+            <span>보관 중인 자료</span>
+            <strong id="kpiDocs">3</strong>
+            <small>프로젝트 자료 · 링크 · 파일</small>
+          </div>
+        </section>
+
+        <!-- 2-Columns Home Layout -->
+        <div class="home-layout">
+          <!-- Left: Project Area -->
+          <section class="project-area">
+            <div class="section-header">
+              <div>
+                <span class="section-eyebrow">MY PROJECTS</span>
+                <h2>나의 프로젝트 <span id="projectCountDisplay" style="font-size: 16px; color: var(--text-muted); font-weight: normal;">6개</span></h2>
+              </div>
+              <div class="section-links">
+                <a href="javascript:void(0)" onclick="navigateTo('calendar')">일정 캘린더 ↗</a> ·
+                <a href="javascript:void(0)" onclick="openNewProjectModal()">업무 만들기 ↗</a>
+              </div>
             </div>
-            <div class="deadline-list" id="deadlineList"><div class="deadline-item">
+
+            <!-- Category Tabs -->
+            <div class="category-tabs" id="categoryTabs">
+              <button class="cat-btn selected" data-cat="all" onclick="filterCategory('all')">전체</button>
+              <button class="cat-btn" data-cat="work" onclick="filterCategory('work')">업무</button>
+              <button class="cat-btn" data-cat="study" onclick="filterCategory('study')">Study</button>
+              <button class="cat-btn" data-cat="life" onclick="filterCategory('life')">일상</button>
+            </div>
+
+            <!-- Filter & Search Bar -->
+            <div class="filter-bar">
+              <input type="search" id="searchInput" placeholder="프로젝트명, 목표, 소재, 태그 검색" oninput="renderProjects()">
+              <select id="statusFilter" onchange="renderProjects()">
+                <option value="all">모든 상태</option>
+                <option value="favorite">즐겨찾기</option>
+                <option value="예정">예정</option>
+                <option value="진행 중">진행 중</option>
+                <option value="보류">보류</option>
+                <option value="완료">완료</option>
+              </select>
+              <select id="sortFilter" onchange="renderProjects()">
+                <option value="fav">즐겨찾기 우선</option>
+                <option value="due">마감일순</option>
+                <option value="recent">최근 수정순</option>
+              </select>
+            </div>
+
+            <!-- Project Cards Grid -->
+            <div class="project-grid" id="projectCardsGrid"><div class="proj-card">
+          <div>
+            <div class="proj-top">
+              <span class="status-pill scheduled">예정</span>
+              <button class="btn-fav " onclick="toggleFavorite('proj_1', event)" title="즐겨찾기">
+                <i class="fa-regular fa-star"></i>
+              </button>
+            </div>
+            <h3 onclick="openProjectModal('proj_1')">정부 과제 신청</h3>
+            <p class="proj-desc">2027 정부과제 대응 신청</p>
+          </div>
+          <div>
+            <div class="proj-badges-inline">
+              <span><i class="fa-regular fa-calendar-check"></i> 일정 0/2</span>
+              <span><i class="fa-regular fa-folder-open"></i> 자료 0건</span>
+            </div>
+            <div class="proj-meta">
+              <span>업무 · 연구기획</span>
+              <span>진행률 0%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div class="proj-foot">
+              <span class="dday-tag">D-195</span>
+              <span class="btn-open-proj" onclick="openProjectModal('proj_1')">일정·자료 열기 →</span>
+            </div>
+          </div>
+        </div><div class="proj-card">
+          <div>
+            <div class="proj-top">
+              <span class="status-pill active">진행 중</span>
+              <button class="btn-fav " onclick="toggleFavorite('proj_2', event)" title="즐겨찾기">
+                <i class="fa-regular fa-star"></i>
+              </button>
+            </div>
+            <h3 onclick="openProjectModal('proj_2')">한국재료연구원 AX 지원</h3>
+            <p class="proj-desc">한국재료연구원 AX 지원 (웹이젤)</p>
+          </div>
+          <div>
+            <div class="proj-badges-inline">
+              <span><i class="fa-regular fa-calendar-check"></i> 일정 2/2</span>
+              <span><i class="fa-regular fa-folder-open"></i> 자료 3건</span>
+            </div>
+            <div class="proj-meta">
+              <span>업무 · 연구기획</span>
+              <span>진행률 100%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 100%;"></div>
+            </div>
+            <div class="proj-foot">
+              <span class="dday-tag">마감일 미정</span>
+              <span class="btn-open-proj" onclick="openProjectModal('proj_2')">일정·자료 열기 →</span>
+            </div>
+          </div>
+        </div><div class="proj-card">
+          <div>
+            <div class="proj-top">
+              <span class="status-pill active">진행 중</span>
+              <button class="btn-fav " onclick="toggleFavorite('proj_3', event)" title="즐겨찾기">
+                <i class="fa-regular fa-star"></i>
+              </button>
+            </div>
+            <h3 onclick="openProjectModal('proj_3')">전시회(세미나) 및 교육 참석</h3>
+            <p class="proj-desc">전시회(세미나) 및 교육 참석 후 내용 정리</p>
+          </div>
+          <div>
+            <div class="proj-badges-inline">
+              <span><i class="fa-regular fa-calendar-check"></i> 일정 0/1</span>
+              <span><i class="fa-regular fa-folder-open"></i> 자료 0건</span>
+            </div>
+            <div class="proj-meta">
+              <span>업무 · 연구기획</span>
+              <span>진행률 0%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div class="proj-foot">
+              <span class="dday-tag">마감일 미정</span>
+              <span class="btn-open-proj" onclick="openProjectModal('proj_3')">일정·자료 열기 →</span>
+            </div>
+          </div>
+        </div><div class="proj-card">
+          <div>
+            <div class="proj-top">
+              <span class="status-pill active">진행 중</span>
+              <button class="btn-fav " onclick="toggleFavorite('proj_4', event)" title="즐겨찾기">
+                <i class="fa-regular fa-star"></i>
+              </button>
+            </div>
+            <h3 onclick="openProjectModal('proj_4')">항공 신사업 검토 및 발굴</h3>
+            <p class="proj-desc">항공 산업 진출을 위한 신산업 검토 및 발굴</p>
+          </div>
+          <div>
+            <div class="proj-badges-inline">
+              <span><i class="fa-regular fa-calendar-check"></i> 일정 0/1</span>
+              <span><i class="fa-regular fa-folder-open"></i> 자료 0건</span>
+            </div>
+            <div class="proj-meta">
+              <span>업무 · 연구기획</span>
+              <span>진행률 0%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div class="proj-foot">
+              <span class="dday-tag">D-775</span>
+              <span class="btn-open-proj" onclick="openProjectModal('proj_4')">일정·자료 열기 →</span>
+            </div>
+          </div>
+        </div><div class="proj-card">
+          <div>
+            <div class="proj-top">
+              <span class="status-pill active">진행 중</span>
+              <button class="btn-fav " onclick="toggleFavorite('proj_5', event)" title="즐겨찾기">
+                <i class="fa-regular fa-star"></i>
+              </button>
+            </div>
+            <h3 onclick="openProjectModal('proj_5')">경남TP 브레이크 캘리퍼</h3>
+            <p class="proj-desc">경남 TP 지원사업 브레이크 캘리퍼 시제품 제작</p>
+          </div>
+          <div>
+            <div class="proj-badges-inline">
+              <span><i class="fa-regular fa-calendar-check"></i> 일정 0/2</span>
+              <span><i class="fa-regular fa-folder-open"></i> 자료 0건</span>
+            </div>
+            <div class="proj-meta">
+              <span>업무 · 연구기획</span>
+              <span>진행률 0%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div class="proj-foot">
+              <span class="dday-tag overdue">4일 지남</span>
+              <span class="btn-open-proj" onclick="openProjectModal('proj_5')">일정·자료 열기 →</span>
+            </div>
+          </div>
+        </div><div class="proj-card">
+          <div>
+            <div class="proj-top">
+              <span class="status-pill active">진행 중</span>
+              <button class="btn-fav " onclick="toggleFavorite('proj_6', event)" title="즐겨찾기">
+                <i class="fa-regular fa-star"></i>
+              </button>
+            </div>
+            <h3 onclick="openProjectModal('proj_6')">현대자동차 고강도 합금 개발</h3>
+            <p class="proj-desc">6110 고강도 합금 개발</p>
+          </div>
+          <div>
+            <div class="proj-badges-inline">
+              <span><i class="fa-regular fa-calendar-check"></i> 일정 0/1</span>
+              <span><i class="fa-regular fa-folder-open"></i> 자료 0건</span>
+            </div>
+            <div class="proj-meta">
+              <span>업무 · 소재개발</span>
+              <span>진행률 0%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div class="proj-foot">
+              <span class="dday-tag">D-256</span>
+              <span class="btn-open-proj" onclick="openProjectModal('proj_6')">일정·자료 열기 →</span>
+            </div>
+          </div>
+        </div></div>
+
+            <!-- Next Tasks Bottom Card -->
+            <div class="nexttasks-card">
+              <div class="head">
+                <h2>다음 할 일 · 프로젝트 세부 일정</h2>
+                <span class="badge-sub">일정 날짜순 우선 표시</span>
+              </div>
+              <div id="nextTasksContainer"><div class="task-item">
+          <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_5', 0)">
+          <span class="task-title " onclick="openProjectModal('proj_5', 'schedule')">캘리퍼 시제품 최종 치수 측정 검사</span>
+          <span class="task-date-pill ">2026-11-18</span>
+          <span class="task-tag" onclick="openProjectModal('proj_5', 'schedule')">경남TP 브레이크 캘리퍼</span>
+        </div><div class="task-item">
+          <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_3', 0)">
+          <span class="task-title " onclick="openProjectModal('proj_3', 'schedule')">참석 결과 보고서 작성 및 사내 공유</span>
+          <span class="task-date-pill ">2026-11-20</span>
+          <span class="task-tag" onclick="openProjectModal('proj_3', 'schedule')">전시회(세미나) 및 교육 참석</span>
+        </div><div class="task-item">
+          <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_5', 1)">
+          <span class="task-title " onclick="openProjectModal('proj_5', 'schedule')">경남TP 사업비 정산 증빙 서류 제출</span>
+          <span class="task-date-pill ">2026-11-22</span>
+          <span class="task-tag" onclick="openProjectModal('proj_5', 'schedule')">경남TP 브레이크 캘리퍼</span>
+        </div><div class="task-item">
+          <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_6', 0)">
+          <span class="task-title " onclick="openProjectModal('proj_6', 'schedule')">6110 합금 시험편 인장강도 시험</span>
+          <span class="task-date-pill ">2026-11-24</span>
+          <span class="task-tag" onclick="openProjectModal('proj_6', 'schedule')">현대자동차 고강도 합금 개발</span>
+        </div><div class="task-item">
+          <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_1', 0)">
+          <span class="task-title " onclick="openProjectModal('proj_1', 'schedule')">부처별 2027 공고 동향 수집</span>
+          <span class="task-date-pill ">2026-11-25</span>
+          <span class="task-tag" onclick="openProjectModal('proj_1', 'schedule')">정부 과제 신청</span>
+        </div><div class="task-item">
+          <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_4', 0)">
+          <span class="task-title " onclick="openProjectModal('proj_4', 'schedule')">항공 부품 규격(AS9100) 요구사항 분석</span>
+          <span class="task-date-pill ">2026-11-28</span>
+          <span class="task-tag" onclick="openProjectModal('proj_4', 'schedule')">항공 신사업 검토 및 발굴</span>
+        </div></div>
+            </div>
+          </section>
+
+          <!-- Right Aside -->
+          <aside class="aside-col">
+            <!-- Upcoming Deadlines -->
+            <section class="aside-card" id="deadlinesCard">
+              <div class="card-head">
+                <h2>다가오는 마감</h2>
+                <a href="javascript:void(0)" onclick="navigateTo('calendar')" class="link">캘린더 보기 ↗</a>
+              </div>
+              <div class="deadline-list" id="deadlineList"><div class="deadline-item">
           <div class="date-box">
             <small>11월</small>
             <strong>13</strong>
@@ -1664,27 +1446,103 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             <p class="">D-775 · 2028-12-31</p>
           </div>
         </div></div>
-            <p style="font-size: 11px; color: #94a3b8; margin-top: 12px;">마감일이 지난 미완료 프로젝트를 먼저 표시합니다.</p>
-          </section>
+              <p style="font-size: 11px; color: #94a3b8; margin-top: 12px;">마감일이 지난 미완료 항목을 먼저 표시합니다.</p>
+            </section>
 
-          <!-- Recent Documents -->
-          <section class="aside-card">
-            <div class="card-head">
-              <h2>최근 올린 자료</h2>
-              <a href="javascript:void(0)" onclick="openUploadModal()" class="link">전체 보기 ↗</a>
-            </div>
-            <div class="docs-list" id="recentDocsList"></div>
-          </section>
+            <!-- Recent Documents -->
+            <section class="aside-card">
+              <div class="card-head">
+                <h2>최근 올린 자료</h2>
+                <a href="javascript:void(0)" onclick="openUploadModal()" class="link">자료 추가 ↗</a>
+              </div>
+              <div class="docs-list" id="recentDocsList"><div class="doc-item">
+          <span class="doc-type-icon ">PDF</span>
+          <div class="doc-info">
+            <div class="doc-name">단기기술지원(KIMS-CTR에코포징)_8월_1,2주차.pdf</div>
+            <div class="doc-meta">한국재료연구원 AX 지원 · 2026-11-13</div>
+          </div>
+        </div><div class="doc-item">
+          <span class="doc-type-icon ">PDF</span>
+          <div class="doc-info">
+            <div class="doc-name">단기기술지원(KIMS-CTR에코포징)_7월_3,4주차.pdf</div>
+            <div class="doc-meta">한국재료연구원 AX 지원 · 2026-11-13</div>
+          </div>
+        </div><div class="doc-item">
+          <span class="doc-type-icon ">PDF</span>
+          <div class="doc-info">
+            <div class="doc-name">단기기술지원(KIMS-CTR에코포징)_7월_1,2주차.pdf</div>
+            <div class="doc-meta">한국재료연구원 AX 지원 · 2026-11-13</div>
+          </div>
+        </div></div>
+            </section>
 
-          <!-- Next Step Callout -->
-          <section class="quickstart-card">
-            <span class="eyebrow">YOUR NEXT STEP</span>
-            <h3>자료에서 계획으로</h3>
-            <p>PPT·PDF를 올려 보관하거나, 정리한 결과를 확인하고 프로젝트로 가져오세요.</p>
-            <a href="javascript:void(0)" onclick="openUploadModal()">자료 업로드 열기 →</a>
-          </section>
-        </aside>
+            <!-- Next Step Callout -->
+            <section class="quickstart-card">
+              <span class="eyebrow">PROJECT WORKFLOW</span>
+              <h3>큰 프로젝트 안에서 일정·자료 통합</h3>
+              <p>프로젝트 카드를 클릭해 관련 자료(파일·링크·메모)를 모아두고, 세부 일정을 날짜별로 조율하세요.</p>
+              <a href="javascript:void(0)" onclick="openUploadModal()">자료 등록 열기 →</a>
+            </section>
+          </aside>
+        </div>
       </div>
+
+      <!-- ========== CALENDAR VIEW ========== -->
+      <div class="calendar-view" id="calendarView">
+        <section class="hero-heading">
+          <div>
+            <div class="eyebrow-date">SCHEDULE &amp; DEADLINES</div>
+            <h1>프로젝트 통합 캘린더</h1>
+            <p>프로젝트 마감일과 각 프로젝트 내부 세부 일정을 달력에서 한눈에 조율하세요.</p>
+          </div>
+          <div class="hero-buttons">
+            <button class="btn" onclick="navigateTo('dashboard', 'all')"><i class="fa-solid fa-arrow-left"></i> 대시보드로</button>
+            <button class="btn primary" onclick="openQuickScheduleFromCalendar()"><i class="fa-solid fa-plus"></i> 선택한 날짜에 일정 추가</button>
+          </div>
+        </section>
+
+        <div class="calendar-layout">
+          <section class="cal-card">
+            <div class="cal-toolbar">
+              <div class="cal-nav-btns">
+                <button class="btn sm" onclick="changeCalMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <span class="cal-month-title" id="calMonthTitle">2026년 11월</span>
+                <button class="btn sm" onclick="changeCalMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <button class="btn sm" onclick="goCalToday()">오늘</button>
+              </div>
+              <div class="cal-legend">
+                <span><i class="legend-dot" style="background:#dc2626;"></i> 프로젝트 마감</span>
+                <span><i class="legend-dot" style="background:#2563eb;"></i> 세부 일정</span>
+                <span><i class="legend-dot" style="background:#16a34a;"></i> 완료</span>
+              </div>
+            </div>
+
+            <div class="cal-weekdays">
+              <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+          </section>
+
+          <aside class="aside-card">
+            <div class="card-head">
+              <h2 id="calSelectedDateTitle">선택한 날짜 일정</h2>
+              <span class="badge-sub" id="calSelectedCount">0건</span>
+            </div>
+            <div class="inline-add-box">
+              <div class="form-group" style="margin-bottom:8px;">
+                <label style="font-size:11px;">어느 프로젝트 일정인가요?</label>
+                <select id="calQuickProjSelect" class="form-control" style="padding:6px 8px; font-size:12px;"></select>
+              </div>
+              <div class="inline-row">
+                <input type="text" id="calQuickTaskInput" class="form-control" style="flex:1; padding:6px 9px; font-size:12px;" placeholder="세부 일정 입력 후 추가">
+                <button class="btn primary sm" onclick="addQuickScheduleOnSelectedDate()">추가</button>
+              </div>
+            </div>
+            <div class="cal-side-list" id="calSelectedDayList"></div>
+          </aside>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -1692,7 +1550,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
   <dialog id="projectDetailModal">
     <div class="dialog-head">
       <div>
-        <span style="font-size: 11px; font-weight: 800; color: var(--primary);">PROJECT OVERVIEW</span>
+        <span style="font-size: 11px; font-weight: 800; color: var(--primary);">PROJECT WORKSPACE</span>
         <h2 id="modalProjTitle">프로젝트 상세</h2>
       </div>
       <button class="dialog-close" onclick="closeProjectModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -1701,7 +1559,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       <!-- Dynamic Detail Content -->
     </div>
     <div class="dialog-foot">
-      <button class="btn" onclick="deleteCurrentProject()" style="color: var(--accent-danger); border-color: #fecaca;"><i class="fa-regular fa-trash-can"></i> 삭제</button>
+      <button class="btn" onclick="deleteCurrentProject()" style="color: var(--accent-danger); border-color: #fecaca;"><i class="fa-regular fa-trash-can"></i> 프로젝트 삭제</button>
       <button class="btn primary" onclick="closeProjectModal()">확인 완료</button>
     </div>
   </dialog>
@@ -1761,19 +1619,38 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
   <!-- ================= UPLOAD MODAL DIALOG ================= -->
   <dialog id="uploadModal">
     <div class="dialog-head">
-      <h2>자료 보관 및 업로드</h2>
+      <div>
+        <span style="font-size: 11px; font-weight: 800; color: var(--primary);">PROJECT RESOURCES</span>
+        <h2>업무 자료 등록 및 보관</h2>
+      </div>
       <button class="dialog-close" onclick="closeUploadModal()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="dialog-body">
-      <div style="border: 2px dashed #cbd5e1; padding: 28px; text-align: center; border-radius: 12px; background: #f8fafc; cursor: pointer;" onclick="document.getElementById('hiddenFileInput').click()">
-        <i class="fa-solid fa-cloud-arrow-up" style="font-size: 32px; color: var(--primary); margin-bottom: 8px;"></i>
-        <p style="font-weight: 800; font-size: 13.5px;">파일을 드래그하거나 클릭하여 업로드</p>
-        <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">PDF, PPTX, HWPX 파일 지원 (로컬 보관)</p>
+      <div class="form-group">
+        <label>연결할 프로젝트</label>
+        <select id="uploadTargetProject" class="form-control"></select>
+      </div>
+
+      <div style="border: 2px dashed #cbd5e1; padding: 22px; text-align: center; border-radius: 12px; background: #f8fafc; cursor: pointer; margin-bottom: 16px;" onclick="document.getElementById('hiddenFileInput').click()">
+        <i class="fa-solid fa-cloud-arrow-up" style="font-size: 28px; color: var(--primary); margin-bottom: 6px;"></i>
+        <p style="font-weight: 800; font-size: 13px;">파일을 클릭하여 프로젝트 자료로 등록</p>
+        <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">PDF, PPTX, HWPX, XLSX 등 지원 (메타데이터 로컬 보관)</p>
         <input type="file" id="hiddenFileInput" style="display: none;" onchange="handleFileSelect(event)">
+      </div>
+
+      <div style="border-top: 1px solid var(--border-color); padding-top: 14px;">
+        <label style="display:block; font-size:12px; font-weight:800; margin-bottom:8px;">또는 링크 / 참고 자료 직접 등록</label>
+        <div class="form-group" style="margin-bottom:8px;">
+          <input type="text" id="uploadDocTitle" class="form-control" placeholder="자료명 (예: 6110 합금 물성시험 결과서)">
+        </div>
+        <div class="inline-row">
+          <input type="url" id="uploadDocUrl" class="form-control" style="flex:1;" placeholder="참고 URL (선택, 예: https://...)">
+          <button class="btn primary sm" onclick="submitManualDoc()">자료 추가</button>
+        </div>
       </div>
     </div>
     <div class="dialog-foot">
-      <button class="btn primary" onclick="closeUploadModal()">닫기</button>
+      <button class="btn" onclick="closeUploadModal()">닫기</button>
     </div>
   </dialog>
 
@@ -1782,7 +1659,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
   <!-- ================= JAVASCRIPT ENGINE ================= -->
   <script>
-    // 1. DATA STATE (Pre-populated with User's Exact 6 Projects & Docs)
+    // 1. DATA STATE
     const DEFAULT_PROJECTS = [
       {
         id: 'proj_1',
@@ -1792,13 +1669,14 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         subCategory: '업무 · 연구기획',
         stageCount: 5,
         progress: 0,
-        progressNote: '미산정 · 작업 미등록',
+        progressNote: '0%',
         status: '예정',
         deadline: '2027-05-31',
         isFavorite: false,
+        notes: '',
         tasks: [
-          { text: '부처별 2027 공고 동향 수집', done: false },
-          { text: '수요조사서 제안서 사전 기획', done: false }
+          { text: '부처별 2027 공고 동향 수집', done: false, date: '2026-11-25', phase: '기획' },
+          { text: '수요조사서 제안서 사전 기획', done: false, date: '2026-12-10', phase: '기획' }
         ]
       },
       {
@@ -1813,9 +1691,10 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         status: '진행 중',
         deadline: '',
         isFavorite: false,
+        notes: '',
         tasks: [
-          { text: '웹이젤 플랫폼 연동 및 실증 테스트', done: true },
-          { text: '최종 결과 보고서 제출 완료', done: true }
+          { text: '웹이젤 플랫폼 연동 및 실증 테스트', done: true, date: '2026-11-05', phase: '실증' },
+          { text: '최종 결과 보고서 제출 완료', done: true, date: '2026-11-12', phase: '완료' }
         ]
       },
       {
@@ -1826,12 +1705,13 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         subCategory: '업무 · 연구기획',
         stageCount: 4,
         progress: 0,
-        progressNote: '미산정 · 작업 미등록',
+        progressNote: '0%',
         status: '진행 중',
         deadline: '',
         isFavorite: false,
+        notes: '',
         tasks: [
-          { text: '참석 결과 보고서 작성 및 사내 공유', done: false }
+          { text: '참석 결과 보고서 작성 및 사내 공유', done: false, date: '2026-11-20', phase: '정리' }
         ]
       },
       {
@@ -1842,12 +1722,13 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         subCategory: '업무 · 연구기획',
         stageCount: 4,
         progress: 0,
-        progressNote: '미산정 · 작업 미등록',
+        progressNote: '0%',
         status: '진행 중',
         deadline: '2028-12-31',
         isFavorite: false,
+        notes: '',
         tasks: [
-          { text: '항공 부품 규격(AS9100) 요구사항 분석', done: false }
+          { text: '항공 부품 규격(AS9100) 요구사항 분석', done: false, date: '2026-11-28', phase: '검토' }
         ]
       },
       {
@@ -1858,13 +1739,14 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         subCategory: '업무 · 연구기획',
         stageCount: 5,
         progress: 0,
-        progressNote: '미산정 · 작업 미등록',
+        progressNote: '0%',
         status: '진행 중',
         deadline: '2026-11-13',
         isFavorite: false,
+        notes: '',
         tasks: [
-          { text: '캘리퍼 시제품 최종 치수 측정 검사', done: false },
-          { text: '경남TP 사업비 정산 증빙 서류 제출', done: false }
+          { text: '캘리퍼 시제품 최종 치수 측정 검사', done: false, date: '2026-11-18', phase: '시험' },
+          { text: '경남TP 사업비 정산 증빙 서류 제출', done: false, date: '2026-11-22', phase: '정산' }
         ]
       },
       {
@@ -1875,26 +1757,33 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         subCategory: '업무 · 소재개발',
         stageCount: 5,
         progress: 0,
-        progressNote: '미산정 · 작업 미등록',
+        progressNote: '0%',
         status: '진행 중',
         deadline: '2027-07-31',
         isFavorite: false,
+        notes: '',
         tasks: [
-          { text: '6110 합금 시험편 인장강도 시험', done: false }
+          { text: '6110 합금 시험편 인장강도 시험', done: false, date: '2026-11-24', phase: '시험' }
         ]
       }
     ];
 
     const DEFAULT_DOCS = [
-      { id: 'doc_1', name: '단기기술지원(KIMS-CTR에코포징)_8월_1,2주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무' },
-      { id: 'doc_2', name: '단기기술지원(KIMS-CTR에코포징)_7월_3,4주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무' },
-      { id: 'doc_3', name: '단기기술지원(KIMS-CTR에코포징)_7월_1,2주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무' }
+      { id: 'doc_1', name: '단기기술지원(KIMS-CTR에코포징)_8월_1,2주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무', projectId: 'proj_2', url: '' },
+      { id: 'doc_2', name: '단기기술지원(KIMS-CTR에코포징)_7월_3,4주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무', projectId: 'proj_2', url: '' },
+      { id: 'doc_3', name: '단기기술지원(KIMS-CTR에코포징)_7월_1,2주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무', projectId: 'proj_2', url: '' }
     ];
 
     let projects = [];
     let documents = [];
     let currentCategory = 'all';
+    let currentView = 'dashboard';
     let activeModalProjId = null;
+    let activeModalTab = 'schedule'; // 'schedule' | 'docs' | 'info'
+
+    // Calendar State
+    let calCursor = new Date();
+    let calSelectedDate = toDateStr(new Date());
 
     // 2. INITIALIZATION
     window.addEventListener('DOMContentLoaded', () => {
@@ -1904,26 +1793,56 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     });
 
     function initData() {
-      const storedProj = localStorage.getItem('my_workspace_projects');
-      if (storedProj) {
-        try { projects = JSON.parse(storedProj); } catch(e) { projects = DEFAULT_PROJECTS; }
-      } else {
-        projects = DEFAULT_PROJECTS;
-        saveData();
+      try {
+        const storedProj = localStorage.getItem('my_workspace_projects');
+        if (storedProj) {
+          projects = JSON.parse(storedProj);
+        } else {
+          projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
+        }
+      } catch (e) {
+        projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
       }
 
-      const storedDocs = localStorage.getItem('my_workspace_docs');
-      if (storedDocs) {
-        try { documents = JSON.parse(storedDocs); } catch(e) { documents = DEFAULT_DOCS; }
-      } else {
-        documents = DEFAULT_DOCS;
-        saveData();
+      // Normalize legacy project objects safely
+      projects = projects.map(p => ({
+        notes: '',
+        tasks: [],
+        ...p,
+        tasks: (p.tasks || []).map(t => ({
+          date: t.date || '',
+          phase: t.phase || '',
+          ...t
+        }))
+      }));
+
+      try {
+        const storedDocs = localStorage.getItem('my_workspace_docs');
+        if (storedDocs) {
+          documents = JSON.parse(storedDocs);
+        } else {
+          documents = JSON.parse(JSON.stringify(DEFAULT_DOCS));
+        }
+      } catch (e) {
+        documents = JSON.parse(JSON.stringify(DEFAULT_DOCS));
       }
+
+      documents = documents.map(d => ({
+        projectId: d.projectId || '',
+        url: d.url || '',
+        ...d
+      }));
+
+      saveData();
     }
 
     function saveData() {
-      localStorage.setItem('my_workspace_projects', JSON.stringify(projects));
-      localStorage.setItem('my_workspace_docs', JSON.stringify(documents));
+      try {
+        localStorage.setItem('my_workspace_projects', JSON.stringify(projects));
+        localStorage.setItem('my_workspace_docs', JSON.stringify(documents));
+      } catch (e) {
+        console.warn('localStorage save skipped:', e);
+      }
     }
 
     function renderTodayDate() {
@@ -1942,12 +1861,57 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       renderDeadlines();
       renderRecentDocs();
       renderNextTasks();
+      if (currentView === 'calendar') {
+        renderCalendar();
+      }
     }
 
-    // 3. KPI CALCULATOR
+    // 3. NAVIGATION & SIDEBAR
+    function navigateTo(view, cat) {
+      currentView = view;
+      const dashEl = document.getElementById('dashboardView');
+      const calEl = document.getElementById('calendarView');
+      const breadcrumb = document.getElementById('breadcrumbDisplay');
+
+      document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
+
+      if (view === 'calendar') {
+        dashEl.classList.add('hidden');
+        calEl.classList.add('active');
+        document.getElementById('nav-calendar').classList.add('active');
+        breadcrumb.innerHTML = '나의 워크스페이스 <b>/</b> <strong>캘린더</strong>';
+        renderCalendar();
+      } else {
+        calEl.classList.remove('active');
+        dashEl.classList.remove('hidden');
+        const targetCat = cat || currentCategory || 'all';
+        filterCategory(targetCat);
+
+        if (targetCat === 'work') {
+          document.getElementById('nav-work').classList.add('active');
+          breadcrumb.innerHTML = '나의 워크스페이스 <b>/</b> <strong>업무 프로젝트</strong>';
+        } else if (targetCat === 'study') {
+          document.getElementById('nav-study').classList.add('active');
+          breadcrumb.innerHTML = '나의 워크스페이스 <b>/</b> <strong>Study</strong>';
+        } else if (targetCat === 'life') {
+          document.getElementById('nav-life').classList.add('active');
+          breadcrumb.innerHTML = '나의 워크스페이스 <b>/</b> <strong>일상</strong>';
+        } else {
+          document.getElementById('nav-home').classList.add('active');
+          breadcrumb.innerHTML = '나의 워크스페이스 <b>/</b> <strong>홈</strong>';
+        }
+      }
+
+      document.getElementById('sidebar').classList.remove('open');
+    }
+
+    function toggleMobileSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    // 4. KPI CALCULATOR
     function renderKPIs() {
       document.getElementById('kpiTotal').textContent = projects.length;
-      
       const activeCount = projects.filter(p => p.status === '예정' || p.status === '진행 중' || p.status === '보류').length;
       document.getElementById('kpiActive').textContent = activeCount;
 
@@ -1961,7 +1925,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       document.getElementById('kpiDocs').textContent = documents.length;
     }
 
-    // 4. PROJECT CARDS RENDERER
+    // 5. PROJECT CARDS RENDERER
     function renderProjects() {
       const container = document.getElementById('projectCardsGrid');
       container.innerHTML = '';
@@ -1970,11 +1934,13 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       const statusF = document.getElementById('statusFilter').value;
       const sortF = document.getElementById('sortFilter').value;
 
-      // Filter
       let filtered = projects.filter(p => {
         const matchesCategory = currentCategory === 'all' || p.category === currentCategory;
-        const matchesSearch = p.title.toLowerCase().includes(search) || (p.desc && p.desc.toLowerCase().includes(search));
-        
+        const matchesSearch =
+          p.title.toLowerCase().includes(search) ||
+          (p.desc && p.desc.toLowerCase().includes(search)) ||
+          (p.subCategory && p.subCategory.toLowerCase().includes(search));
+
         let matchesStatus = true;
         if (statusF === 'favorite') matchesStatus = p.isFavorite;
         else if (statusF !== 'all') matchesStatus = p.status === statusF;
@@ -1982,7 +1948,6 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         return matchesCategory && matchesSearch && matchesStatus;
       });
 
-      // Sort
       filtered.sort((a, b) => {
         if (sortF === 'fav') {
           if (a.isFavorite !== b.isFavorite) return a.isFavorite ? -1 : 1;
@@ -2005,17 +1970,15 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         const card = document.createElement('div');
         card.className = 'proj-card';
 
-        // Status Pill Class
         let pillClass = 'status-pill';
         if (p.status === '진행 중') pillClass += ' active';
         else if (p.status === '예정') pillClass += ' scheduled';
         else if (p.status === '완료') pillClass += ' done';
 
-        // D-Day
         let dDayText = '마감일 미정';
         let dDayClass = 'dday-tag';
         if (p.deadline) {
-          const { diff, formatted } = calculateDDay(p.deadline);
+          const { diff } = calculateDDay(p.deadline);
           if (diff < 0) {
             dDayText = `${Math.abs(diff)}일 지남`;
             dDayClass += ' overdue';
@@ -2027,11 +1990,15 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
           }
         }
 
+        const totalTasks = (p.tasks || []).length;
+        const doneTasks = (p.tasks || []).filter(t => t.done).length;
+        const projDocsCount = documents.filter(d => d.projectId === p.id).length;
+
         card.innerHTML = `
           <div>
             <div class="proj-top">
-              <span class="${pillClass}">${p.status}</span>
-              <button class="btn-fav ${p.isFavorite ? 'active' : ''}" onclick="toggleFavorite('${p.id}', event)">
+              <span class="${pillClass}">${escapeHtml(p.status)}</span>
+              <button class="btn-fav ${p.isFavorite ? 'active' : ''}" onclick="toggleFavorite('${p.id}', event)" title="즐겨찾기">
                 <i class="${p.isFavorite ? 'fa-solid' : 'fa-regular'} fa-star"></i>
               </button>
             </div>
@@ -2039,16 +2006,20 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             <p class="proj-desc">${escapeHtml(p.desc || '')}</p>
           </div>
           <div>
+            <div class="proj-badges-inline">
+              <span><i class="fa-regular fa-calendar-check"></i> 일정 ${doneTasks}/${totalTasks}</span>
+              <span><i class="fa-regular fa-folder-open"></i> 자료 ${projDocsCount}건</span>
+            </div>
             <div class="proj-meta">
               <span>${escapeHtml(p.subCategory || '업무')}</span>
-              <span>${p.stageCount || 4}개 단계</span>
+              <span>진행률 ${p.progress || 0}%</span>
             </div>
             <div class="progress-bar-wrap">
               <div class="progress-bar-fill" style="width: ${p.progress || 0}%;"></div>
             </div>
             <div class="proj-foot">
               <span class="${dDayClass}">${dDayText}</span>
-              <span class="btn-open-proj" onclick="openProjectModal('${p.id}')">프로젝트 열기 →</span>
+              <span class="btn-open-proj" onclick="openProjectModal('${p.id}')">일정·자료 열기 →</span>
             </div>
           </div>
         `;
@@ -2056,20 +2027,21 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       });
     }
 
-    // 5. DEADLINES ASIDE
+    // 6. DEADLINES ASIDE
     function renderDeadlines() {
       const container = document.getElementById('deadlineList');
       container.innerHTML = '';
 
       const withDates = projects.filter(p => p.deadline && p.status !== '완료');
-      withDates.sort((a, b) => {
-        const da = calculateDDay(a.deadline).diff;
-        const db = calculateDDay(b.deadline).diff;
-        return da - db;
-      });
+      withDates.sort((a, b) => calculateDDay(a.deadline).diff - calculateDDay(b.deadline).diff);
+
+      if (withDates.length === 0) {
+        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">예정된 마감이 없습니다.</p>`;
+        return;
+      }
 
       withDates.slice(0, 5).forEach(p => {
-        const d = new Date(p.deadline);
+        const d = new Date(p.deadline + 'T00:00:00');
         const mo = d.getMonth() + 1;
         const dt = d.getDate();
         const { diff } = calculateDDay(p.deadline);
@@ -2082,6 +2054,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
         const item = document.createElement('div');
         item.className = 'deadline-item';
+        item.onclick = () => openProjectModal(p.id);
         item.innerHTML = `
           <div class="date-box">
             <small>${mo}월</small>
@@ -2096,26 +2069,40 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       });
     }
 
-    // 6. RECENT DOCUMENTS ASIDE
+    // 7. RECENT DOCUMENTS ASIDE
     function renderRecentDocs() {
       const container = document.getElementById('recentDocsList');
       container.innerHTML = '';
 
-      documents.slice(0, 4).forEach(doc => {
+      if (documents.length === 0) {
+        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">등록된 자료가 없습니다.</p>`;
+        return;
+      }
+
+      documents.slice(0, 5).forEach(doc => {
+        const linkedProj = projects.find(p => p.id === doc.projectId);
+        const typeClass = doc.type === 'LINK' ? 'link-type' : (doc.type === 'NOTE' ? 'note-type' : '');
         const item = document.createElement('div');
         item.className = 'doc-item';
+        item.onclick = () => {
+          if (doc.url) {
+            window.open(doc.url, '_blank', 'noopener,noreferrer');
+          } else if (linkedProj) {
+            openProjectModal(linkedProj.id, 'docs');
+          }
+        };
         item.innerHTML = `
-          <span class="doc-type-icon">${doc.type}</span>
+          <span class="doc-type-icon ${typeClass}">${escapeHtml(doc.type)}</span>
           <div class="doc-info">
             <div class="doc-name">${escapeHtml(doc.name)}</div>
-            <div class="doc-meta">${doc.sub} · ${doc.date}</div>
+            <div class="doc-meta">${linkedProj ? escapeHtml(linkedProj.title) : escapeHtml(doc.sub || '공통')} · ${escapeHtml(doc.date)}</div>
           </div>
         `;
         container.appendChild(item);
       });
     }
 
-    // 7. NEXT TASKS
+    // 8. NEXT TASKS
     function renderNextTasks() {
       const container = document.getElementById('nextTasksContainer');
       container.innerHTML = '';
@@ -2129,48 +2116,66 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         }
       });
 
+      // Unchecked first, then dated earliest first
+      allTasks.sort((a, b) => {
+        if (a.done !== b.done) return a.done ? 1 : -1;
+        if (a.date && b.date) return a.date.localeCompare(b.date);
+        if (a.date) return -1;
+        if (b.date) return 1;
+        return 0;
+      });
+
       if (allTasks.length === 0) {
         container.innerHTML = `<p style="font-size: 12.5px; color: var(--text-muted); padding: 12px 0;">아직 등록된 작업이 없습니다.</p>`;
         return;
       }
 
-      allTasks.slice(0, 4).forEach(task => {
+      allTasks.slice(0, 6).forEach(task => {
+        let datePill = '';
+        if (task.date) {
+          const { diff } = calculateDDay(task.date);
+          const isOver = !task.done && diff < 0;
+          datePill = `<span class="task-date-pill ${isOver ? 'overdue' : ''}">${task.date}</span>`;
+        }
         const item = document.createElement('div');
         item.className = 'task-item';
         item.innerHTML = `
           <input type="checkbox" class="task-check" ${task.done ? 'checked' : ''} onchange="toggleTaskDone('${task.projId}', ${task.taskIndex})" />
-          <span class="task-title ${task.done ? 'done' : ''}">${escapeHtml(task.text)}</span>
-          <span class="task-tag">${escapeHtml(task.projTitle)}</span>
+          <span class="task-title ${task.done ? 'done' : ''}" onclick="openProjectModal('${task.projId}', 'schedule')">${escapeHtml(task.text)}</span>
+          ${datePill}
+          <span class="task-tag" onclick="openProjectModal('${task.projId}', 'schedule')">${escapeHtml(task.projTitle)}</span>
         `;
         container.appendChild(item);
       });
+    }
+
+    function recalcProjectProgress(p) {
+      if (!p.tasks || p.tasks.length === 0) {
+        p.progress = 0;
+        p.progressNote = '0%';
+      } else {
+        const doneCount = p.tasks.filter(t => t.done).length;
+        p.progress = Math.round((doneCount / p.tasks.length) * 100);
+        p.progressNote = `${p.progress}%`;
+      }
     }
 
     function toggleTaskDone(projId, taskIdx) {
       const p = projects.find(item => item.id === projId);
       if (p && p.tasks[taskIdx]) {
         p.tasks[taskIdx].done = !p.tasks[taskIdx].done;
-        
-        // Recalculate progress if tasks exist
-        const doneCount = p.tasks.filter(t => t.done).length;
-        p.progress = Math.round((doneCount / p.tasks.length) * 100);
-        p.progressNote = `${p.progress}%`;
-
+        recalcProjectProgress(p);
         saveData();
         renderAll();
       }
     }
 
-    // 8. ACTIONS & MODALS
+    // 9. CATEGORY FILTER & FAVORITE
     function filterCategory(cat) {
       currentCategory = cat;
-      const tabs = document.querySelectorAll('.cat-btn');
-      tabs.forEach(tab => {
-        if (tab.textContent === (cat === 'all' ? '전체' : cat === 'work' ? '업무' : cat === 'study' ? 'Study' : '일상')) {
-          tab.classList.add('selected');
-        } else {
-          tab.classList.remove('selected');
-        }
+      document.querySelectorAll('.cat-btn').forEach(tab => {
+        if (tab.dataset.cat === cat) tab.classList.add('selected');
+        else tab.classList.remove('selected');
       });
       renderProjects();
     }
@@ -2185,46 +2190,271 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       }
     }
 
-    // Modal: Project Detail
-    function openProjectModal(id) {
+    // 10. PROJECT DETAIL MODAL (SCHEDULE COORDINATION + DOCS + INFO)
+    function openProjectModal(id, initialTab) {
       activeModalProjId = id;
-      const p = projects.find(item => item.id === id);
+      if (initialTab) activeModalTab = initialTab;
+      else activeModalTab = 'schedule';
+
+      renderProjectModalContent();
+      const dlg = document.getElementById('projectDetailModal');
+      if (!dlg.open) dlg.showModal();
+    }
+
+    function switchProjectModalTab(tab) {
+      activeModalTab = tab;
+      renderProjectModalContent();
+    }
+
+    function renderProjectModalContent() {
+      const p = projects.find(item => item.id === activeModalProjId);
       if (!p) return;
 
       document.getElementById('modalProjTitle').textContent = p.title;
       const body = document.getElementById('modalProjBody');
-      body.innerHTML = `
-        <div style="margin-bottom: 16px;">
-          <span class="status-pill ${p.status === '진행 중' ? 'active' : ''}">${p.status}</span>
-          <span style="font-size: 12px; color: var(--text-muted); margin-left: 8px;">${escapeHtml(p.subCategory || '업무')}</span>
-        </div>
-        <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; margin-bottom: 20px;">
-          <strong style="display:block; font-size:12px; margin-bottom:4px; color:var(--text-sub);">프로젝트 목표</strong>
-          <p style="color:var(--text-main); line-height:1.5;">${escapeHtml(p.desc || '설명 없음')}</p>
-        </div>
-        <div style="margin-bottom: 16px;">
-          <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:6px;">
-            <span>진행률: ${p.progress || 0}%</span>
-            <span>마감일: ${p.deadline || '미정'}</span>
-          </div>
-          <div class="progress-bar-wrap" style="height:6px;">
-            <div class="progress-bar-fill" style="width:${p.progress || 0}%;"></div>
-          </div>
-        </div>
-        <div>
-          <h4 style="font-size:13px; font-weight:800; margin-bottom:8px;">단계별 세부 작업 (${p.tasks ? p.tasks.length : 0}개)</h4>
-          <div style="display:flex; flex-direction:column; gap:6px;">
-            ${(p.tasks || []).map((t, i) => `
-              <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; cursor:pointer;">
-                <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTaskDone('${p.id}', ${i}); openProjectModal('${p.id}');" />
-                <span style="${t.done ? 'text-decoration:line-through; color:#94a3b8;' : ''}">${escapeHtml(t.text)}</span>
-              </label>
-            `).join('') || '<p style="color:var(--text-muted); font-size:12px;">등록된 세부 작업이 없습니다.</p>'}
-          </div>
-        </div>
-      `;
+      const projDocs = documents.filter(d => d.projectId === p.id);
+      const tasks = p.tasks || [];
 
-      document.getElementById('projectDetailModal').showModal();
+      let tabBodyHtml = '';
+
+      if (activeModalTab === 'schedule') {
+        tabBodyHtml = `
+          <div class="inline-add-box">
+            <div style="font-size:12px; font-weight:800; margin-bottom:8px; color:var(--text-main);">+ 이 프로젝트에 세부 일정 / 할 일 추가</div>
+            <div class="inline-row" style="margin-bottom:8px;">
+              <input type="text" id="newTaskTextInput" class="form-control" style="flex:1; min-width:180px;" placeholder="해야 할 일이나 회의·시험 일정을 입력하세요">
+              <input type="text" id="newTaskPhaseInput" class="form-control" style="width:95px;" placeholder="단계 (예: 시험)">
+              <input type="date" id="newTaskDateInput" class="form-control" style="width:140px;">
+              <button class="btn primary sm" onclick="addProjectTask()"><i class="fa-solid fa-plus"></i> 추가</button>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <h4 style="font-size:13px; font-weight:800;">세부 일정 목록 (${tasks.length}개)</h4>
+              <span style="font-size:11px; color:var(--text-muted);">날짜를 수정하면 캘린더에 바로 반영됩니다</span>
+            </div>
+            <div>
+              ${tasks.length === 0
+                ? '<p style="color:var(--text-muted); font-size:12px; padding:16px; text-align:center; border:1px dashed var(--border-color); border-radius:8px;">등록된 세부 일정이 없습니다. 위에서 일정을 추가해 보세요.</p>'
+                : tasks.map((t, i) => `
+                  <div class="schedule-row">
+                    <input type="checkbox" class="task-check" ${t.done ? 'checked' : ''} onchange="toggleTaskDone('${p.id}', ${i}); renderProjectModalContent();" />
+                    <span style="flex:1; font-size:12.5px; font-weight:600; ${t.done ? 'text-decoration:line-through; color:#94a3b8;' : ''}">${escapeHtml(t.text)}</span>
+                    ${t.phase ? `<span class="task-tag">${escapeHtml(t.phase)}</span>` : ''}
+                    <input type="date" value="${escapeHtml(t.date || '')}" onchange="updateProjectTaskDate('${p.id}', ${i}, this.value)" title="일정 날짜 조율" />
+                    <button class="icon-btn" onclick="deleteProjectTask('${p.id}', ${i})" title="일정 삭제"><i class="fa-regular fa-trash-can"></i></button>
+                  </div>
+                `).join('')
+              }
+            </div>
+          </div>
+        `;
+      } else if (activeModalTab === 'docs') {
+        tabBodyHtml = `
+          <div class="inline-add-box">
+            <div style="font-size:12px; font-weight:800; margin-bottom:8px; color:var(--text-main);">+ 이 프로젝트 자료함에 자료 추가</div>
+            <div class="inline-row" style="margin-bottom:8px;">
+              <input type="text" id="projDocTitleInput" class="form-control" style="flex:1; min-width:160px;" placeholder="자료 제목 또는 메모명">
+              <input type="url" id="projDocUrlInput" class="form-control" style="flex:1; min-width:160px;" placeholder="링크 URL (선택)">
+              <button class="btn primary sm" onclick="addDocToCurrentProject()">링크/자료 추가</button>
+            </div>
+            <div class="inline-row">
+              <button class="btn sm" onclick="document.getElementById('projModalFileInput').click()"><i class="fa-solid fa-paperclip"></i> PC 파일 선택해서 이 프로젝트에 등록</button>
+              <input type="file" id="projModalFileInput" style="display:none;" onchange="handleProjectFileUpload(event)">
+              <span style="font-size:11px; color:var(--text-muted);">PDF, PPTX, HWPX, XLSX 등 파일명·날짜 저장</span>
+            </div>
+          </div>
+          <div>
+            <h4 style="font-size:13px; font-weight:800; margin-bottom:8px;">연결된 프로젝트 자료 (${projDocs.length}건)</h4>
+            ${projDocs.length === 0
+              ? '<p style="color:var(--text-muted); font-size:12px; padding:16px; text-align:center; border:1px dashed var(--border-color); border-radius:8px;">이 프로젝트에 연결된 자료가 아직 없습니다.</p>'
+              : projDocs.map(d => `
+                <div class="schedule-row">
+                  <span class="doc-type-icon ${d.type === 'LINK' ? 'link-type' : ''}" style="margin-top:0;">${escapeHtml(d.type)}</span>
+                  <div style="flex:1; min-width:0;">
+                    <div style="font-size:12.5px; font-weight:700; word-break:break-word;">
+                      ${d.url
+                        ? `<a href="${escapeHtml(d.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:none;">${escapeHtml(d.name)} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px;"></i></a>`
+                        : escapeHtml(d.name)
+                      }
+                    </div>
+                    <div style="font-size:10.5px; color:#94a3b8;">등록일: ${escapeHtml(d.date)}</div>
+                  </div>
+                  <button class="icon-btn" onclick="deleteProjectDoc('${d.id}')" title="자료 삭제"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
+              `).join('')
+            }
+          </div>
+        `;
+      } else {
+        tabBodyHtml = `
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label>진행 상태</label>
+              <select id="editProjStatus" class="form-control">
+                <option value="예정" ${p.status === '예정' ? 'selected' : ''}>예정</option>
+                <option value="진행 중" ${p.status === '진행 중' ? 'selected' : ''}>진행 중</option>
+                <option value="보류" ${p.status === '보류' ? 'selected' : ''}>보류</option>
+                <option value="완료" ${p.status === '완료' ? 'selected' : ''}>완료</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>최종 마감일</label>
+              <input type="date" id="editProjDeadline" class="form-control" value="${escapeHtml(p.deadline || '')}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>소분류 / 태그</label>
+            <input type="text" id="editProjSub" class="form-control" value="${escapeHtml(p.subCategory || '')}">
+          </div>
+          <div class="form-group">
+            <label>프로젝트 목표 설명</label>
+            <textarea id="editProjDesc" class="form-control" rows="2">${escapeHtml(p.desc || '')}</textarea>
+          </div>
+          <div class="form-group">
+            <label>업무 메모 · 진행 기록</label>
+            <textarea id="editProjNotes" class="form-control" rows="4" placeholder="회의 내용, 담당자 연락처, 주요 이슈나 결정 사항을 기록하세요...">${escapeHtml(p.notes || '')}</textarea>
+          </div>
+          <div style="display:flex; justify-content:flex-end;">
+            <button class="btn primary sm" onclick="saveProjectMetaEdits()"><i class="fa-solid fa-check"></i> 변경사항 저장</button>
+          </div>
+        `;
+      }
+
+      body.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+          <div>
+            <span class="status-pill ${p.status === '진행 중' ? 'active' : p.status === '예정' ? 'scheduled' : p.status === '완료' ? 'done' : ''}">${escapeHtml(p.status)}</span>
+            <span style="font-size:12px; color:var(--text-muted); margin-left:8px;">${escapeHtml(p.subCategory || '업무')}</span>
+          </div>
+          <span style="font-size:12px; font-weight:700; color:var(--text-sub);">진행률 ${p.progress || 0}% · 마감일 ${p.deadline || '미정'}</span>
+        </div>
+        <div class="progress-bar-wrap" style="height:6px; margin-bottom:16px;">
+          <div class="progress-bar-fill" style="width:${p.progress || 0}%;"></div>
+        </div>
+
+        <div class="modal-tabs">
+          <button class="modal-tab-btn ${activeModalTab === 'schedule' ? 'active' : ''}" onclick="switchProjectModalTab('schedule')">
+            <i class="fa-regular fa-calendar-check"></i> 세부 일정 조율 (${tasks.length})
+          </button>
+          <button class="modal-tab-btn ${activeModalTab === 'docs' ? 'active' : ''}" onclick="switchProjectModalTab('docs')">
+            <i class="fa-regular fa-folder-open"></i> 프로젝트 자료함 (${projDocs.length})
+          </button>
+          <button class="modal-tab-btn ${activeModalTab === 'info' ? 'active' : ''}" onclick="switchProjectModalTab('info')">
+            <i class="fa-solid fa-sliders"></i> 정보 · 메모 수정
+          </button>
+        </div>
+
+        ${tabBodyHtml}
+      `;
+    }
+
+    function addProjectTask() {
+      const p = projects.find(item => item.id === activeModalProjId);
+      if (!p) return;
+      const text = (document.getElementById('newTaskTextInput').value || '').trim();
+      const phase = (document.getElementById('newTaskPhaseInput').value || '').trim();
+      const date = document.getElementById('newTaskDateInput').value || '';
+
+      if (!text) {
+        showToast('세부 일정 내용을 입력해 주세요.');
+        return;
+      }
+      if (!p.tasks) p.tasks = [];
+      p.tasks.push({ text, done: false, date, phase });
+      recalcProjectProgress(p);
+      saveData();
+      renderAll();
+      renderProjectModalContent();
+      showToast('프로젝트 세부 일정이 추가되었습니다.');
+    }
+
+    function updateProjectTaskDate(projId, taskIdx, newDate) {
+      const p = projects.find(item => item.id === projId);
+      if (p && p.tasks && p.tasks[taskIdx]) {
+        p.tasks[taskIdx].date = newDate;
+        saveData();
+        renderAll();
+        showToast('세부 일정 날짜가 변경되었습니다.');
+      }
+    }
+
+    function deleteProjectTask(projId, taskIdx) {
+      const p = projects.find(item => item.id === projId);
+      if (p && p.tasks) {
+        p.tasks.splice(taskIdx, 1);
+        recalcProjectProgress(p);
+        saveData();
+        renderAll();
+        renderProjectModalContent();
+        showToast('세부 일정이 삭제되었습니다.');
+      }
+    }
+
+    function addDocToCurrentProject() {
+      const p = projects.find(item => item.id === activeModalProjId);
+      if (!p) return;
+      const name = (document.getElementById('projDocTitleInput').value || '').trim();
+      const url = (document.getElementById('projDocUrlInput').value || '').trim();
+      if (!name) {
+        showToast('자료 제목을 입력해 주세요.');
+        return;
+      }
+      documents.unshift({
+        id: 'doc_' + Date.now(),
+        name,
+        type: url ? 'LINK' : 'NOTE',
+        date: toDateStr(new Date()),
+        sub: p.subCategory || '업무',
+        projectId: p.id,
+        url
+      });
+      saveData();
+      renderAll();
+      renderProjectModalContent();
+      showToast('프로젝트 자료함에 추가되었습니다.');
+    }
+
+    function handleProjectFileUpload(e) {
+      const file = e.target.files[0];
+      const p = projects.find(item => item.id === activeModalProjId);
+      if (!file || !p) return;
+      const ext = file.name.split('.').pop().toUpperCase();
+      documents.unshift({
+        id: 'doc_' + Date.now(),
+        name: file.name,
+        type: ext,
+        date: toDateStr(new Date()),
+        sub: p.subCategory || '업무',
+        projectId: p.id,
+        url: ''
+      });
+      saveData();
+      renderAll();
+      renderProjectModalContent();
+      showToast(`'${file.name}' 자료가 연결되었습니다.`);
+    }
+
+    function deleteProjectDoc(docId) {
+      documents = documents.filter(d => d.id !== docId);
+      saveData();
+      renderAll();
+      renderProjectModalContent();
+      showToast('자료가 삭제되었습니다.');
+    }
+
+    function saveProjectMetaEdits() {
+      const p = projects.find(item => item.id === activeModalProjId);
+      if (!p) return;
+      p.status = document.getElementById('editProjStatus').value;
+      p.deadline = document.getElementById('editProjDeadline').value;
+      p.subCategory = document.getElementById('editProjSub').value.trim() || '업무';
+      p.desc = document.getElementById('editProjDesc').value.trim();
+      p.notes = document.getElementById('editProjNotes').value;
+      saveData();
+      renderAll();
+      renderProjectModalContent();
+      showToast('프로젝트 정보가 저장되었습니다.');
     }
 
     function closeProjectModal() {
@@ -2241,9 +2471,10 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       showToast('프로젝트가 삭제되었습니다.');
     }
 
-    // Modal: New Project
+    // 11. NEW PROJECT MODAL
     function openNewProjectModal() {
       document.getElementById('newProjTitle').value = '';
+      document.getElementById('newProjSub').value = '';
       document.getElementById('newProjDesc').value = '';
       document.getElementById('newProjDeadline').value = '';
       document.getElementById('newProjectModal').showModal();
@@ -2255,7 +2486,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     function submitNewProject() {
       const title = document.getElementById('newProjTitle').value.trim();
       if (!title) {
-        alert('프로젝트명을 입력해 주세요.');
+        showToast('프로젝트명을 입력해 주세요.');
         return;
       }
       const category = document.getElementById('newProjCategory').value;
@@ -2272,10 +2503,11 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         subCategory: sub,
         stageCount: 4,
         progress: 0,
-        progressNote: '미산정 · 작업 미등록',
+        progressNote: '0%',
         status,
         deadline,
         isFavorite: false,
+        notes: '',
         tasks: []
       };
 
@@ -2286,35 +2518,224 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       showToast('새 프로젝트가 등록되었습니다.');
     }
 
-    // Modal: Upload
-    function openUploadModal() { document.getElementById('uploadModal').showModal(); }
+    // 12. UPLOAD MODAL
+    function openUploadModal() {
+      const sel = document.getElementById('uploadTargetProject');
+      sel.innerHTML = `<option value="">(공통 보관함 - 프로젝트 미지정)</option>` +
+        projects.map(p => `<option value="${p.id}">${escapeHtml(p.title)}</option>`).join('');
+      document.getElementById('uploadDocTitle').value = '';
+      document.getElementById('uploadDocUrl').value = '';
+      document.getElementById('uploadModal').showModal();
+    }
     function closeUploadModal() { document.getElementById('uploadModal').close(); }
 
     function handleFileSelect(e) {
       const file = e.target.files[0];
       if (!file) return;
+      const projId = document.getElementById('uploadTargetProject').value;
+      const proj = projects.find(p => p.id === projId);
 
       const ext = file.name.split('.').pop().toUpperCase();
-      const today = new Date().toISOString().split('T')[0];
-      const newDoc = {
+      documents.unshift({
         id: 'doc_' + Date.now(),
         name: file.name,
         type: ext,
-        date: today,
-        sub: '업무'
-      };
-      documents.unshift(newDoc);
+        date: toDateStr(new Date()),
+        sub: proj ? proj.title : '업무',
+        projectId: projId,
+        url: ''
+      });
       saveData();
-      renderKPIs();
-      renderRecentDocs();
+      renderAll();
       closeUploadModal();
       showToast(`'${file.name}' 자료가 보관함에 저장되었습니다.`);
     }
 
-    // 9. STANDALONE HTML DOWNLOADER & CLIPBOARD BACKUP
+    function submitManualDoc() {
+      const name = document.getElementById('uploadDocTitle').value.trim();
+      const url = document.getElementById('uploadDocUrl').value.trim();
+      const projId = document.getElementById('uploadTargetProject').value;
+      const proj = projects.find(p => p.id === projId);
+
+      if (!name) {
+        showToast('자료명을 입력해 주세요.');
+        return;
+      }
+      documents.unshift({
+        id: 'doc_' + Date.now(),
+        name,
+        type: url ? 'LINK' : 'NOTE',
+        date: toDateStr(new Date()),
+        sub: proj ? proj.title : '업무',
+        projectId: projId,
+        url
+      });
+      saveData();
+      renderAll();
+      closeUploadModal();
+      showToast('자료가 등록되었습니다.');
+    }
+
+    // 13. CALENDAR ENGINE
+    function collectCalendarEvents() {
+      const map = {};
+      const pushEvent = (dateStr, ev) => {
+        if (!dateStr) return;
+        if (!map[dateStr]) map[dateStr] = [];
+        map[dateStr].push(ev);
+      };
+
+      projects.forEach(p => {
+        if (p.deadline) {
+          pushEvent(p.deadline, {
+            kind: p.status === '완료' ? 'done' : 'deadline',
+            title: `[마감] ${p.title}`,
+            projId: p.id,
+            projTitle: p.title,
+            done: p.status === '완료'
+          });
+        }
+        (p.tasks || []).forEach((t, idx) => {
+          if (t.date) {
+            pushEvent(t.date, {
+              kind: t.done ? 'done' : 'task',
+              title: t.text,
+              projId: p.id,
+              projTitle: p.title,
+              phase: t.phase || '',
+              taskIdx: idx,
+              done: !!t.done
+            });
+          }
+        });
+      });
+      return map;
+    }
+
+    function renderCalendar() {
+      const year = calCursor.getFullYear();
+      const month = calCursor.getMonth();
+      document.getElementById('calMonthTitle').textContent = `${year}년 ${month + 1}월`;
+
+      const firstDay = new Date(year, month, 1);
+      const startOffset = firstDay.getDay();
+      const startDate = new Date(year, month, 1 - startOffset);
+      const todayStr = toDateStr(new Date());
+      const eventsMap = collectCalendarEvents();
+
+      const grid = document.getElementById('calGrid');
+      grid.innerHTML = '';
+
+      for (let i = 0; i < 42; i++) {
+        const cellDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
+        const dateStr = toDateStr(cellDate);
+        const isOther = cellDate.getMonth() !== month;
+        const isToday = dateStr === todayStr;
+        const isSelected = dateStr === calSelectedDate;
+        const dow = cellDate.getDay();
+
+        const cell = document.createElement('div');
+        cell.className = `cal-cell ${isOther ? 'other-month' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}`;
+        cell.onclick = () => selectCalDate(dateStr);
+
+        const dayEvents = eventsMap[dateStr] || [];
+        const pillsHtml = dayEvents.slice(0, 3).map(ev =>
+          `<div class="cal-pill ${ev.kind}" title="${escapeHtml(ev.projTitle + ' - ' + ev.title)}">${escapeHtml(ev.title)}</div>`
+        ).join('');
+        const moreHtml = dayEvents.length > 3 ? `<div class="cal-more">+${dayEvents.length - 3}건 더</div>` : '';
+
+        cell.innerHTML = `
+          <div class="cal-day-num ${dow === 0 ? 'sun' : dow === 6 ? 'sat' : ''}">
+            <span>${cellDate.getDate()}</span>
+          </div>
+          <div class="cal-events-wrap">
+            ${pillsHtml}
+            ${moreHtml}
+          </div>
+        `;
+        grid.appendChild(cell);
+      }
+
+      renderSelectedCalDatePanel(eventsMap);
+    }
+
+    function renderSelectedCalDatePanel(eventsMap) {
+      const map = eventsMap || collectCalendarEvents();
+      const list = map[calSelectedDate] || [];
+      document.getElementById('calSelectedDateTitle').textContent = `${calSelectedDate} 일정`;
+      document.getElementById('calSelectedCount').textContent = `${list.length}건`;
+
+      const sel = document.getElementById('calQuickProjSelect');
+      sel.innerHTML = projects.map(p => `<option value="${p.id}">${escapeHtml(p.title)}</option>`).join('');
+
+      const container = document.getElementById('calSelectedDayList');
+      if (list.length === 0) {
+        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); padding:16px 0; text-align:center;">이 날짜에 등록된 일정이 없습니다.</p>`;
+        return;
+      }
+
+      container.innerHTML = list.map(ev => `
+        <div class="cal-detail-item">
+          <div class="cal-detail-top">
+            <span class="status-pill ${ev.kind === 'deadline' ? '' : ev.kind === 'done' ? 'done' : 'active'}" style="${ev.kind === 'deadline' ? 'background:#fee2e2; color:#991b1b;' : ''}">
+              ${ev.kind === 'deadline' ? '마감일' : ev.phase ? escapeHtml(ev.phase) : '세부 일정'}
+            </span>
+            <span style="font-size:10.5px; color:var(--text-muted);">${escapeHtml(ev.projTitle)}</span>
+          </div>
+          <div class="cal-detail-title" onclick="openProjectModal('${ev.projId}', 'schedule')">${escapeHtml(ev.title)}</div>
+        </div>
+      `).join('');
+    }
+
+    function selectCalDate(dateStr) {
+      calSelectedDate = dateStr;
+      renderCalendar();
+    }
+
+    function changeCalMonth(delta) {
+      calCursor = new Date(calCursor.getFullYear(), calCursor.getMonth() + delta, 1);
+      renderCalendar();
+    }
+
+    function goCalToday() {
+      const now = new Date();
+      calCursor = new Date(now.getFullYear(), now.getMonth(), 1);
+      calSelectedDate = toDateStr(now);
+      renderCalendar();
+    }
+
+    function openQuickScheduleFromCalendar() {
+      const input = document.getElementById('calQuickTaskInput');
+      if (input) input.focus();
+    }
+
+    function addQuickScheduleOnSelectedDate() {
+      const projId = document.getElementById('calQuickProjSelect').value;
+      const text = (document.getElementById('calQuickTaskInput').value || '').trim();
+      const p = projects.find(item => item.id === projId);
+      if (!p) {
+        showToast('먼저 프로젝트를 등록해 주세요.');
+        return;
+      }
+      if (!text) {
+        showToast('세부 일정 내용을 입력해 주세요.');
+        return;
+      }
+      if (!p.tasks) p.tasks = [];
+      p.tasks.push({ text, done: false, date: calSelectedDate, phase: '일정' });
+      recalcProjectProgress(p);
+      saveData();
+      document.getElementById('calQuickTaskInput').value = '';
+      renderAll();
+      showToast(`${calSelectedDate} 일정에 추가되었습니다.`);
+    }
+
+    // 14. STANDALONE HTML DOWNLOADER & CLIPBOARD BACKUP
     function downloadSelfHtml() {
       saveData();
-      const fullSource = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const clone = document.documentElement.cloneNode(true);
+      clone.querySelectorAll('[data-bard-client-injected="true"]').forEach(el => el.remove());
+      const fullSource = '<!DOCTYPE html>\n' + clone.outerHTML;
       let downloaded = false;
 
       try {
@@ -2332,13 +2753,12 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         console.warn('Sandbox blocked direct download:', err);
       }
 
-      // Safe Clipboard Backup
       copyTextToClipboard(fullSource);
 
       if (downloaded) {
-        showToast('index.html 다운로드가 완료되었습니다! (클립보드에도 자동 복사됨)');
+        showToast('index.html 다운로드가 완료되었습니다! (클립보드에도 복사됨)');
       } else {
-        showToast('보안으로 파일 다운로드가 막혀 전체 소스를 [클립보드에 자동 복사]했습니다. GitHub에 Ctrl+V로 붙여넣으세요!');
+        showToast('전체 소스를 클립보드에 복사했습니다. GitHub에 Ctrl+V로 붙여넣으세요!');
       }
     }
 
@@ -2358,21 +2778,24 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       document.body.appendChild(ta);
       ta.focus();
       ta.select();
-      try { document.execCommand('copy'); } catch(e) {}
+      try { document.execCommand('copy'); } catch (e) {}
       document.body.removeChild(ta);
     }
 
     // UTILITIES
+    function toDateStr(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
     function calculateDDay(dateStr) {
       const target = new Date(dateStr + 'T00:00:00');
       const now = new Date();
-      now.setHours(0,0,0,0);
+      now.setHours(0, 0, 0, 0);
       const diffDays = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
       return { diff: diffDays, formatted: dateStr };
-    }
-
-    function scrollToDeadlines() {
-      document.getElementById('deadlinesCard').scrollIntoView({ behavior: 'smooth' });
     }
 
     function showToast(msg) {
