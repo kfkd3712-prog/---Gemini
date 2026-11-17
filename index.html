@@ -855,6 +855,9 @@
     .cal-pill.deadline { background: #fee2e2; color: #991b1b; }
     .cal-pill.task { background: #dbeafe; color: #1e40af; }
     .cal-pill.done { background: #dcfce7; color: #166534; text-decoration: line-through; }
+    .cal-pill.general { background: #f3e8ff; color: #6b21a8; }
+    .cal-meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; font-size: 11px; color: var(--text-sub); }
+    .cal-meta-row span { display: inline-flex; align-items: center; gap: 4px; }
 
     .cal-more {
       font-size: 9.5px;
@@ -1513,6 +1516,7 @@
               <div class="cal-legend">
                 <span><i class="legend-dot" style="background:#dc2626;"></i> 프로젝트 마감</span>
                 <span><i class="legend-dot" style="background:#2563eb;"></i> 세부 일정</span>
+                <span><i class="legend-dot" style="background:#7c3aed;"></i> 일반 일정</span>
                 <span><i class="legend-dot" style="background:#16a34a;"></i> 완료</span>
               </div>
             </div>
@@ -1530,11 +1534,15 @@
             </div>
             <div class="inline-add-box">
               <div class="form-group" style="margin-bottom:8px;">
-                <label style="font-size:11px;">어느 프로젝트 일정인가요?</label>
+                <label style="font-size:11px;">프로젝트 연결 (선택 · 일반 일정은 공란 유지)</label>
                 <select id="calQuickProjSelect" class="form-control" style="padding:6px 8px; font-size:12px;"></select>
               </div>
+              <div class="inline-row" style="margin-bottom:8px;">
+                <input type="time" id="calQuickTimeInput" class="form-control" style="flex:1; min-width:105px; padding:6px 8px; font-size:12px;" title="시간 (선택)">
+                <input type="text" id="calQuickLocInput" class="form-control" style="flex:1.4; min-width:120px; padding:6px 9px; font-size:12px;" placeholder="장소 (선택)">
+              </div>
               <div class="inline-row">
-                <input type="text" id="calQuickTaskInput" class="form-control" style="flex:1; padding:6px 9px; font-size:12px;" placeholder="세부 일정 입력 후 추가">
+                <input type="text" id="calQuickTaskInput" class="form-control" style="flex:1; padding:6px 9px; font-size:12px;" placeholder="일정 내용 입력 후 추가">
                 <button class="btn primary sm" onclick="addQuickScheduleOnSelectedDate()">추가</button>
               </div>
             </div>
@@ -1776,6 +1784,7 @@
 
     let projects = [];
     let documents = [];
+    let standaloneEvents = [];
     let currentCategory = 'all';
     let currentView = 'dashboard';
     let activeModalProjId = null;
@@ -1833,6 +1842,17 @@
         ...d
       }));
 
+      try {
+        const storedEvents = localStorage.getItem('my_workspace_events');
+        if (storedEvents) {
+          standaloneEvents = JSON.parse(storedEvents);
+        } else {
+          standaloneEvents = [];
+        }
+      } catch (e) {
+        standaloneEvents = [];
+      }
+
       saveData();
     }
 
@@ -1840,6 +1860,7 @@
       try {
         localStorage.setItem('my_workspace_projects', JSON.stringify(projects));
         localStorage.setItem('my_workspace_docs', JSON.stringify(documents));
+        localStorage.setItem('my_workspace_events', JSON.stringify(standaloneEvents));
       } catch (e) {
         console.warn('localStorage save skipped:', e);
       }
@@ -2600,6 +2621,8 @@
             pushEvent(t.date, {
               kind: t.done ? 'done' : 'task',
               title: t.text,
+              time: t.time || '',
+              location: t.location || '',
               projId: p.id,
               projTitle: p.title,
               phase: t.phase || '',
@@ -2608,6 +2631,25 @@
             });
           }
         });
+      });
+
+      (standaloneEvents || []).forEach(ev => {
+        if (ev.date) {
+          pushEvent(ev.date, {
+            kind: ev.done ? 'done' : 'general',
+            title: ev.title,
+            time: ev.time || '',
+            location: ev.location || '',
+            projId: '',
+            projTitle: '일반 일정',
+            eventId: ev.id,
+            done: !!ev.done
+          });
+        }
+      });
+
+      Object.keys(map).forEach(k => {
+        map[k].sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99'));
       });
       return map;
     }
@@ -2639,9 +2681,11 @@
         cell.onclick = () => selectCalDate(dateStr);
 
         const dayEvents = eventsMap[dateStr] || [];
-        const pillsHtml = dayEvents.slice(0, 3).map(ev =>
-          `<div class="cal-pill ${ev.kind}" title="${escapeHtml(ev.projTitle + ' - ' + ev.title)}">${escapeHtml(ev.title)}</div>`
-        ).join('');
+        const pillsHtml = dayEvents.slice(0, 3).map(ev => {
+          const prefix = ev.time ? ev.time + ' ' : '';
+          const tip = [ev.projTitle, ev.time, ev.location, ev.title].filter(Boolean).join(' · ');
+          return `<div class="cal-pill ${ev.kind}" title="${escapeHtml(tip)}">${escapeHtml(prefix + ev.title)}</div>`;
+        }).join('');
         const moreHtml = dayEvents.length > 3 ? `<div class="cal-more">+${dayEvents.length - 3}건 더</div>` : '';
 
         cell.innerHTML = `
@@ -2666,7 +2710,10 @@
       document.getElementById('calSelectedCount').textContent = `${list.length}건`;
 
       const sel = document.getElementById('calQuickProjSelect');
-      sel.innerHTML = projects.map(p => `<option value="${p.id}">${escapeHtml(p.title)}</option>`).join('');
+      const prevSel = sel.value;
+      sel.innerHTML = `<option value="">일반 일정 (프로젝트 미지정)</option>` +
+        projects.map(p => `<option value="${p.id}">${escapeHtml(p.title)}</option>`).join('');
+      if (prevSel && projects.some(p => p.id === prevSel)) sel.value = prevSel;
 
       const container = document.getElementById('calSelectedDayList');
       if (list.length === 0) {
@@ -2674,17 +2721,42 @@
         return;
       }
 
-      container.innerHTML = list.map(ev => `
-        <div class="cal-detail-item">
-          <div class="cal-detail-top">
-            <span class="status-pill ${ev.kind === 'deadline' ? '' : ev.kind === 'done' ? 'done' : 'active'}" style="${ev.kind === 'deadline' ? 'background:#fee2e2; color:#991b1b;' : ''}">
-              ${ev.kind === 'deadline' ? '마감일' : ev.phase ? escapeHtml(ev.phase) : '세부 일정'}
-            </span>
-            <span style="font-size:10.5px; color:var(--text-muted);">${escapeHtml(ev.projTitle)}</span>
+      container.innerHTML = list.map(ev => {
+        const badgeStyle = ev.kind === 'deadline'
+          ? 'background:#fee2e2; color:#991b1b;'
+          : ev.kind === 'general'
+            ? 'background:#f3e8ff; color:#6b21a8;'
+            : '';
+        const badgeLabel = ev.kind === 'deadline'
+          ? '마감일'
+          : ev.kind === 'general'
+            ? '일반 일정'
+            : (ev.phase ? escapeHtml(ev.phase) : '세부 일정');
+        const metaParts = [];
+        if (ev.time) metaParts.push(`<span><i class="fa-regular fa-clock"></i> ${escapeHtml(ev.time)}</span>`);
+        if (ev.location) metaParts.push(`<span><i class="fa-solid fa-location-dot"></i> ${escapeHtml(ev.location)}</span>`);
+
+        const titleHtml = ev.projId
+          ? `<div class="cal-detail-title" onclick="openProjectModal('${ev.projId}', 'schedule')">${escapeHtml(ev.title)}</div>`
+          : `<div style="display:flex; align-items:center; gap:8px;">
+               <input type="checkbox" class="task-check" ${ev.done ? 'checked' : ''} onchange="toggleStandaloneEvent('${ev.eventId}')" />
+               <span style="flex:1; font-weight:800; color:var(--text-main); ${ev.done ? 'text-decoration:line-through; color:#94a3b8;' : ''}">${escapeHtml(ev.title)}</span>
+               <button class="icon-btn" onclick="deleteStandaloneEvent('${ev.eventId}')" title="일정 삭제"><i class="fa-regular fa-trash-can"></i></button>
+             </div>`;
+
+        return `
+          <div class="cal-detail-item">
+            <div class="cal-detail-top">
+              <span class="status-pill ${ev.kind === 'done' ? 'done' : ev.kind === 'task' ? 'active' : ''}" style="${badgeStyle}">
+                ${badgeLabel}
+              </span>
+              <span style="font-size:10.5px; color:var(--text-muted);">${escapeHtml(ev.projTitle)}</span>
+            </div>
+            ${titleHtml}
+            ${metaParts.length ? `<div class="cal-meta-row">${metaParts.join('')}</div>` : ''}
           </div>
-          <div class="cal-detail-title" onclick="openProjectModal('${ev.projId}', 'schedule')">${escapeHtml(ev.title)}</div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function selectCalDate(dateStr) {
@@ -2712,22 +2784,56 @@
     function addQuickScheduleOnSelectedDate() {
       const projId = document.getElementById('calQuickProjSelect').value;
       const text = (document.getElementById('calQuickTaskInput').value || '').trim();
-      const p = projects.find(item => item.id === projId);
-      if (!p) {
-        showToast('먼저 프로젝트를 등록해 주세요.');
-        return;
-      }
+      const time = document.getElementById('calQuickTimeInput').value || '';
+      const location = (document.getElementById('calQuickLocInput').value || '').trim();
+
       if (!text) {
-        showToast('세부 일정 내용을 입력해 주세요.');
+        showToast('일정 내용을 입력해 주세요.');
         return;
       }
-      if (!p.tasks) p.tasks = [];
-      p.tasks.push({ text, done: false, date: calSelectedDate, phase: '일정' });
-      recalcProjectProgress(p);
+
+      if (!projId) {
+        standaloneEvents.push({
+          id: 'ev_' + Date.now(),
+          date: calSelectedDate,
+          time,
+          location,
+          title: text,
+          done: false
+        });
+      } else {
+        const p = projects.find(item => item.id === projId);
+        if (!p) {
+          showToast('선택한 프로젝트를 찾을 수 없습니다.');
+          return;
+        }
+        if (!p.tasks) p.tasks = [];
+        p.tasks.push({ text, done: false, date: calSelectedDate, time, location, phase: '일정' });
+        recalcProjectProgress(p);
+      }
+
       saveData();
       document.getElementById('calQuickTaskInput').value = '';
+      document.getElementById('calQuickTimeInput').value = '';
+      document.getElementById('calQuickLocInput').value = '';
       renderAll();
       showToast(`${calSelectedDate} 일정에 추가되었습니다.`);
+    }
+
+    function toggleStandaloneEvent(eventId) {
+      const ev = standaloneEvents.find(item => item.id === eventId);
+      if (ev) {
+        ev.done = !ev.done;
+        saveData();
+        renderAll();
+      }
+    }
+
+    function deleteStandaloneEvent(eventId) {
+      standaloneEvents = standaloneEvents.filter(item => item.id !== eventId);
+      saveData();
+      renderAll();
+      showToast('일반 일정이 삭제되었습니다.');
     }
 
     // 14. STANDALONE HTML DOWNLOADER & CLIPBOARD BACKUP
