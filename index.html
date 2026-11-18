@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- My Workspace v1.2 · 2026-11-18 · 일정 id·자료 연결 정리, 로그 수정, 오늘 브리핑, 반복 일정, 주간 보기, 분석 메뉴 -->
+<!-- My Workspace v1.3 · 2026-11-18 · 캘린더 칸 너비가 일정 길이에 따라 달라지던 문제 수정 -->
 <html lang="ko"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -794,7 +794,7 @@
 
     .calendar-layout {
       display: grid;
-      grid-template-columns: 1fr 350px;
+      grid-template-columns: minmax(0, 1fr) 350px;
       gap: 24px;
       align-items: flex-start;
     }
@@ -844,7 +844,7 @@
     }
     .cal-weekdays {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: 6px;
       margin-bottom: 6px;
       text-align: center;
@@ -857,10 +857,11 @@
 
     .cal-grid {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: 6px;
     }
     .cal-cell {
+      min-width: 0;
       min-height: 98px;
       border: 1px solid #f1f5f9;
       border-radius: 8px;
