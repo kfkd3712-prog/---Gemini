@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- My Workspace v1.3 · 2026-11-18 · 캘린더 칸 너비가 일정 길이에 따라 달라지던 문제 수정 -->
+<!-- My Workspace v1.4 · 2026-11-18 · 주간 보고, 프로젝트 템플릿, 빠른 입력, 캘린더 드래그, 마감 알림, 체크리스트, 공부 기록 -->
 <html lang="ko"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1241,6 +1241,137 @@
     .an-table td:first-child, .an-table th:first-child { text-align: left; font-weight: 800; }
     .an-table td.zero { color: #cbd5e1; }
 
+    /* ================= v1.4 추가 스타일 ================= */
+    /* Alert banner */
+    .alert-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 12.5px;
+    }
+    .alert-banner.urgent { background: #fef2f2; border-color: #fecaca; }
+    .alert-banner .ab-icon { font-size: 16px; color: var(--accent-amber); }
+    .alert-banner.urgent .ab-icon { color: var(--accent-danger); }
+    .alert-banner .ab-summary { font-weight: 800; color: var(--text-main); }
+    .alert-banner .ab-chips { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; min-width: 0; }
+    .ab-chip {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .ab-chip b { color: var(--accent-danger); margin-right: 4px; }
+    .ab-chip:hover { border-color: #cbd5e1; }
+    .ab-actions { display: flex; gap: 6px; align-items: center; margin-left: auto; }
+
+    /* Quick add */
+    .quick-add {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+    }
+    .quick-add-row { display: flex; align-items: center; gap: 10px; }
+    .quick-add-row .fa-bolt { color: var(--accent-amber); }
+    .quick-add-row input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      font-size: 13px;
+      font-family: inherit;
+      padding: 6px 0;
+      background: transparent;
+    }
+    .quick-add-preview { font-size: 11.5px; color: var(--text-muted); padding-left: 24px; }
+    .quick-add-preview:empty { display: none; }
+    .quick-add-preview strong { color: var(--primary); }
+    .qp-chip { display: inline-block; background: #f1f5f9; border-radius: 4px; padding: 1px 6px; margin-right: 4px; font-weight: 700; color: var(--text-sub); }
+
+    /* Checklist */
+    .cl-btn {
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      color: var(--text-muted);
+      border-radius: 6px;
+      padding: 3px 7px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .cl-btn.has { color: var(--primary); border-color: #bfdbfe; background: #eff6ff; }
+    .cl-btn.open { box-shadow: 0 0 0 2px #bfdbfe; }
+    .checklist-panel {
+      margin: -2px 0 8px 26px;
+      padding: 10px 12px;
+      border: 1px dashed #bfdbfe;
+      border-radius: 8px;
+      background: #f8fbff;
+    }
+    .cl-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 12.5px; }
+    .cl-item span { flex: 1; }
+    .cl-item span.done { text-decoration: line-through; color: #94a3b8; }
+    .cl-badge { font-size: 10.5px; font-weight: 700; color: var(--primary); white-space: nowrap; }
+
+    /* Calendar drag */
+    .cal-pill[draggable="true"] { cursor: grab; }
+    .cal-pill.dragging { opacity: 0.4; }
+    .cal-cell.drop-target { border-color: var(--primary); background: #eff6ff; box-shadow: 0 0 0 2px #bfdbfe; }
+
+    /* Templates */
+    .template-preview { font-size: 11.5px; color: var(--text-sub); margin-top: 6px; line-height: 1.6; }
+    .template-preview:empty { display: none; }
+    .template-preview .tp-row { display: flex; gap: 8px; }
+    .template-preview .tp-off { color: var(--text-muted); min-width: 64px; font-weight: 700; }
+
+    /* Report */
+    .report-opts { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; font-weight: 700; color: var(--text-sub); }
+    .report-opts label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+    .report-text { font-family: 'Malgun Gothic', monospace; font-size: 12.5px; line-height: 1.6; resize: vertical; }
+
+    /* Study card */
+    .study-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 24px;
+    }
+    .study-stats { display: flex; gap: 22px; margin: 10px 0 14px; flex-wrap: wrap; }
+    .study-stats div span { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); }
+    .study-stats div strong { font-family: var(--font-heading); font-size: 24px; font-weight: 800; }
+    .study-stats div strong small { font-size: 12px; color: var(--text-muted); margin-left: 2px; }
+    .heatmap { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 13px); grid-auto-columns: 13px; justify-content: start; gap: 3px; overflow-x: auto; padding-bottom: 4px; }
+    .hm-cell { width: 13px; height: 13px; border-radius: 3px; background: #f1f5f9; }
+    .hm-cell.l1 { background: #dbeafe; }
+    .hm-cell.l2 { background: #93c5fd; }
+    .hm-cell.l3 { background: #3b82f6; }
+    .hm-cell.l4 { background: #1e40af; }
+    .hm-cell.future { background: transparent; }
+    .hm-cell.today { outline: 2px solid var(--text-main); outline-offset: 1px; }
+    .hm-legend { display: flex; align-items: center; gap: 3px; font-size: 10.5px; color: var(--text-muted); margin-top: 6px; }
+    .hm-legend .hm-cell { width: 10px; height: 10px; }
+    .study-form { border-left: 1px solid #f1f5f9; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+    .study-form h3 { font-family: var(--font-heading); font-size: 14px; font-weight: 800; }
+
     /* Toast */
     #toast {
       position: fixed;
@@ -1264,7 +1395,8 @@
     @media (max-width: 1024px) {
       .home-layout, .calendar-layout { grid-template-columns: 1fr; }
       .kpis-grid { grid-template-columns: repeat(2, 1fr); }
-      .today-brief, .an-grid { grid-template-columns: 1fr; }
+      .today-brief, .an-grid, .study-card { grid-template-columns: 1fr; }
+      .study-form { border-left: none; padding-left: 0; border-top: 1px solid #f1f5f9; padding-top: 14px; }
     }
     @media (max-width: 768px) {
       .sidebar {
@@ -1369,11 +1501,15 @@
             <p>진행 중인 프로젝트와 내부 일정·자료를 한곳에서 조율하세요.</p>
           </div>
           <div class="hero-buttons">
+            <button class="btn" onclick="openReportModal()"><i class="fa-solid fa-clipboard-list"></i> 주간 보고</button>
             <button class="btn" onclick="navigateTo('calendar')"><i class="fa-solid fa-calendar-days"></i> 캘린더 열기</button>
             <button class="btn" onclick="openUploadModal()"><i class="fa-solid fa-arrow-up-from-bracket"></i> 자료 등록</button>
             <button class="btn primary" onclick="openNewProjectModal()"><i class="fa-solid fa-plus"></i> 새 프로젝트</button>
           </div>
         </section>
+
+        <!-- Deadline Alert Banner -->
+        <div id="alertBanner"></div>
 
         <!-- KPIs -->
         <section class="kpis-grid">
@@ -1399,8 +1535,22 @@
           </div>
         </section>
 
+        <!-- Quick Add -->
+        <section class="quick-add">
+          <div class="quick-add-row">
+            <i class="fa-solid fa-bolt"></i>
+            <input type="text" id="quickAddInput" placeholder="빠른 일정 입력 — 예: 내일 오후 2시 시험편 인장시험 @합금 · 다음주 수요일 보고서 제출 · 11/25 10:30 미팅"
+              oninput="renderQuickPreview()" onkeydown="if(event.key==='Enter') submitQuickAdd()">
+            <button class="btn primary sm" onclick="submitQuickAdd()">추가</button>
+          </div>
+          <div class="quick-add-preview" id="quickAddPreview"></div>
+        </section>
+
         <!-- Today Brief -->
         <section class="today-brief" id="todayBrief"></section>
+
+        <!-- Study Card (Study 분야에서만 표시) -->
+        <section id="studyCard"></section>
 
         <!-- 2-Columns Home Layout -->
         <div class="home-layout">
@@ -1693,6 +1843,14 @@
           <input type="date" id="newProjDeadline" class="form-control">
         </div>
       </div>
+      <div class="form-group template-box">
+        <label>일정 템플릿 (선택)</label>
+        <div class="inline-row">
+          <select id="newProjTemplate" class="form-control" style="flex:1;" onchange="onTemplateSelect()"></select>
+          <button class="btn sm" id="deleteTemplateBtn" onclick="deleteSelectedTemplate()" style="display:none;" title="선택한 템플릿 삭제"><i class="fa-regular fa-trash-can"></i></button>
+        </div>
+        <div class="template-preview" id="templatePreview"></div>
+      </div>
     </div>
     <div class="dialog-foot">
       <button class="btn" onclick="closeNewProjectModal()">취소</button>
@@ -1779,6 +1937,39 @@
     </div>
   </dialog>
 
+  <!-- ================= WEEKLY REPORT MODAL ================= -->
+  <dialog id="reportModal" style="max-width: 820px;">
+    <div class="dialog-head">
+      <div>
+        <span style="font-size: 11px; font-weight: 800; color: var(--primary);">WEEKLY REPORT</span>
+        <h2>주간 업무 보고 정리</h2>
+      </div>
+      <button class="dialog-close" onclick="closeReportModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="dialog-body">
+      <div class="inline-row" style="margin-bottom:10px; justify-content:space-between;">
+        <div class="cal-nav-btns">
+          <button class="btn sm" onclick="shiftReportWeek(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+          <strong id="reportWeekLabel" style="font-size:14px; min-width:190px; text-align:center;"></strong>
+          <button class="btn sm" onclick="shiftReportWeek(1)"><i class="fa-solid fa-chevron-right"></i></button>
+          <button class="btn sm" onclick="setReportWeekToThis()">이번 주</button>
+        </div>
+        <div class="report-opts">
+          <label><input type="checkbox" id="rptLogs" checked onchange="renderReport()"> 업무 기록</label>
+          <label><input type="checkbox" id="rptPending" checked onchange="renderReport()"> 미완료</label>
+          <label><input type="checkbox" id="rptNext" checked onchange="renderReport()"> 다음 주 계획</label>
+          <label><input type="checkbox" id="rptGeneral" onchange="renderReport()"> 일반 일정</label>
+        </div>
+      </div>
+      <textarea id="reportText" class="form-control report-text" rows="20" spellcheck="false"></textarea>
+      <p style="font-size:11px; color:var(--text-muted); margin-top:6px;">내용은 여기서 바로 고친 뒤 복사할 수 있습니다. 주는 월요일~일요일 기준입니다.</p>
+    </div>
+    <div class="dialog-foot">
+      <button class="btn" onclick="closeReportModal()">닫기</button>
+      <button class="btn primary" onclick="copyReport()"><i class="fa-regular fa-copy"></i> 복사하기</button>
+    </div>
+  </dialog>
+
   <!-- Toast Notification -->
   <div id="toast"></div>
 
@@ -1804,6 +1995,45 @@
     let calMode = 'month';        // 'month' | 'week'
 
     const REPEAT_LABELS = { '': '반복 안 함', daily: '매일', weekly: '매주', biweekly: '격주', monthly: '매월' };
+    const LOG_TAGS = ['회의/협의', '시험/분석', '보고/문서', '이슈/메모', '학습 기록'];
+    const expandedChecklists = new Set();  // 체크리스트를 펼친 세부 일정 id
+    let reportWeekStart = null;            // 주간 보고 기준 월요일 'YYYY-MM-DD'
+
+    // 일정 템플릿 (offset = 마감일 기준 며칠 전(-)/후(+), null이면 날짜 없음)
+    const TEMPLATE_KEY = 'my_workspace_templates';
+    const DEFAULT_TEMPLATES = [
+      {
+        id: 'tpl_gov', name: '정부과제 신청', category: 'work', subCategory: '업무 · 연구기획',
+        steps: [
+          { text: '공고문 확인 및 지원 요건 검토', phase: '기획', offset: -35 },
+          { text: '참여기관·컨소시엄 협의', phase: '기획', offset: -28 },
+          { text: '사업계획서 초안 작성', phase: '작성', offset: -21 },
+          { text: '예산·증빙 서류 준비', phase: '작성', offset: -14 },
+          { text: '내부 검토 및 결재', phase: '검토', offset: -7 },
+          { text: '온라인 접수 및 최종 제출', phase: '제출', offset: -2 }
+        ]
+      },
+      {
+        id: 'tpl_event', name: '전시회·세미나 참석', category: 'work', subCategory: '업무 · 연구기획',
+        steps: [
+          { text: '참가 등록', phase: '준비', offset: -14 },
+          { text: '출장 신청 및 일정 공유', phase: '준비', offset: -7 },
+          { text: '행사 참석', phase: '참석', offset: 0 },
+          { text: '참석 결과 보고서 작성·공유', phase: '정리', offset: 3 }
+        ]
+      },
+      {
+        id: 'tpl_cert', name: '자격증 시험 준비', category: 'study', subCategory: 'Study · 자격증',
+        steps: [
+          { text: '시험 접수', phase: '준비', offset: -45 },
+          { text: '학습 계획 수립·교재 준비', phase: '준비', offset: -42 },
+          { text: '1회독 완료', phase: '학습', offset: -21 },
+          { text: '기출·모의고사 풀이', phase: '학습', offset: -7 },
+          { text: '시험 응시', phase: '시험', offset: 0 }
+        ]
+      }
+    ];
+    let templates = [];
 
     // Calendar State
     let calCursor = new Date();
@@ -1814,6 +2044,11 @@
       initData();
       renderTodayDate();
       renderAll();
+      runNotificationCheck();
+      setInterval(() => {
+        runNotificationCheck();
+        renderTodayDate();
+      }, 60000);
     });
 
     function initData() {
@@ -1867,6 +2102,14 @@
       if (!Array.isArray(standaloneEvents)) standaloneEvents = [];
       standaloneEvents = standaloneEvents.map(ev => normalizeScheduleItem(ev, 'ev'));
 
+      try {
+        const storedTpl = localStorage.getItem(TEMPLATE_KEY);
+        templates = storedTpl ? JSON.parse(storedTpl) : JSON.parse(JSON.stringify(DEFAULT_TEMPLATES));
+      } catch (e) {
+        templates = JSON.parse(JSON.stringify(DEFAULT_TEMPLATES));
+      }
+      if (!Array.isArray(templates)) templates = [];
+
       saveData();
     }
 
@@ -1887,7 +2130,8 @@
         repeatUntil: '',
         ...item,
         id: item.id || genId(prefix),
-        doneDates: Array.isArray(item.doneDates) ? item.doneDates : []
+        doneDates: Array.isArray(item.doneDates) ? item.doneDates : [],
+        checklist: Array.isArray(item.checklist) ? item.checklist : []
       };
     }
 
@@ -1896,6 +2140,7 @@
         localStorage.setItem('my_workspace_projects', JSON.stringify(projects));
         localStorage.setItem('my_workspace_docs', JSON.stringify(documents));
         localStorage.setItem('my_workspace_events', JSON.stringify(standaloneEvents));
+        localStorage.setItem(TEMPLATE_KEY, JSON.stringify(templates));
       } catch (e) {
         console.warn('localStorage save skipped:', e);
       }
@@ -2115,8 +2360,10 @@
 
     function renderAll() {
       renderBackupStatus();
+      renderAlertBanner();
       renderKPIs();
       renderTodayBrief();
+      renderStudyCard();
       renderProjects();
       renderDeadlines();
       renderRecentDocs();
@@ -2588,7 +2835,9 @@
         repeat: item.repeat || '',
         done: occDate ? isOccurrenceDone(item, occDate) : !!item.done,
         seriesKey: `${src}_${item.id}`,
-        key: `${src}_${item.id}_${occDate}`
+        key: `${src}_${item.id}_${occDate}`,
+        clTotal: (item.checklist || []).length,
+        clDone: (item.checklist || []).filter(c => c.done).length
       };
     }
 
@@ -2704,6 +2953,7 @@
         <div class="task-item">
           <input type="checkbox" class="task-check" ${it.done ? 'checked' : ''} onchange="toggleOccurrence('${it.src}', '${it.ownerId}', '${it.itemId}', '${it.date}')" />
           <span class="task-title ${it.done ? 'done' : ''}" onclick="${titleClick}">${repeatIcon}${escapeHtml(it.title)}</span>
+          ${it.clTotal ? `<span class="cl-badge"><i class="fa-solid fa-list-check"></i> ${it.clDone}/${it.clTotal}</span>` : ''}
           ${locLabel}
           ${datePill}
           <span class="${tagClass}" onclick="${titleClick}">${escapeHtml(it.projTitle)}</span>
@@ -2823,16 +3073,20 @@
         p.progressNote = `${p.progress}% (수동)`;
         return;
       }
-      // 반복 일정(정기 회의 등)은 진행률 계산에서 제외
+      // 반복 일정(정기 회의 등)은 제외, 체크리스트가 있으면 부분 완료로 계산
       const counted = (p.tasks || []).filter(t => !t.repeat);
       if (counted.length === 0) {
         p.progress = 0;
         p.progressNote = '0%';
-      } else {
-        const doneCount = counted.filter(t => t.done).length;
-        p.progress = Math.round((doneCount / counted.length) * 100);
-        p.progressNote = `${p.progress}%`;
+        return;
       }
+      const score = counted.reduce((sum, t) => {
+        if (t.done) return sum + 1;
+        const cl = t.checklist || [];
+        return sum + (cl.length ? cl.filter(c => c.done).length / cl.length : 0);
+      }, 0);
+      p.progress = Math.round((score / counted.length) * 100);
+      p.progressNote = `${p.progress}%`;
     }
 
     function toggleTaskDone(projId, taskId) {
@@ -2844,6 +3098,7 @@
     // 9. CATEGORY FILTER & FAVORITE
     function filterCategory(cat) {
       currentCategory = cat;
+      renderStudyCard();
       document.querySelectorAll('.cat-btn').forEach(tab => {
         if (tab.dataset.cat === cat) tab.classList.add('selected');
         else tab.classList.remove('selected');
@@ -2934,8 +3189,10 @@
                     <input type="text" value="${escapeHtml(t.location || '')}" placeholder="장소" style="width:90px;" onchange="updateProjectTaskField('${p.id}', '${t.id}', 'location', this.value)" />
                     <select class="sr-repeat" onchange="updateProjectTaskField('${p.id}', '${t.id}', 'repeat', this.value)" title="반복">${repeatOptionsHtml(t.repeat)}</select>
                     ${t.repeat ? `<input type="date" value="${escapeHtml(t.repeatUntil || '')}" onchange="updateProjectTaskField('${p.id}', '${t.id}', 'repeatUntil', this.value)" title="반복 끝 (비우면 계속)" />` : ''}
+                    ${t.repeat ? '' : checklistButtonHtml(t)}
                     <button class="icon-btn" onclick="deleteProjectTask('${p.id}', '${t.id}')" title="일정 삭제"><i class="fa-regular fa-trash-can"></i></button>
                   </div>
+                  ${t.repeat ? '' : checklistPanelHtml(p, t)}
                 `).join('')
               }
             </div>
@@ -2991,7 +3248,7 @@
           </div>
         `;
       } else if (activeModalTab === 'logs') {
-        const tagOptions = (sel) => ['회의/협의', '시험/분석', '보고/문서', '이슈/메모']
+        const tagOptions = (sel) => LOG_TAGS
           .map(t => `<option value="${t}" ${t === sel ? 'selected' : ''}>${t}</option>`).join('');
         tabBodyHtml = `
           <div class="inline-add-box">
@@ -3097,6 +3354,14 @@
           </div>
           <div style="display:flex; justify-content:flex-end;">
             <button class="btn primary sm" onclick="saveProjectMetaEdits()"><i class="fa-solid fa-check"></i> 변경사항 저장</button>
+          </div>
+          <div class="inline-add-box" style="margin-top:18px; margin-bottom:0;">
+            <div style="font-size:12px; font-weight:800; margin-bottom:4px;"><i class="fa-regular fa-copy"></i> 이 프로젝트 일정을 템플릿으로 저장</div>
+            <p style="font-size:11px; color:var(--text-muted); margin-bottom:8px;">세부 일정(반복 제외)의 날짜를 마감일 기준 '며칠 전/후'로 바꿔 저장합니다. 다음에 비슷한 프로젝트를 만들 때 고르면 일정이 자동으로 들어갑니다.</p>
+            <div class="inline-row">
+              <input type="text" id="saveTplName" class="form-control" style="flex:1;" placeholder="템플릿 이름 (예: 경남TP 시제품 지원사업)" value="${escapeHtml(p.title)}">
+              <button class="btn sm" onclick="saveProjectAsTemplate()">템플릿 저장</button>
+            </div>
           </div>
         `;
       }
@@ -3430,13 +3695,84 @@
     }
 
     // 11. NEW PROJECT MODAL
-    function openNewProjectModal() {
+    function openNewProjectModal(presetCategory) {
       document.getElementById('newProjTitle').value = '';
       document.getElementById('newProjSub').value = '';
       document.getElementById('newProjDesc').value = '';
       document.getElementById('newProjDeadline').value = '';
+      document.getElementById('newProjCategory').value = typeof presetCategory === 'string' ? presetCategory : 'work';
+      populateTemplateSelect();
       document.getElementById('newProjectModal').showModal();
     }
+
+    function populateTemplateSelect(selectedId) {
+      const sel = document.getElementById('newProjTemplate');
+      sel.innerHTML = `<option value="">템플릿 없이 빈 프로젝트로 시작</option>` +
+        templates.map(t => `<option value="${t.id}">${escapeHtml(t.name)} (일정 ${t.steps.length}개)</option>`).join('');
+      sel.value = selectedId && templates.some(t => t.id === selectedId) ? selectedId : '';
+      onTemplateSelect(true);
+    }
+
+    function onTemplateSelect(silent) {
+      const id = document.getElementById('newProjTemplate').value;
+      const tpl = templates.find(t => t.id === id);
+      const prev = document.getElementById('templatePreview');
+      document.getElementById('deleteTemplateBtn').style.display = tpl ? 'inline-flex' : 'none';
+      if (!tpl) {
+        prev.innerHTML = '';
+        return;
+      }
+      if (!silent) {
+        if (tpl.category) document.getElementById('newProjCategory').value = tpl.category;
+        const subEl = document.getElementById('newProjSub');
+        if (!subEl.value && tpl.subCategory) subEl.value = tpl.subCategory;
+      }
+      const offLabel = (o) => o === null || o === undefined ? '날짜 없음' : o === 0 ? '마감일 당일' : o < 0 ? `마감 ${-o}일 전` : `마감 ${o}일 후`;
+      prev.innerHTML = `<div style="font-weight:800; margin-bottom:2px;">마감일 기준으로 아래 일정이 자동 생성됩니다</div>` +
+        tpl.steps.map(s => `<div class="tp-row"><span class="tp-off">${offLabel(s.offset)}</span><span>${escapeHtml(s.text)}</span></div>`).join('');
+    }
+
+    function deleteSelectedTemplate() {
+      const id = document.getElementById('newProjTemplate').value;
+      const tpl = templates.find(t => t.id === id);
+      if (!tpl) return;
+      askConfirm(`'${tpl.name}' 템플릿을 삭제하시겠습니까? (이미 만든 프로젝트에는 영향 없음)`, () => {
+        templates = templates.filter(t => t.id !== id);
+        saveData();
+        populateTemplateSelect();
+        showToast('템플릿이 삭제되었습니다.');
+      });
+    }
+
+    function saveProjectAsTemplate() {
+      const p = projects.find(item => item.id === activeModalProjId);
+      if (!p) return;
+      const name = (document.getElementById('saveTplName').value || '').trim();
+      if (!name) {
+        showToast('템플릿 이름을 입력해 주세요.');
+        return;
+      }
+      if (!p.deadline) {
+        showToast('템플릿은 마감일 기준으로 저장됩니다. 먼저 마감일을 입력해 주세요.');
+        return;
+      }
+      const steps = (p.tasks || []).filter(t => !t.repeat).map(t => ({
+        text: t.text,
+        phase: t.phase || '',
+        offset: t.date ? daysBetween(p.deadline, t.date) : null,
+        checklist: (t.checklist || []).map(c => c.text)
+      }));
+      if (steps.length === 0) {
+        showToast('저장할 세부 일정이 없습니다.');
+        return;
+      }
+      const existing = templates.find(t => t.name === name);
+      const tpl = { id: existing ? existing.id : genId('tpl'), name, category: p.category, subCategory: p.subCategory, steps };
+      templates = existing ? templates.map(t => t.id === existing.id ? tpl : t) : [...templates, tpl];
+      saveData();
+      showToast(existing ? `'${name}' 템플릿을 덮어썼습니다.` : `'${name}' 템플릿으로 저장했습니다. (일정 ${steps.length}개)`);
+    }
+
     function closeNewProjectModal() {
       document.getElementById('newProjectModal').close();
     }
@@ -3448,10 +3784,23 @@
         return;
       }
       const category = document.getElementById('newProjCategory').value;
-      const sub = document.getElementById('newProjSub').value.trim() || '업무 · 신규';
+      const sub = document.getElementById('newProjSub').value.trim() || ({ work: '업무 · 신규', study: 'Study', life: '일상' }[category] || '업무 · 신규');
       const desc = document.getElementById('newProjDesc').value.trim();
       const status = document.getElementById('newProjStatus').value;
       const deadline = document.getElementById('newProjDeadline').value;
+      const tpl = templates.find(t => t.id === document.getElementById('newProjTemplate').value);
+
+      if (tpl && !deadline && tpl.steps.some(s => s.offset !== null && s.offset !== undefined)) {
+        showToast('템플릿 일정은 마감일 기준으로 만들어집니다. 마감일을 입력해 주세요.');
+        return;
+      }
+
+      const tasks = tpl ? tpl.steps.map(s => normalizeScheduleItem({
+        text: s.text,
+        phase: s.phase || '',
+        date: (s.offset === null || s.offset === undefined || !deadline) ? '' : addDaysStr(deadline, s.offset),
+        checklist: (s.checklist || []).map(text => ({ id: genId('cl'), text, done: false }))
+      }, 'task')) : [];
 
       const newProj = {
         id: 'proj_' + Date.now(),
@@ -3468,14 +3817,14 @@
         notes: '',
         updatedAt: Date.now(),
         logs: [],
-        tasks: []
+        tasks
       };
 
       projects.unshift(newProj);
       saveData();
       closeNewProjectModal();
       renderAll();
-      showToast('새 프로젝트가 등록되었습니다.');
+      showToast(tpl ? `새 프로젝트가 등록되었습니다. '${tpl.name}' 일정 ${tasks.length}개가 추가되었습니다.` : '새 프로젝트가 등록되었습니다.');
     }
 
     // 12. UPLOAD MODAL
@@ -3617,6 +3966,57 @@
       return map;
     }
 
+    // 캘린더 드래그 이동 (반복 일정 제외)
+    function calDragStart(e, src, ownerId, itemId, fromDate) {
+      e.stopPropagation();
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', JSON.stringify({ src, ownerId, itemId, fromDate }));
+      e.target.classList.add('dragging');
+    }
+
+    function calDrop(e, toDate) {
+      e.preventDefault();
+      document.querySelectorAll('.cal-cell.drop-target').forEach(c => c.classList.remove('drop-target'));
+      let info;
+      try {
+        info = JSON.parse(e.dataTransfer.getData('text/plain'));
+      } catch (err) {
+        return;
+      }
+      if (!info || info.fromDate === toDate) return;
+      const delta = daysBetween(info.fromDate, toDate);
+      const md = (ds) => {
+        const d = new Date(ds + 'T00:00:00');
+        return `${d.getMonth() + 1}/${d.getDate()}(${['일', '월', '화', '수', '목', '금', '토'][d.getDay()]})`;
+      };
+
+      if (info.src === 'deadline') {
+        const p = projects.find(pp => pp.id === info.ownerId);
+        if (!p) return;
+        p.deadline = addDaysStr(p.deadline, delta);
+        touchProject(p);
+        saveData();
+        calSelectedDate = toDate;
+        renderAll();
+        showToast(`'${p.title}' 마감일을 ${md(p.deadline)}로 옮겼습니다.`);
+        return;
+      }
+
+      const { item, project } = findScheduleItem(info.src, info.ownerId, info.itemId);
+      if (!item) return;
+      if (item.repeat) {
+        showToast('반복 일정은 끌어서 옮길 수 없습니다. 연필 버튼으로 수정해 주세요.');
+        return;
+      }
+      item.date = addDaysStr(item.date, delta);
+      if (item.endDate) item.endDate = addDaysStr(item.endDate, delta);
+      if (project) touchProject(project);
+      saveData();
+      calSelectedDate = toDate;
+      renderAll();
+      showToast(`'${info.src === 'task' ? item.text : item.title}' 일정을 ${md(item.date)}${item.endDate ? ' ~ ' + md(item.endDate) : ''}로 옮겼습니다.`);
+    }
+
     function setCalMode(mode) {
       calMode = mode;
       document.getElementById('calModeMonth').classList.toggle('active', mode === 'month');
@@ -3668,6 +4068,12 @@
         const cell = document.createElement('div');
         cell.className = `cal-cell ${isOther ? 'other-month' : ''} ${dateStr === todayStr ? 'today' : ''} ${dateStr === calSelectedDate ? 'selected' : ''}`;
         cell.onclick = () => selectCalDate(dateStr);
+        cell.ondragover = (e) => {
+          e.preventDefault();
+          cell.classList.add('drop-target');
+        };
+        cell.ondragleave = () => cell.classList.remove('drop-target');
+        cell.ondrop = (e) => calDrop(e, dateStr);
 
         const dayEvents = eventsMap[dateStr] || [];
         const shown = isWeek ? dayEvents : dayEvents.slice(0, 3);
@@ -3678,7 +4084,11 @@
           const sub = isWeek && (ev.location || (ev.src === 'task' && ev.projTitle))
             ? `<small>${escapeHtml([ev.src === 'task' ? ev.projTitle : '', ev.location].filter(Boolean).join(' · '))}</small>`
             : '';
-          return `<div class="cal-pill ${ev.kind}" title="${escapeHtml(tip)}">${rep}${escapeHtml(prefix + ev.title)}${sub}</div>`;
+          const canDrag = !ev.repeat;
+          const dragAttrs = canDrag
+            ? `draggable="true" ondragstart="calDragStart(event, '${ev.src}', '${ev.src === 'deadline' ? ev.projId : ev.ownerId}', '${ev.src === 'deadline' ? '' : ev.itemId}', '${dateStr}')" ondragend="this.classList.remove('dragging')"`
+            : '';
+          return `<div class="cal-pill ${ev.kind}" title="${escapeHtml(tip + (canDrag ? ' · 끌어서 날짜 이동' : ''))}" ${dragAttrs}>${rep}${escapeHtml(prefix + ev.title)}${sub}</div>`;
         }).join('');
         const moreHtml = !isWeek && dayEvents.length > 3 ? `<div class="cal-more">+${dayEvents.length - 3}건 더</div>` : '';
         const weekDayLabel = isWeek ? `<span class="wk-dow">${['일', '월', '화', '수', '목', '금', '토'][dow]}</span>` : '';
@@ -4024,6 +4434,16 @@
             <span class="pct">${n}건</span>
           </div>`).join('');
 
+      const hasStudy = projects.some(p => p.category === 'study');
+      const studyMap = hasStudy ? studyActivityMap() : {};
+      const studySt = hasStudy ? studyStats(studyMap) : null;
+      const studyHtml = hasStudy ? `
+        <div class="an-card" style="margin-bottom:18px;">
+          <h2>공부 기록</h2>
+          <p class="an-sub">Study 분야 · 최근 26주 · 연속 ${studySt.streak}일 · 최장 ${studySt.longest}일 · 이번 달 ${studySt.monthDays}일</p>
+          ${studyHeatmapHtml(studyMap, 26)}
+        </div>` : '';
+
       el.innerHTML = `
         <section class="kpis-grid">
           <div class="kpi-card blue"><span>이번 달 완료한 일정</span><strong>${doneByMonth[thisMonth]}</strong><small>세부 일정 + 일반 일정 + 반복 회차</small></div>
@@ -4058,7 +4478,637 @@
             ${tagHtml}
           </div>
         </div>
+        ${studyHtml}
       `;
+    }
+
+    // 13-2. CHECKLIST (세부 일정 안의 작은 할 일)
+    function checklistButtonHtml(t) {
+      const cl = t.checklist || [];
+      const done = cl.filter(c => c.done).length;
+      const open = expandedChecklists.has(t.id);
+      return `<button class="cl-btn ${cl.length ? 'has' : ''} ${open ? 'open' : ''}" onclick="toggleChecklistPanel('${t.id}')" title="체크리스트">
+        <i class="fa-solid fa-list-check"></i>${cl.length ? ` ${done}/${cl.length}` : ''}
+      </button>`;
+    }
+
+    function checklistPanelHtml(p, t) {
+      if (!expandedChecklists.has(t.id)) return '';
+      const cl = t.checklist || [];
+      return `
+        <div class="checklist-panel">
+          ${cl.length === 0 ? '<p style="font-size:11.5px; color:var(--text-muted); margin-bottom:6px;">작은 할 일을 추가하세요. 모두 체크하면 이 일정이 자동으로 완료됩니다.</p>' : ''}
+          ${cl.map(c => `
+            <div class="cl-item">
+              <input type="checkbox" class="task-check" ${c.done ? 'checked' : ''} onchange="toggleChecklistItem('${p.id}', '${t.id}', '${c.id}')">
+              <span class="${c.done ? 'done' : ''}">${escapeHtml(c.text)}</span>
+              <button class="icon-btn" onclick="deleteChecklistItem('${p.id}', '${t.id}', '${c.id}')" title="삭제"><i class="fa-solid fa-xmark"></i></button>
+            </div>`).join('')}
+          <div class="inline-row" style="margin-top:6px;">
+            <input type="text" id="clInput_${t.id}" class="form-control" style="flex:1; padding:5px 9px; font-size:12px;" placeholder="체크리스트 항목 입력 후 Enter" onkeydown="if(event.key==='Enter') addChecklistItem('${p.id}', '${t.id}')">
+            <button class="btn sm" onclick="addChecklistItem('${p.id}', '${t.id}')">추가</button>
+          </div>
+        </div>`;
+    }
+
+    function toggleChecklistPanel(taskId) {
+      if (expandedChecklists.has(taskId)) expandedChecklists.delete(taskId);
+      else expandedChecklists.add(taskId);
+      renderProjectModalContent();
+      const input = document.getElementById(`clInput_${taskId}`);
+      if (input) input.focus();
+    }
+
+    function afterChecklistChange(project, task) {
+      const cl = task.checklist || [];
+      if (cl.length) {
+        const allDone = cl.every(c => c.done);
+        if (allDone && !task.done) {
+          task.done = true;
+          task.doneAt = Date.now();
+        } else if (!allDone && task.done) {
+          task.done = false;
+          task.doneAt = null;
+        }
+      }
+      recalcProjectProgress(project);
+      touchProject(project);
+      saveData();
+      renderAll();
+      renderProjectModalContent();
+    }
+
+    function addChecklistItem(projId, taskId) {
+      const { item, project } = findScheduleItem('task', projId, taskId);
+      const input = document.getElementById(`clInput_${taskId}`);
+      const text = input ? input.value.trim() : '';
+      if (!item || !text) return;
+      item.checklist = item.checklist || [];
+      item.checklist.push({ id: genId('cl'), text, done: false });
+      afterChecklistChange(project, item);
+      const again = document.getElementById(`clInput_${taskId}`);
+      if (again) again.focus();
+    }
+
+    function toggleChecklistItem(projId, taskId, clId) {
+      const { item, project } = findScheduleItem('task', projId, taskId);
+      const c = item && (item.checklist || []).find(x => x.id === clId);
+      if (!c) return;
+      c.done = !c.done;
+      afterChecklistChange(project, item);
+      if (item.done && item.checklist.every(x => x.done)) showToast(`체크리스트를 모두 끝내서 '${item.text}' 일정이 완료되었습니다.`);
+    }
+
+    function deleteChecklistItem(projId, taskId, clId) {
+      const { item, project } = findScheduleItem('task', projId, taskId);
+      if (!item) return;
+      item.checklist = (item.checklist || []).filter(x => x.id !== clId);
+      afterChecklistChange(project, item);
+    }
+
+    // 13-3. QUICK ADD (자연어 빠른 입력)
+    function parseQuickInput(raw) {
+      let s = ' ' + (raw || '') + ' ';
+      const todayStr = toDateStr(new Date());
+      const now = new Date();
+      let date = '';
+      let time = '';
+      let projId = '';
+      const ymd = (y, m, d) => {
+        const dt = new Date(y, m - 1, d);
+        return dt.getMonth() === m - 1 ? toDateStr(dt) : '';
+      };
+      const nearestMD = (m, d) => {
+        let ds = ymd(now.getFullYear(), m, d);
+        if (ds && daysBetween(ds, todayStr) > 60) ds = ymd(now.getFullYear() + 1, m, d);
+        return ds;
+      };
+      const take = (re, fn) => {
+        const m = s.match(re);
+        if (!m) return false;
+        const ok = fn(m);
+        if (ok !== false) s = s.replace(m[0], ' ');
+        return ok !== false;
+      };
+      const DOW = { 일: 0, 월: 1, 화: 2, 수: 3, 목: 4, 금: 5, 토: 6 };
+      const mondayOf = (ds) => {
+        const d = new Date(ds + 'T00:00:00');
+        return addDaysStr(ds, -((d.getDay() + 6) % 7));
+      };
+
+      // 프로젝트: @키워드 또는 #키워드
+      take(/[@#](\S+)/, m => {
+        const kw = m[1].toLowerCase().replace(/\s/g, '');
+        const p = projects.find(pp => pp.title.toLowerCase().replace(/\s/g, '').includes(kw));
+        if (p) projId = p.id;
+        return true;
+      });
+
+      // 날짜
+      take(/(\d{4})[-.\/](\d{1,2})[-.\/](\d{1,2})/, m => { date = ymd(+m[1], +m[2], +m[3]); return !!date; }) ||
+      take(/(\d{1,2})\s*월\s*(\d{1,2})\s*일/, m => { date = nearestMD(+m[1], +m[2]); return !!date; }) ||
+      take(/(?<![\d:])(\d{1,2})\/(\d{1,2})(?![\d\/])/, m => { date = nearestMD(+m[1], +m[2]); return !!date; }) ||
+      take(/(오늘|내일|모레|글피)/, m => { date = addDaysStr(todayStr, { 오늘: 0, 내일: 1, 모레: 2, 글피: 3 }[m[1]]); }) ||
+      take(/(다음\s*주|담주|이번\s*주)\s*([월화수목금토일])(?:요일)?/, m => {
+        const base = mondayOf(todayStr);
+        const offset = (DOW[m[2]] + 6) % 7;
+        date = addDaysStr(base, offset + (/이번/.test(m[1]) ? 0 : 7));
+      }) ||
+      take(/([월화수목금토일])요일/, m => {
+        const diff = (DOW[m[1]] - now.getDay() + 7) % 7;
+        date = addDaysStr(todayStr, diff);
+      }) ||
+      take(/(?<![\d월\/])(\d{1,2})\s*일(?!정)/, m => {
+        const d = +m[1];
+        let ds = ymd(now.getFullYear(), now.getMonth() + 1, d);
+        if (ds && ds < todayStr) {
+          const nm = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+          ds = ymd(nm.getFullYear(), nm.getMonth() + 1, d);
+        }
+        date = ds;
+        return !!ds;
+      });
+
+      // 시간
+      const toTime = (h, mi) => `${String(h).padStart(2, '0')}:${String(mi).padStart(2, '0')}`;
+      take(/(오전|오후|아침|저녁|밤)?\s*(\d{1,2})\s*시\s*(?:(\d{1,2})\s*분|(반))?/, m => {
+        let h = +m[2];
+        const mi = m[4] ? 30 : (m[3] ? +m[3] : 0);
+        if (h > 24 || mi > 59) return false;
+        if (/오후|저녁|밤/.test(m[1] || '') && h < 12) h += 12;
+        else if (m[1] === '오전' && h === 12) h = 0;
+        else if (!m[1] && h >= 1 && h <= 7) h += 12;  // 업무 시간 기준: "2시" → 14:00
+        time = toTime(h % 24, mi);
+      }) ||
+      take(/(?<![\d\/])(\d{1,2}):(\d{2})(?!\d)/, m => {
+        if (+m[1] > 23 || +m[2] > 59) return false;
+        time = toTime(+m[1], +m[2]);
+      });
+
+      const title = s.replace(/\s+/g, ' ').trim();
+      return { title, date: date || todayStr, dateGiven: !!date, time, projId };
+    }
+
+    function renderQuickPreview() {
+      const raw = document.getElementById('quickAddInput').value;
+      const el = document.getElementById('quickAddPreview');
+      if (!raw.trim()) {
+        el.innerHTML = '';
+        return;
+      }
+      const r = parseQuickInput(raw);
+      const d = new Date(r.date + 'T00:00:00');
+      const dLabel = `${d.getMonth() + 1}/${d.getDate()}(${['일', '월', '화', '수', '목', '금', '토'][d.getDay()]})${r.dateGiven ? '' : ' · 날짜 없음→오늘'}`;
+      const p = projects.find(pp => pp.id === r.projId);
+      el.innerHTML = `→ <span class="qp-chip">${dLabel}</span>${r.time ? `<span class="qp-chip">${r.time}</span>` : ''}` +
+        `<span class="qp-chip">${p ? escapeHtml(p.title) : '일반 일정'}</span> <strong>${escapeHtml(r.title || '(내용을 입력하세요)')}</strong> · Enter로 추가`;
+    }
+
+    function submitQuickAdd() {
+      const input = document.getElementById('quickAddInput');
+      const r = parseQuickInput(input.value);
+      if (!r.title) {
+        showToast('일정 내용을 입력해 주세요.');
+        return;
+      }
+      const p = projects.find(pp => pp.id === r.projId);
+      if (p) {
+        p.tasks.push(normalizeScheduleItem({ text: r.title, date: r.date, time: r.time, phase: '' }, 'task'));
+        recalcProjectProgress(p);
+        touchProject(p);
+      } else {
+        standaloneEvents.push(normalizeScheduleItem({ title: r.title, date: r.date, time: r.time }, 'ev'));
+      }
+      saveData();
+      input.value = '';
+      renderQuickPreview();
+      renderAll();
+      showToast(`${r.date}${r.time ? ' ' + r.time : ''} '${r.title}' 일정을 ${p ? `'${p.title}'에` : '일반 일정으로'} 추가했습니다.`);
+    }
+
+    // 13-4. DEADLINE ALERTS (배너 + 브라우저 알림)
+    const ALERT_DISMISS_KEY = 'my_workspace_alert_dismissed';
+    const NOTIFY_KEY = 'my_workspace_notify';
+    const NOTIFY_DAILY_KEY = 'my_workspace_notify_daily';
+    const NOTIFIED_KEY = 'my_workspace_notified';
+
+    function getAlertItems() {
+      const items = [];
+      projects.forEach(p => {
+        if (p.deadline && p.status !== '완료') {
+          const diff = calculateDDay(p.deadline).diff;
+          if (diff >= 0 && diff <= 3) items.push({ title: `[마감] ${p.title}`, diff, open: `openProjectModal('${p.id}', 'info')` });
+        }
+      });
+      collectUpcomingItems(3, false).forEach(it => {
+        if (it.diff >= 0) {
+          items.push({
+            title: it.title,
+            diff: it.diff,
+            open: it.src === 'task' ? `openProjectModal('${it.projId}', 'schedule')` : `goToCalendarDate('${it.date}')`
+          });
+        }
+      });
+      items.sort((a, b) => a.diff - b.diff);
+      const today = toDateStr(new Date());
+      const overdue = collectUpcomingItems(-1, false).filter(it => !it.repeat && it.date && (it.endDate || it.date) < today).length +
+        projects.filter(p => p.deadline && p.status !== '완료' && calculateDDay(p.deadline).diff < 0).length;
+      const c0 = items.filter(i => i.diff === 0).length;
+      const c1 = items.filter(i => i.diff === 1).length;
+      const c3 = items.filter(i => i.diff >= 2).length;
+      const parts = [];
+      if (c0) parts.push(`오늘 ${c0}건`);
+      if (c1) parts.push(`내일 ${c1}건`);
+      if (c3) parts.push(`2~3일 내 ${c3}건`);
+      if (overdue) parts.push(`밀린 일정 ${overdue}건`);
+      return { items, overdue, c0, c1, text: parts.join(' · ') };
+    }
+
+    function notifySupported() {
+      return 'Notification' in window;
+    }
+
+    function notifyEnabled() {
+      let on = false;
+      try { on = localStorage.getItem(NOTIFY_KEY) === 'on'; } catch (e) {}
+      return on && notifySupported() && Notification.permission === 'granted';
+    }
+
+    function renderAlertBanner() {
+      const el = document.getElementById('alertBanner');
+      if (!el) return;
+      const today = toDateStr(new Date());
+      let dismissed = '';
+      try { dismissed = localStorage.getItem(ALERT_DISMISS_KEY) || ''; } catch (e) {}
+      const a = getAlertItems();
+      if (dismissed === today || (a.items.length === 0 && a.overdue === 0)) {
+        el.innerHTML = '';
+        return;
+      }
+      const dLabel = (d) => d === 0 ? '오늘' : `D-${d}`;
+      const notifyBtn = notifySupported()
+        ? `<button class="btn sm" onclick="toggleBrowserNotify()" title="이 페이지가 열려 있을 때 마감·일정 알림을 보냅니다">
+             <i class="fa-${notifyEnabled() ? 'solid' : 'regular'} fa-bell"></i> ${notifyEnabled() ? '알림 켜짐' : '브라우저 알림 켜기'}
+           </button>`
+        : '';
+      el.innerHTML = `
+        <div class="alert-banner ${a.c0 || a.overdue ? 'urgent' : ''}">
+          <i class="fa-solid fa-bell ab-icon"></i>
+          <span class="ab-summary">${escapeHtml(a.text)}</span>
+          <div class="ab-chips">
+            ${a.items.slice(0, 4).map(i => `<span class="ab-chip" onclick="${i.open}"><b>${dLabel(i.diff)}</b>${escapeHtml(i.title)}</span>`).join('')}
+            ${a.items.length > 4 ? `<span class="ab-chip" onclick="document.getElementById('todayBrief').scrollIntoView({behavior:'smooth'})">외 ${a.items.length - 4}건</span>` : ''}
+          </div>
+          <div class="ab-actions">
+            ${notifyBtn}
+            <button class="icon-btn" onclick="dismissAlertBanner()" title="오늘 하루 숨기기"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>`;
+    }
+
+    function dismissAlertBanner() {
+      try { localStorage.setItem(ALERT_DISMISS_KEY, toDateStr(new Date())); } catch (e) {}
+      renderAlertBanner();
+      showToast('오늘 하루 알림 띠를 숨겼습니다.');
+    }
+
+    async function toggleBrowserNotify() {
+      if (!notifySupported()) {
+        showToast('이 브라우저는 알림을 지원하지 않습니다.');
+        return;
+      }
+      if (notifyEnabled()) {
+        try { localStorage.setItem(NOTIFY_KEY, 'off'); } catch (e) {}
+        renderAlertBanner();
+        showToast('브라우저 알림을 껐습니다.');
+        return;
+      }
+      let perm = Notification.permission;
+      if (perm !== 'granted') {
+        try { perm = await Notification.requestPermission(); } catch (e) { perm = 'denied'; }
+      }
+      if (perm === 'granted') {
+        try {
+          localStorage.setItem(NOTIFY_KEY, 'on');
+          localStorage.removeItem(NOTIFY_DAILY_KEY);
+        } catch (e) {}
+        showToast('브라우저 알림을 켰습니다. 이 페이지가 열려 있을 때 알려 드립니다.');
+        runNotificationCheck();
+      } else {
+        showToast('알림 권한이 거부되었습니다. 브라우저 주소창의 자물쇠 아이콘에서 알림을 허용해 주세요.');
+      }
+      renderAlertBanner();
+    }
+
+    function sendNotification(title, body) {
+      try {
+        const n = new Notification(title, { body, tag: title });
+        n.onclick = () => { window.focus(); n.close(); };
+      } catch (e) {}
+    }
+
+    // 1분마다 실행: 하루 1번 요약 알림 + 시간 있는 일정 15분 전 알림
+    function runNotificationCheck() {
+      if (!notifyEnabled()) return;
+      const today = toDateStr(new Date());
+      try {
+        if (localStorage.getItem(NOTIFY_DAILY_KEY) !== today) {
+          const a = getAlertItems();
+          if (a.text) {
+            const top = a.items.slice(0, 3).map(i => `· ${i.diff === 0 ? '오늘' : 'D-' + i.diff} ${i.title}`).join('\n');
+            sendNotification('My Workspace · 확인할 일정', `${a.text}${top ? '\n' + top : ''}`);
+          }
+          localStorage.setItem(NOTIFY_DAILY_KEY, today);
+        }
+
+        let notified = {};
+        try { notified = JSON.parse(localStorage.getItem(NOTIFIED_KEY) || '{}'); } catch (e) {}
+        Object.keys(notified).forEach(k => { if (notified[k] !== today) delete notified[k]; });
+        const now = new Date();
+        const nowMin = now.getHours() * 60 + now.getMinutes();
+        listOccurrences(today, today).forEach(o => {
+          if (!o.time || o.done || o.date !== today || notified[o.key]) return;
+          const [h, m] = o.time.split(':').map(Number);
+          const until = h * 60 + m - nowMin;
+          if (until >= 0 && until <= 15) {
+            sendNotification(`${until === 0 ? '지금' : until + '분 후'} · ${o.title}`, [o.time, o.location, o.projTitle].filter(Boolean).join(' · '));
+            notified[o.key] = today;
+          }
+        });
+        localStorage.setItem(NOTIFIED_KEY, JSON.stringify(notified));
+      } catch (e) {
+        console.warn('알림 확인 실패:', e);
+      }
+    }
+
+    // 13-5. WEEKLY REPORT (주간 업무 보고 정리)
+    function mondayOfDate(ds) {
+      const d = new Date(ds + 'T00:00:00');
+      return addDaysStr(ds, -((d.getDay() + 6) % 7));
+    }
+
+    function openReportModal() {
+      if (!reportWeekStart) reportWeekStart = mondayOfDate(toDateStr(new Date()));
+      renderReport();
+      document.getElementById('reportModal').showModal();
+    }
+
+    function closeReportModal() {
+      document.getElementById('reportModal').close();
+    }
+
+    function shiftReportWeek(delta) {
+      reportWeekStart = addDaysStr(reportWeekStart, 7 * delta);
+      renderReport();
+    }
+
+    function setReportWeekToThis() {
+      reportWeekStart = mondayOfDate(toDateStr(new Date()));
+      renderReport();
+    }
+
+    function buildWeeklyReport(weekStart, opts) {
+      const weekEnd = addDaysStr(weekStart, 6);
+      const nextStart = addDaysStr(weekStart, 7);
+      const nextEnd = addDaysStr(weekStart, 13);
+      const DOW = ['일', '월', '화', '수', '목', '금', '토'];
+      const md = (ds) => {
+        const d = new Date(ds + 'T00:00:00');
+        return `${d.getMonth() + 1}/${d.getDate()}(${DOW[d.getDay()]})`;
+      };
+      const inWeek = (ds) => ds && ds >= weekStart && ds <= weekEnd;
+      const doneDateOf = (t) => t.doneAt ? toDateStr(new Date(t.doneAt)) : t.date;
+
+      const section = (title, items) => {
+        const out = { title, done: [], logs: [], pending: [], next: [] };
+        items.forEach(({ item, label }) => {
+          if (item.repeat) {
+            item.doneDates.filter(inWeek).sort().forEach(ds => out.done.push(`${label} (${md(ds)})`));
+          } else if (item.done && inWeek(doneDateOf(item))) {
+            const cl = (item.checklist || []).length ? ` [체크리스트 ${item.checklist.length}/${item.checklist.length}]` : '';
+            out.done.push(`${label} (${md(doneDateOf(item))})${cl}`);
+          } else if (!item.done && item.date && item.date <= weekEnd && (item.endDate || item.date) >= weekStart) {
+            const cl = item.checklist || [];
+            const prog = cl.length ? ` [체크리스트 ${cl.filter(c => c.done).length}/${cl.length}]` : '';
+            out.pending.push(`${label} (${md(item.date)}${item.date < weekStart ? ' 이전부터' : ''})${prog}`);
+          } else if (!item.done && item.date && item.date < weekStart) {
+            out.pending.push(`${label} (${md(item.date)} 예정이었음, 지연)`);
+          }
+          const seenSeries = new Set();
+          getOccurrenceStarts(item, nextStart, nextEnd).forEach(ds => {
+            if (ds < nextStart || isOccurrenceDone(item, ds) || seenSeries.has(item.id)) return;
+            if (item.repeat) seenSeries.add(item.id);
+            out.next.push(`${label} (${md(ds)}${item.time ? ' ' + item.time : ''}${item.repeat ? ', ' + REPEAT_LABELS[item.repeat] : ''})`);
+          });
+        });
+        return out;
+      };
+
+      const blocks = [];
+      projects.forEach(p => {
+        const sec = section(p.title, (p.tasks || []).map(t => ({ item: t, label: t.text })));
+        sec.logs = (p.logs || []).filter(l => inWeek(l.date))
+          .sort((a, b) => a.date.localeCompare(b.date))
+          .map(l => `${md(l.date)} [${l.tag || '기록'}] ${String(l.content).replace(/\s*\n\s*/g, ' / ')}`);
+        sec.meta = `${p.status} · 진행률 ${p.progress || 0}%${p.deadline ? ' · 마감 ' + p.deadline : ''}`;
+        blocks.push(sec);
+      });
+      if (opts.general) {
+        blocks.push(section('일반 일정', standaloneEvents.map(ev => ({ item: ev, label: ev.title }))));
+      }
+
+      const sd = new Date(weekStart + 'T00:00:00');
+      const ed = new Date(weekEnd + 'T00:00:00');
+      const lines = [`[주간 업무 보고] ${sd.getFullYear()}.${sd.getMonth() + 1}.${sd.getDate()}(월) ~ ${ed.getMonth() + 1}.${ed.getDate()}(일)`, ''];
+      let any = false;
+      blocks.forEach(b => {
+        const hasContent = b.done.length || (opts.logs && b.logs.length) || (opts.pending && b.pending.length) || (opts.next && b.next.length);
+        if (!hasContent) return;
+        any = true;
+        lines.push(`■ ${b.title}${b.meta ? `  (${b.meta})` : ''}`);
+        if (b.done.length) {
+          lines.push('  [완료]');
+          b.done.forEach(x => lines.push(`   - ${x}`));
+        }
+        if (opts.pending && b.pending.length) {
+          lines.push('  [진행 중 / 미완료]');
+          b.pending.forEach(x => lines.push(`   - ${x}`));
+        }
+        if (opts.logs && b.logs.length) {
+          lines.push('  [업무 기록]');
+          b.logs.forEach(x => lines.push(`   - ${x}`));
+        }
+        if (opts.next && b.next.length) {
+          lines.push('  [다음 주 계획]');
+          b.next.forEach(x => lines.push(`   - ${x}`));
+        }
+        lines.push('');
+      });
+      if (!any) lines.push('이 주에 완료했거나 기록한 내용이 없습니다.');
+      return { text: lines.join('\n').trim(), weekEnd };
+    }
+
+    function renderReport() {
+      const opts = {
+        logs: document.getElementById('rptLogs').checked,
+        pending: document.getElementById('rptPending').checked,
+        next: document.getElementById('rptNext').checked,
+        general: document.getElementById('rptGeneral').checked
+      };
+      const r = buildWeeklyReport(reportWeekStart, opts);
+      const s = new Date(reportWeekStart + 'T00:00:00');
+      const e = new Date(r.weekEnd + 'T00:00:00');
+      const thisWeek = mondayOfDate(toDateStr(new Date())) === reportWeekStart;
+      document.getElementById('reportWeekLabel').textContent =
+        `${s.getMonth() + 1}/${s.getDate()} ~ ${e.getMonth() + 1}/${e.getDate()}${thisWeek ? ' (이번 주)' : ''}`;
+      document.getElementById('reportText').value = r.text;
+    }
+
+    function copyReport() {
+      const text = document.getElementById('reportText').value;
+      copyTextToClipboard(text).then(ok => showToast(ok ? '주간 보고 내용을 복사했습니다. 메일이나 메신저에 붙여넣으세요.' : '복사에 실패했습니다. 내용을 직접 선택해 복사해 주세요.'));
+    }
+
+    async function copyTextToClipboard(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (e) {}
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return ok;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // 13-6. STUDY RECORD (공부 기록·연속 일수·잔디)
+    function studyActivityMap() {
+      const map = {};
+      const add = (ds) => { if (ds) map[ds] = (map[ds] || 0) + 1; };
+      projects.filter(p => p.category === 'study').forEach(p => {
+        (p.logs || []).forEach(l => add(l.date));
+        (p.tasks || []).forEach(t => {
+          if (t.repeat) t.doneDates.forEach(add);
+          else if (t.done) add(t.doneAt ? toDateStr(new Date(t.doneAt)) : t.date);
+        });
+      });
+      return map;
+    }
+
+    function studyStats(map) {
+      const today = toDateStr(new Date());
+      let cur = map[today] ? today : addDaysStr(today, -1);
+      let streak = 0;
+      while (map[cur]) {
+        streak++;
+        cur = addDaysStr(cur, -1);
+      }
+      const days = Object.keys(map).sort();
+      let longest = 0;
+      let run = 0;
+      let prev = '';
+      days.forEach(d => {
+        run = prev && daysBetween(prev, d) === 1 ? run + 1 : 1;
+        longest = Math.max(longest, run);
+        prev = d;
+      });
+      const monthKey = today.slice(0, 7);
+      const monthDays = days.filter(d => d.startsWith(monthKey)).length;
+      return { streak, longest, monthDays, doneToday: !!map[today] };
+    }
+
+    function studyHeatmapHtml(map, weeks) {
+      const today = toDateStr(new Date());
+      const t = new Date(today + 'T00:00:00');
+      const start = addDaysStr(today, -t.getDay() - (weeks - 1) * 7);
+      const max = Math.max(1, ...Object.values(map));
+      let cells = '';
+      for (let i = 0; i < weeks * 7; i++) {
+        const ds = addDaysStr(start, i);
+        if (ds > today) {
+          cells += '<div class="hm-cell future"></div>';
+          continue;
+        }
+        const n = map[ds] || 0;
+        const lv = n === 0 ? '' : `l${Math.min(4, Math.ceil((n / max) * 4))}`;
+        cells += `<div class="hm-cell ${lv} ${ds === today ? 'today' : ''}" title="${ds} · ${n ? n + '건 기록' : '기록 없음'}"></div>`;
+      }
+      return `<div class="heatmap">${cells}</div>
+        <div class="hm-legend">적음 <div class="hm-cell"></div><div class="hm-cell l1"></div><div class="hm-cell l2"></div><div class="hm-cell l3"></div><div class="hm-cell l4"></div> 많음</div>`;
+    }
+
+    function renderStudyCard() {
+      const el = document.getElementById('studyCard');
+      if (!el) return;
+      if (currentCategory !== 'study') {
+        el.innerHTML = '';
+        return;
+      }
+      const studyProjects = projects.filter(p => p.category === 'study' && p.status !== '완료');
+      if (projects.filter(p => p.category === 'study').length === 0) {
+        el.innerHTML = `
+          <div class="study-card" style="display:block;">
+            <h2 style="font-family:var(--font-heading); font-size:16px; font-weight:800; margin-bottom:6px;"><i class="fa-solid fa-seedling" style="color:var(--accent-emerald);"></i> 공부 기록</h2>
+            <p style="font-size:12.5px; color:var(--text-sub); margin-bottom:12px;">Study 분야 프로젝트(예: 영어, 일본어, 자격증)를 만들면 날마다 공부한 기록이 잔디처럼 쌓이고 연속 일수가 표시됩니다.</p>
+            <button class="btn primary sm" onclick="openNewProjectModal('study')"><i class="fa-solid fa-plus"></i> Study 프로젝트 만들기</button>
+          </div>`;
+        return;
+      }
+      const map = studyActivityMap();
+      const st = studyStats(map);
+      el.innerHTML = `
+        <div class="study-card">
+          <div style="min-width:0;">
+            <h2 style="font-family:var(--font-heading); font-size:16px; font-weight:800;"><i class="fa-solid fa-seedling" style="color:var(--accent-emerald);"></i> 공부 기록</h2>
+            <div class="study-stats">
+              <div><span>연속 공부</span><strong style="color:var(--primary);">${st.streak}<small>일</small></strong></div>
+              <div><span>최장 연속</span><strong>${st.longest}<small>일</small></strong></div>
+              <div><span>이번 달 공부한 날</span><strong>${st.monthDays}<small>일</small></strong></div>
+              <div><span>오늘</span><strong style="font-size:15px; line-height:2; color:${st.doneToday ? 'var(--accent-emerald)' : 'var(--text-muted)'};">${st.doneToday ? '✔ 기록함' : '아직 없음'}</strong></div>
+            </div>
+            ${studyHeatmapHtml(map, 16)}
+            <p style="font-size:11px; color:var(--text-muted); margin-top:6px;">Study 프로젝트의 업무 로그와 완료한 일정(반복 회차 포함)이 기록으로 집계됩니다.</p>
+          </div>
+          <div class="study-form">
+            <h3>오늘 공부 기록하기</h3>
+            <select id="studyProjSelect" class="form-control">
+              ${(studyProjects.length ? studyProjects : projects.filter(p => p.category === 'study')).map(p => `<option value="${p.id}">${escapeHtml(p.title)}</option>`).join('')}
+            </select>
+            <div class="inline-row">
+              <input type="number" id="studyMinutes" class="form-control" style="width:90px;" min="0" step="10" placeholder="분">
+              <span class="mini-label">분</span>
+              <input type="date" id="studyDate" class="form-control" style="flex:1;" value="${toDateStr(new Date())}">
+            </div>
+            <input type="text" id="studyMemo" class="form-control" placeholder="메모 (예: 토익 RC Part5 30문제)" onkeydown="if(event.key==='Enter') addStudyRecord()">
+            <button class="btn primary sm" onclick="addStudyRecord()" style="justify-content:center;"><i class="fa-solid fa-check"></i> 기록 추가</button>
+          </div>
+        </div>`;
+    }
+
+    function addStudyRecord() {
+      const p = projects.find(pp => pp.id === document.getElementById('studyProjSelect').value);
+      if (!p) return;
+      const minutes = Number(document.getElementById('studyMinutes').value) || 0;
+      const memo = (document.getElementById('studyMemo').value || '').trim();
+      const date = document.getElementById('studyDate').value || toDateStr(new Date());
+      const content = [minutes ? `${minutes}분` : '', memo].filter(Boolean).join(' · ') || '공부 완료';
+      p.logs = p.logs || [];
+      p.logs.unshift({ id: genId('log'), date, tag: '학습 기록', content });
+      sortLogs(p);
+      touchProject(p);
+      saveData();
+      renderAll();
+      showToast(`'${p.title}'에 공부 기록을 추가했습니다.`);
     }
 
     // 14. BACKUP EXPORT / IMPORT (JSON)
@@ -4126,11 +5176,13 @@
           projects: projects.length,
           documents: documents.length,
           events: standaloneEvents.length,
+          templates: templates.length,
           files: files.length
         },
         projects,
         documents,
         events: standaloneEvents,
+        templates,
         files
       };
 
@@ -4201,6 +5253,7 @@
       projects = data.projects || [];
       documents = data.documents || [];
       standaloneEvents = data.events || [];
+      if (Array.isArray(data.templates)) templates = data.templates;
       saveData();
 
       let restored = 0;
