@@ -518,10 +518,11 @@
     }
     .proj-badges-inline {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       font-size: 10.5px;
       color: var(--text-muted);
       margin-bottom: 8px;
+      flex-wrap: wrap;
     }
     .proj-badges-inline span {
       display: inline-flex;
@@ -576,7 +577,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
     }
     .nexttasks-card h2 {
       font-family: var(--font-heading);
@@ -588,6 +591,26 @@
       font-weight: 700;
       color: #94a3b8;
     }
+    .sub-filter-pills {
+      display: flex;
+      gap: 4px;
+    }
+    .sub-pill-btn {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+    .sub-pill-btn.active {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: var(--primary);
+      font-weight: 800;
+    }
     .task-item {
       display: flex;
       align-items: center;
@@ -595,10 +618,11 @@
       padding: 10px 0;
       border-bottom: 1px solid #f1f5f9;
       font-size: 12.5px;
+      flex-wrap: wrap;
     }
     .task-item:last-child { border-bottom: none; }
     .task-check { cursor: pointer; accent-color: var(--primary); }
-    .task-title { flex: 1; font-weight: 600; cursor: pointer; }
+    .task-title { flex: 1; font-weight: 600; cursor: pointer; min-width: 140px; }
     .task-title.done { text-decoration: line-through; color: #94a3b8; }
     .task-date-pill {
       font-size: 10.5px;
@@ -736,14 +760,14 @@
     .quickstart-card p { font-size: 11.5px; color: var(--text-sub); line-height: 1.5; margin-bottom: 12px; }
     .quickstart-card a { font-size: 11.5px; font-weight: 800; color: var(--primary); text-decoration: none; cursor: pointer; }
 
-    /* ================= CALENDAR VIEW ================= */
-    .calendar-view { display: none; }
-    .calendar-view.active { display: block; }
+    /* ================= CALENDAR & DOCS VIEWS ================= */
+    .calendar-view, .docs-view { display: none; }
+    .calendar-view.active, .docs-view.active { display: block; }
     .dashboard-view.hidden { display: none; }
 
     .calendar-layout {
       display: grid;
-      grid-template-columns: 1fr 340px;
+      grid-template-columns: 1fr 350px;
       gap: 24px;
       align-items: flex-start;
     }
@@ -778,6 +802,7 @@
       font-size: 11px;
       color: var(--text-sub);
       font-weight: 700;
+      flex-wrap: wrap;
     }
     .cal-legend span {
       display: inline-flex;
@@ -856,8 +881,20 @@
     .cal-pill.task { background: #dbeafe; color: #1e40af; }
     .cal-pill.done { background: #dcfce7; color: #166534; text-decoration: line-through; }
     .cal-pill.general { background: #f3e8ff; color: #6b21a8; }
-    .cal-meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; font-size: 11px; color: var(--text-sub); }
-    .cal-meta-row span { display: inline-flex; align-items: center; gap: 4px; }
+
+    .cal-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 5px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+    .cal-meta-row span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
 
     .cal-more {
       font-size: 9.5px;
@@ -898,7 +935,7 @@
       border: none;
       border-radius: 16px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.18);
-      max-width: 740px;
+      max-width: 780px;
       width: 92%;
       background: #ffffff;
       padding: 0;
@@ -924,7 +961,7 @@
       color: #94a3b8;
     }
     .dialog-close:hover { color: var(--text-main); }
-    .dialog-body { padding: 20px 24px; max-height: 72vh; overflow-y: auto; font-size: 13px; }
+    .dialog-body { padding: 20px 24px; max-height: 74vh; overflow-y: auto; font-size: 13px; }
     .dialog-foot {
       padding: 14px 24px;
       border-top: 1px solid var(--border-color);
@@ -983,13 +1020,17 @@
       border-radius: 8px;
       background: #ffffff;
       margin-bottom: 6px;
+      flex-wrap: wrap;
     }
-    .schedule-row input[type="date"] {
-      font-size: 11px;
-      padding: 3px 6px;
+    .schedule-row input[type="date"],
+    .schedule-row input[type="time"],
+    .schedule-row input[type="text"] {
+      font-size: 11.5px;
+      padding: 4px 6px;
       border: 1px solid var(--border-color);
       border-radius: 6px;
-      color: var(--text-sub);
+      color: var(--text-main);
+      font-family: inherit;
     }
     .icon-btn {
       background: none;
@@ -1000,6 +1041,15 @@
       font-size: 13px;
     }
     .icon-btn:hover { color: var(--accent-danger); }
+    .icon-btn.edit:hover { color: var(--primary); }
+
+    .log-item {
+      border-left: 3px solid var(--primary);
+      background: #f8fafc;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
 
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
@@ -1070,7 +1120,7 @@
     <ul class="nav-list">
       <li><a class="nav-item active" id="nav-home" onclick="navigateTo('dashboard', 'all')"><i class="fa-solid fa-house"></i> <span>홈</span></a></li>
       <li><a class="nav-item" id="nav-work" onclick="navigateTo('dashboard', 'work')"><i class="fa-solid fa-briefcase"></i> <span>업무 프로젝트</span></a></li>
-      <li><a class="nav-item" id="nav-upload" onclick="openUploadModal()"><i class="fa-solid fa-cloud-arrow-up"></i> <span>자료 업로드</span></a></li>
+      <li><a class="nav-item" id="nav-upload" onclick="navigateTo('docs')"><i class="fa-solid fa-folder-open"></i> <span>자료 보관함</span></a></li>
       <li><a class="nav-item" id="nav-study" onclick="navigateTo('dashboard', 'study')"><i class="fa-solid fa-book-open"></i> <span>Study</span></a></li>
     </ul>
 
@@ -1117,7 +1167,7 @@
         <!-- Hero Heading -->
         <section class="hero-heading">
           <div>
-            <div class="eyebrow-date" id="currentDateDisplay">2026년 11월 17일 화요일</div>
+            <div class="eyebrow-date" id="currentDateDisplay">2026년 11월 18일 수요일</div>
             <h1>오늘도, 하나씩 앞으로.</h1>
             <p>진행 중인 프로젝트와 내부 일정·자료를 한곳에서 조율하세요.</p>
           </div>
@@ -1163,6 +1213,7 @@
               </div>
               <div class="section-links">
                 <a href="javascript:void(0)" onclick="navigateTo('calendar')">일정 캘린더 ↗</a> ·
+                <a href="javascript:void(0)" onclick="navigateTo('docs')">자료 보관함 ↗</a> ·
                 <a href="javascript:void(0)" onclick="openNewProjectModal()">업무 만들기 ↗</a>
               </div>
             </div>
@@ -1177,7 +1228,7 @@
 
             <!-- Filter & Search Bar -->
             <div class="filter-bar">
-              <input type="search" id="searchInput" placeholder="프로젝트명, 목표, 소재, 태그 검색" oninput="renderProjects()">
+              <input type="search" id="searchInput" placeholder="프로젝트명, 목표, 세부 일정, 업무 로그, 자료명 통합 검색" oninput="renderProjects()">
               <select id="statusFilter" onchange="renderProjects()">
                 <option value="all">모든 상태</option>
                 <option value="favorite">즐겨찾기</option>
@@ -1209,6 +1260,7 @@
             <div class="proj-badges-inline">
               <span><i class="fa-regular fa-calendar-check"></i> 일정 0/2</span>
               <span><i class="fa-regular fa-folder-open"></i> 자료 0건</span>
+              <span><i class="fa-regular fa-pen-to-square"></i> 로그 0건</span>
             </div>
             <div class="proj-meta">
               <span>업무 · 연구기획</span>
@@ -1218,7 +1270,7 @@
               <div class="progress-bar-fill" style="width: 0%;"></div>
             </div>
             <div class="proj-foot">
-              <span class="dday-tag">D-195</span>
+              <span class="dday-tag">D-194</span>
               <span class="btn-open-proj" onclick="openProjectModal('proj_1')">일정·자료 열기 →</span>
             </div>
           </div>
@@ -1237,6 +1289,7 @@
             <div class="proj-badges-inline">
               <span><i class="fa-regular fa-calendar-check"></i> 일정 2/2</span>
               <span><i class="fa-regular fa-folder-open"></i> 자료 3건</span>
+              <span><i class="fa-regular fa-pen-to-square"></i> 로그 0건</span>
             </div>
             <div class="proj-meta">
               <span>업무 · 연구기획</span>
@@ -1265,6 +1318,7 @@
             <div class="proj-badges-inline">
               <span><i class="fa-regular fa-calendar-check"></i> 일정 0/1</span>
               <span><i class="fa-regular fa-folder-open"></i> 자료 0건</span>
+              <span><i class="fa-regular fa-pen-to-square"></i> 로그 0건</span>
             </div>
             <div class="proj-meta">
               <span>업무 · 연구기획</span>
@@ -1293,6 +1347,7 @@
             <div class="proj-badges-inline">
               <span><i class="fa-regular fa-calendar-check"></i> 일정 0/1</span>
               <span><i class="fa-regular fa-folder-open"></i> 자료 0건</span>
+              <span><i class="fa-regular fa-pen-to-square"></i> 로그 0건</span>
             </div>
             <div class="proj-meta">
               <span>업무 · 연구기획</span>
@@ -1302,7 +1357,7 @@
               <div class="progress-bar-fill" style="width: 0%;"></div>
             </div>
             <div class="proj-foot">
-              <span class="dday-tag">D-775</span>
+              <span class="dday-tag">D-774</span>
               <span class="btn-open-proj" onclick="openProjectModal('proj_4')">일정·자료 열기 →</span>
             </div>
           </div>
@@ -1321,6 +1376,7 @@
             <div class="proj-badges-inline">
               <span><i class="fa-regular fa-calendar-check"></i> 일정 0/2</span>
               <span><i class="fa-regular fa-folder-open"></i> 자료 0건</span>
+              <span><i class="fa-regular fa-pen-to-square"></i> 로그 0건</span>
             </div>
             <div class="proj-meta">
               <span>업무 · 연구기획</span>
@@ -1330,7 +1386,7 @@
               <div class="progress-bar-fill" style="width: 0%;"></div>
             </div>
             <div class="proj-foot">
-              <span class="dday-tag overdue">4일 지남</span>
+              <span class="dday-tag overdue">5일 지남</span>
               <span class="btn-open-proj" onclick="openProjectModal('proj_5')">일정·자료 열기 →</span>
             </div>
           </div>
@@ -1349,6 +1405,7 @@
             <div class="proj-badges-inline">
               <span><i class="fa-regular fa-calendar-check"></i> 일정 0/1</span>
               <span><i class="fa-regular fa-folder-open"></i> 자료 0건</span>
+              <span><i class="fa-regular fa-pen-to-square"></i> 로그 0건</span>
             </div>
             <div class="proj-meta">
               <span>업무 · 소재개발</span>
@@ -1358,7 +1415,7 @@
               <div class="progress-bar-fill" style="width: 0%;"></div>
             </div>
             <div class="proj-foot">
-              <span class="dday-tag">D-256</span>
+              <span class="dday-tag">D-255</span>
               <span class="btn-open-proj" onclick="openProjectModal('proj_6')">일정·자료 열기 →</span>
             </div>
           </div>
@@ -1367,50 +1424,73 @@
             <!-- Next Tasks Bottom Card -->
             <div class="nexttasks-card">
               <div class="head">
-                <h2>다음 할 일 · 프로젝트 세부 일정</h2>
-                <span class="badge-sub">일정 날짜순 우선 표시</span>
+                <div>
+                  <h2>다음 할 일 · 프로젝트 세부 일정</h2>
+                  <span class="badge-sub" id="nextTasksSummarySub">총 7건</span>
+                </div>
+                <div class="sub-filter-pills">
+                  <button class="sub-pill-btn active" id="taskFilterPending" onclick="setNextTaskFilter('pending')">미완료</button>
+                  <button class="sub-pill-btn" id="taskFilterWeek" onclick="setNextTaskFilter('week')">이번 주(7일)</button>
+                  <button class="sub-pill-btn" id="taskFilterAll" onclick="setNextTaskFilter('all')">전체 보기</button>
+                </div>
               </div>
               <div id="nextTasksContainer"><div class="task-item">
           <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_5', 0)">
           <span class="task-title " onclick="openProjectModal('proj_5', 'schedule')">캘리퍼 시제품 최종 치수 측정 검사</span>
+          
           <span class="task-date-pill ">2026-11-18</span>
           <span class="task-tag" onclick="openProjectModal('proj_5', 'schedule')">경남TP 브레이크 캘리퍼</span>
         </div><div class="task-item">
           <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_3', 0)">
           <span class="task-title " onclick="openProjectModal('proj_3', 'schedule')">참석 결과 보고서 작성 및 사내 공유</span>
+          
           <span class="task-date-pill ">2026-11-20</span>
           <span class="task-tag" onclick="openProjectModal('proj_3', 'schedule')">전시회(세미나) 및 교육 참석</span>
         </div><div class="task-item">
           <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_5', 1)">
           <span class="task-title " onclick="openProjectModal('proj_5', 'schedule')">경남TP 사업비 정산 증빙 서류 제출</span>
+          
           <span class="task-date-pill ">2026-11-22</span>
           <span class="task-tag" onclick="openProjectModal('proj_5', 'schedule')">경남TP 브레이크 캘리퍼</span>
         </div><div class="task-item">
           <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_6', 0)">
           <span class="task-title " onclick="openProjectModal('proj_6', 'schedule')">6110 합금 시험편 인장강도 시험</span>
+          
           <span class="task-date-pill ">2026-11-24</span>
           <span class="task-tag" onclick="openProjectModal('proj_6', 'schedule')">현대자동차 고강도 합금 개발</span>
         </div><div class="task-item">
           <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_1', 0)">
           <span class="task-title " onclick="openProjectModal('proj_1', 'schedule')">부처별 2027 공고 동향 수집</span>
+          
           <span class="task-date-pill ">2026-11-25</span>
           <span class="task-tag" onclick="openProjectModal('proj_1', 'schedule')">정부 과제 신청</span>
         </div><div class="task-item">
           <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_4', 0)">
           <span class="task-title " onclick="openProjectModal('proj_4', 'schedule')">항공 부품 규격(AS9100) 요구사항 분석</span>
+          
           <span class="task-date-pill ">2026-11-28</span>
           <span class="task-tag" onclick="openProjectModal('proj_4', 'schedule')">항공 신사업 검토 및 발굴</span>
+        </div><div class="task-item">
+          <input type="checkbox" class="task-check" onchange="toggleTaskDone('proj_1', 1)">
+          <span class="task-title " onclick="openProjectModal('proj_1', 'schedule')">수요조사서 제안서 사전 기획</span>
+          
+          <span class="task-date-pill ">2026-12-10</span>
+          <span class="task-tag" onclick="openProjectModal('proj_1', 'schedule')">정부 과제 신청</span>
         </div></div>
             </div>
           </section>
 
           <!-- Right Aside -->
           <aside class="aside-col">
-            <!-- Upcoming Deadlines -->
+            <!-- Upcoming Deadlines & Urgent Schedules -->
             <section class="aside-card" id="deadlinesCard">
               <div class="card-head">
-                <h2>다가오는 마감</h2>
+                <h2>다가오는 마감 · 임박 일정</h2>
                 <a href="javascript:void(0)" onclick="navigateTo('calendar')" class="link">캘린더 보기 ↗</a>
+              </div>
+              <div class="sub-filter-pills" style="margin-bottom:10px;">
+                <button class="sub-pill-btn active" id="dlModeAll" onclick="setDeadlineMode('all')">통합 (마감+세부일정)</button>
+                <button class="sub-pill-btn" id="dlModeProj" onclick="setDeadlineMode('proj')">프로젝트 마감만</button>
               </div>
               <div class="deadline-list" id="deadlineList"><div class="deadline-item">
           <div class="date-box">
@@ -1419,44 +1499,62 @@
           </div>
           <div class="deadline-info">
             <h4>경남TP 브레이크 캘리퍼</h4>
-            <p class="overdue">4일 지남 · 2026-11-13</p>
+            <p class="overdue">5일 지남 · 프로젝트 마감</p>
           </div>
         </div><div class="deadline-item">
           <div class="date-box">
-            <small>5월</small>
-            <strong>31</strong>
+            <small>11월</small>
+            <strong>18</strong>
           </div>
           <div class="deadline-info">
-            <h4>정부 과제 신청</h4>
-            <p class="">D-195 · 2027-05-31</p>
+            <h4>캘리퍼 시제품 최종 치수 측정 검사</h4>
+            <p class="">오늘 마감 · 경남TP 브레이크 캘리퍼</p>
           </div>
         </div><div class="deadline-item">
           <div class="date-box">
-            <small>7월</small>
-            <strong>31</strong>
+            <small>11월</small>
+            <strong>20</strong>
           </div>
           <div class="deadline-info">
-            <h4>현대자동차 고강도 합금 개발</h4>
-            <p class="">D-256 · 2027-07-31</p>
+            <h4>참석 결과 보고서 작성 및 사내 공유</h4>
+            <p class="">D-2 · 전시회(세미나) 및 교육 참석</p>
           </div>
         </div><div class="deadline-item">
           <div class="date-box">
-            <small>12월</small>
-            <strong>31</strong>
+            <small>11월</small>
+            <strong>22</strong>
           </div>
           <div class="deadline-info">
-            <h4>항공 신사업 검토 및 발굴</h4>
-            <p class="">D-775 · 2028-12-31</p>
+            <h4>경남TP 사업비 정산 증빙 서류 제출</h4>
+            <p class="">D-4 · 경남TP 브레이크 캘리퍼</p>
+          </div>
+        </div><div class="deadline-item">
+          <div class="date-box">
+            <small>11월</small>
+            <strong>24</strong>
+          </div>
+          <div class="deadline-info">
+            <h4>6110 합금 시험편 인장강도 시험</h4>
+            <p class="">D-6 · 현대자동차 고강도 합금 개발</p>
+          </div>
+        </div><div class="deadline-item">
+          <div class="date-box">
+            <small>11월</small>
+            <strong>25</strong>
+          </div>
+          <div class="deadline-info">
+            <h4>부처별 2027 공고 동향 수집</h4>
+            <p class="">D-7 · 정부 과제 신청</p>
           </div>
         </div></div>
-              <p style="font-size: 11px; color: #94a3b8; margin-top: 12px;">마감일이 지난 미완료 항목을 먼저 표시합니다.</p>
+              <p style="font-size: 11px; color: #94a3b8; margin-top: 12px;">지연되었거나 마감 임박한 항목을 먼저 표시합니다.</p>
             </section>
 
             <!-- Recent Documents -->
             <section class="aside-card">
               <div class="card-head">
                 <h2>최근 올린 자료</h2>
-                <a href="javascript:void(0)" onclick="openUploadModal()" class="link">자료 추가 ↗</a>
+                <a href="javascript:void(0)" onclick="navigateTo('docs')" class="link">전체 자료함 ↗</a>
               </div>
               <div class="docs-list" id="recentDocsList"><div class="doc-item">
           <span class="doc-type-icon ">PDF</span>
@@ -1485,9 +1583,9 @@
             <!-- Next Step Callout -->
             <section class="quickstart-card">
               <span class="eyebrow">PROJECT WORKFLOW</span>
-              <h3>큰 프로젝트 안에서 일정·자료 통합</h3>
-              <p>프로젝트 카드를 클릭해 관련 자료(파일·링크·메모)를 모아두고, 세부 일정을 날짜별로 조율하세요.</p>
-              <a href="javascript:void(0)" onclick="openUploadModal()">자료 등록 열기 →</a>
+              <h3>큰 프로젝트 안에서 일정·로그·자료 통합</h3>
+              <p>프로젝트 카드를 클릭해 세부 일정(시간·장소·기간), 날짜별 업무 로그, 관련 자료를 한곳에서 조율하세요.</p>
+              <a href="javascript:void(0)" onclick="openUploadModal()">새 자료 등록 열기 →</a>
             </section>
           </aside>
         </div>
@@ -1499,7 +1597,7 @@
           <div>
             <div class="eyebrow-date">SCHEDULE &amp; DEADLINES</div>
             <h1>프로젝트 통합 캘린더</h1>
-            <p>프로젝트 마감일과 각 프로젝트 내부 세부 일정을 달력에서 한눈에 조율하세요.</p>
+            <p>프로젝트 마감일, 기간 일정(시작~종료), 일반 일정을 달력에서 한눈에 조율하고 바로 수정하세요.</p>
           </div>
           <div class="hero-buttons">
             <button class="btn" onclick="navigateTo('dashboard', 'all')"><i class="fa-solid fa-arrow-left"></i> 대시보드로</button>
@@ -1541,17 +1639,52 @@
                 <select id="calQuickProjSelect" class="form-control" style="padding:6px 8px; font-size:12px;"></select>
               </div>
               <div class="inline-row" style="margin-bottom:8px;">
-                <input type="time" id="calQuickTimeInput" class="form-control" style="flex:1; min-width:105px; padding:6px 8px; font-size:12px;" title="시간 (선택)">
-                <input type="text" id="calQuickLocInput" class="form-control" style="flex:1.4; min-width:120px; padding:6px 9px; font-size:12px;" placeholder="장소 (선택)">
+                <input type="time" id="calQuickTimeInput" class="form-control" style="flex:1; min-width:95px; padding:6px 8px; font-size:12px;" title="시간 (선택)">
+                <input type="text" id="calQuickLocInput" class="form-control" style="flex:1.4; min-width:110px; padding:6px 9px; font-size:12px;" placeholder="장소 (선택)" onkeydown="if(event.key==='Enter') addQuickScheduleOnSelectedDate()">
+              </div>
+              <div class="inline-row" style="margin-bottom:8px;">
+                <span style="font-size:11px; color:var(--text-muted); font-weight:700;">종료일(기간 일정):</span>
+                <input type="date" id="calQuickEndDateInput" class="form-control" style="flex:1; padding:5px 8px; font-size:11.5px;" title="다일/기간 일정인 경우 종료일 선택">
               </div>
               <div class="inline-row">
-                <input type="text" id="calQuickTaskInput" class="form-control" style="flex:1; padding:6px 9px; font-size:12px;" placeholder="일정 내용 입력 후 추가">
+                <input type="text" id="calQuickTaskInput" class="form-control" style="flex:1; padding:6px 9px; font-size:12px;" placeholder="일정 내용 입력 후 Enter 또는 추가" onkeydown="if(event.key==='Enter') addQuickScheduleOnSelectedDate()">
                 <button class="btn primary sm" onclick="addQuickScheduleOnSelectedDate()">추가</button>
               </div>
             </div>
             <div class="cal-side-list" id="calSelectedDayList"></div>
           </aside>
         </div>
+      </div>
+
+      <!-- ========== DOCUMENTS ARCHIVE VIEW ========== -->
+      <div class="docs-view" id="docsView">
+        <section class="hero-heading">
+          <div>
+            <div class="eyebrow-date">RESOURCE ARCHIVE</div>
+            <h1>통합 자료 보관함</h1>
+            <p>모든 프로젝트에 등록된 파일, 링크, 참고 노트를 검색하고 미리보기·다운로드하세요.</p>
+          </div>
+          <div class="hero-buttons">
+            <button class="btn" onclick="navigateTo('dashboard', 'all')"><i class="fa-solid fa-arrow-left"></i> 대시보드로</button>
+            <button class="btn primary" onclick="openUploadModal()"><i class="fa-solid fa-plus"></i> 새 자료 등록</button>
+          </div>
+        </section>
+
+        <section class="cal-card">
+          <div class="filter-bar" style="margin-bottom: 16px;">
+            <input type="search" id="docsArchiveSearch" placeholder="자료명, 연결된 프로젝트, 세부 일정명 검색" oninput="renderDocsArchive()">
+            <select id="docsArchiveProjFilter" onchange="renderDocsArchive()">
+              <option value="all">모든 프로젝트</option>
+            </select>
+            <select id="docsArchiveTypeFilter" onchange="renderDocsArchive()">
+              <option value="all">모든 형식</option>
+              <option value="file">파일 (PDF/PPTX 등)</option>
+              <option value="link">링크 (LINK)</option>
+              <option value="note">노트 (NOTE)</option>
+            </select>
+          </div>
+          <div id="docsArchiveList"></div>
+        </section>
       </div>
 
     </main>
@@ -1587,7 +1720,7 @@
     <div class="dialog-body">
       <div class="form-group">
         <label>프로젝트명</label>
-        <input type="text" id="newProjTitle" class="form-control" placeholder="예: 2027 정부 과제 신청">
+        <input type="text" id="newProjTitle" class="form-control" placeholder="예: 2027 정부 과제 신청" onkeydown="if(event.key==='Enter') submitNewProject()">
       </div>
       <div class="form-group">
         <label>분야 (카테고리)</label>
@@ -1637,25 +1770,33 @@
       <button class="dialog-close" onclick="closeUploadModal()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="dialog-body">
-      <div class="form-group">
-        <label>연결할 프로젝트</label>
-        <select id="uploadTargetProject" class="form-control"></select>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div class="form-group">
+          <label>연결할 프로젝트</label>
+          <select id="uploadTargetProject" class="form-control" onchange="populateUploadTaskOptions()"></select>
+        </div>
+        <div class="form-group">
+          <label>연결할 세부 일정 (선택)</label>
+          <select id="uploadTargetTask" class="form-control">
+            <option value="">(전체 프로젝트 공통)</option>
+          </select>
+        </div>
       </div>
 
       <div style="border: 2px dashed #cbd5e1; padding: 22px; text-align: center; border-radius: 12px; background: #f8fafc; cursor: pointer; margin-bottom: 16px;" onclick="document.getElementById('hiddenFileInput').click()">
         <i class="fa-solid fa-cloud-arrow-up" style="font-size: 28px; color: var(--primary); margin-bottom: 6px;"></i>
         <p style="font-weight: 800; font-size: 13px;">파일을 클릭하여 프로젝트 자료로 등록</p>
-        <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">PDF, PPTX, HWPX, XLSX 등 지원 (메타데이터 로컬 보관)</p>
+        <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">PDF, PPTX, HWPX, XLSX, 이미지 등 원본 로컬 보관 (미리보기·다운로드 지원)</p>
         <input type="file" id="hiddenFileInput" style="display: none;" onchange="handleFileSelect(event)">
       </div>
 
       <div style="border-top: 1px solid var(--border-color); padding-top: 14px;">
         <label style="display:block; font-size:12px; font-weight:800; margin-bottom:8px;">또는 링크 / 참고 자료 직접 등록</label>
         <div class="form-group" style="margin-bottom:8px;">
-          <input type="text" id="uploadDocTitle" class="form-control" placeholder="자료명 (예: 6110 합금 물성시험 결과서)">
+          <input type="text" id="uploadDocTitle" class="form-control" placeholder="자료명 (예: 6110 합금 물성시험 결과서)" onkeydown="if(event.key==='Enter') submitManualDoc()">
         </div>
         <div class="inline-row">
-          <input type="url" id="uploadDocUrl" class="form-control" style="flex:1;" placeholder="참고 URL (선택, 예: https://...)">
+          <input type="url" id="uploadDocUrl" class="form-control" style="flex:1;" placeholder="참고 URL (선택, 예: https://...)" onkeydown="if(event.key==='Enter') submitManualDoc()">
           <button class="btn primary sm" onclick="submitManualDoc()">자료 추가</button>
         </div>
       </div>
@@ -1682,6 +1823,21 @@
     </div>
   </dialog>
 
+  <!-- ================= CONFIRM DELETE MODAL DIALOG ================= -->
+  <dialog id="confirmModal" style="max-width: 420px; width: 90%;">
+    <div class="dialog-head">
+      <h2>삭제 확인</h2>
+      <button class="dialog-close" onclick="closeConfirmModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="dialog-body">
+      <p id="confirmModalMessage" style="font-size:13.5px; color:var(--text-main); line-height:1.5;">정말 삭제하시겠습니까?</p>
+    </div>
+    <div class="dialog-foot">
+      <button class="btn" onclick="closeConfirmModal()">취소</button>
+      <button class="btn primary" id="confirmModalOkBtn" style="background:var(--accent-danger); border-color:var(--accent-danger);">삭제</button>
+    </div>
+  </dialog>
+
   <!-- Toast Notification -->
   <div id="toast"></div>
 
@@ -1697,14 +1853,17 @@
         subCategory: '업무 · 연구기획',
         stageCount: 5,
         progress: 0,
+        progressMode: 'auto',
         progressNote: '0%',
         status: '예정',
         deadline: '2027-05-31',
         isFavorite: false,
         notes: '',
+        updatedAt: 1763360000001,
+        logs: [],
         tasks: [
-          { text: '부처별 2027 공고 동향 수집', done: false, date: '2026-11-25', phase: '기획' },
-          { text: '수요조사서 제안서 사전 기획', done: false, date: '2026-12-10', phase: '기획' }
+          { text: '부처별 2027 공고 동향 수집', done: false, date: '2026-11-25', endDate: '', time: '', location: '', phase: '기획' },
+          { text: '수요조사서 제안서 사전 기획', done: false, date: '2026-12-10', endDate: '', time: '', location: '', phase: '기획' }
         ]
       },
       {
@@ -1715,14 +1874,17 @@
         subCategory: '업무 · 연구기획',
         stageCount: 4,
         progress: 100,
+        progressMode: 'auto',
         progressNote: '100%',
         status: '진행 중',
         deadline: '',
         isFavorite: false,
         notes: '',
+        updatedAt: 1763360000002,
+        logs: [],
         tasks: [
-          { text: '웹이젤 플랫폼 연동 및 실증 테스트', done: true, date: '2026-11-05', phase: '실증' },
-          { text: '최종 결과 보고서 제출 완료', done: true, date: '2026-11-12', phase: '완료' }
+          { text: '웹이젤 플랫폼 연동 및 실증 테스트', done: true, date: '2026-11-05', endDate: '', time: '', location: '', phase: '실증' },
+          { text: '최종 결과 보고서 제출 완료', done: true, date: '2026-11-12', endDate: '', time: '', location: '', phase: '완료' }
         ]
       },
       {
@@ -1733,13 +1895,16 @@
         subCategory: '업무 · 연구기획',
         stageCount: 4,
         progress: 0,
+        progressMode: 'auto',
         progressNote: '0%',
         status: '진행 중',
         deadline: '',
         isFavorite: false,
         notes: '',
+        updatedAt: 1763360000003,
+        logs: [],
         tasks: [
-          { text: '참석 결과 보고서 작성 및 사내 공유', done: false, date: '2026-11-20', phase: '정리' }
+          { text: '참석 결과 보고서 작성 및 사내 공유', done: false, date: '2026-11-20', endDate: '', time: '', location: '', phase: '정리' }
         ]
       },
       {
@@ -1750,13 +1915,16 @@
         subCategory: '업무 · 연구기획',
         stageCount: 4,
         progress: 0,
+        progressMode: 'auto',
         progressNote: '0%',
         status: '진행 중',
         deadline: '2028-12-31',
         isFavorite: false,
         notes: '',
+        updatedAt: 1763360000004,
+        logs: [],
         tasks: [
-          { text: '항공 부품 규격(AS9100) 요구사항 분석', done: false, date: '2026-11-28', phase: '검토' }
+          { text: '항공 부품 규격(AS9100) 요구사항 분석', done: false, date: '2026-11-28', endDate: '', time: '', location: '', phase: '검토' }
         ]
       },
       {
@@ -1767,14 +1935,17 @@
         subCategory: '업무 · 연구기획',
         stageCount: 5,
         progress: 0,
+        progressMode: 'auto',
         progressNote: '0%',
         status: '진행 중',
         deadline: '2026-11-13',
         isFavorite: false,
         notes: '',
+        updatedAt: 1763360000005,
+        logs: [],
         tasks: [
-          { text: '캘리퍼 시제품 최종 치수 측정 검사', done: false, date: '2026-11-18', phase: '시험' },
-          { text: '경남TP 사업비 정산 증빙 서류 제출', done: false, date: '2026-11-22', phase: '정산' }
+          { text: '캘리퍼 시제품 최종 치수 측정 검사', done: false, date: '2026-11-18', endDate: '', time: '', location: '', phase: '시험' },
+          { text: '경남TP 사업비 정산 증빙 서류 제출', done: false, date: '2026-11-22', endDate: '', time: '', location: '', phase: '정산' }
         ]
       },
       {
@@ -1785,21 +1956,24 @@
         subCategory: '업무 · 소재개발',
         stageCount: 5,
         progress: 0,
+        progressMode: 'auto',
         progressNote: '0%',
         status: '진행 중',
         deadline: '2027-07-31',
         isFavorite: false,
         notes: '',
+        updatedAt: 1763360000006,
+        logs: [],
         tasks: [
-          { text: '6110 합금 시험편 인장강도 시험', done: false, date: '2026-11-24', phase: '시험' }
+          { text: '6110 합금 시험편 인장강도 시험', done: false, date: '2026-11-24', endDate: '', time: '', location: '', phase: '시험' }
         ]
       }
     ];
 
     const DEFAULT_DOCS = [
-      { id: 'doc_1', name: '단기기술지원(KIMS-CTR에코포징)_8월_1,2주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무', projectId: 'proj_2', url: '' },
-      { id: 'doc_2', name: '단기기술지원(KIMS-CTR에코포징)_7월_3,4주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무', projectId: 'proj_2', url: '' },
-      { id: 'doc_3', name: '단기기술지원(KIMS-CTR에코포징)_7월_1,2주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무', projectId: 'proj_2', url: '' }
+      { id: 'doc_1', name: '단기기술지원(KIMS-CTR에코포징)_8월_1,2주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무', projectId: 'proj_2', taskLabel: '', url: '' },
+      { id: 'doc_2', name: '단기기술지원(KIMS-CTR에코포징)_7월_3,4주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무', projectId: 'proj_2', taskLabel: '', url: '' },
+      { id: 'doc_3', name: '단기기술지원(KIMS-CTR에코포징)_7월_1,2주차.pdf', type: 'PDF', date: '2026-11-13', sub: '업무', projectId: 'proj_2', taskLabel: '', url: '' }
     ];
 
     let projects = [];
@@ -1808,7 +1982,10 @@
     let currentCategory = 'all';
     let currentView = 'dashboard';
     let activeModalProjId = null;
-    let activeModalTab = 'schedule'; // 'schedule' | 'docs' | 'info'
+    let activeModalTab = 'schedule'; // 'schedule' | 'docs' | 'logs' | 'info'
+    let nextTaskFilter = 'pending'; // 'pending' | 'week' | 'all'
+    let deadlineMode = 'all'; // 'all' | 'proj'
+    let editingCalItemKey = null; // key of item being edited inline in calendar
 
     // Calendar State
     let calCursor = new Date();
@@ -1833,13 +2010,19 @@
         projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
       }
 
-      // Normalize legacy project objects safely
-      projects = projects.map(p => ({
+      projects = projects.map((p, idx) => ({
         notes: '',
+        progressMode: 'auto',
+        updatedAt: Date.now() - idx * 1000,
+        logs: [],
         tasks: [],
         ...p,
+        logs: Array.isArray(p.logs) ? p.logs : [],
         tasks: (p.tasks || []).map(t => ({
           date: t.date || '',
+          endDate: t.endDate || '',
+          time: t.time || '',
+          location: t.location || '',
           phase: t.phase || '',
           ...t
         }))
@@ -1858,6 +2041,7 @@
 
       documents = documents.map(d => ({
         projectId: d.projectId || '',
+        taskLabel: d.taskLabel || '',
         url: d.url || '',
         ...d
       }));
@@ -1873,6 +2057,13 @@
         standaloneEvents = [];
       }
 
+      standaloneEvents = standaloneEvents.map(ev => ({
+        endDate: ev.endDate || '',
+        time: ev.time || '',
+        location: ev.location || '',
+        ...ev
+      }));
+
       saveData();
     }
 
@@ -1886,7 +2077,30 @@
       }
     }
 
-    // IndexedDB File Storage (Stores actual file Blobs locally without 5MB localStorage limit)
+    function touchProject(p) {
+      if (p) p.updatedAt = Date.now();
+    }
+
+    // Confirm Modal Helper (Replaces window.confirm)
+    let pendingConfirmCallback = null;
+    function askConfirm(message, onConfirm) {
+      pendingConfirmCallback = onConfirm;
+      document.getElementById('confirmModalMessage').textContent = message;
+      const okBtn = document.getElementById('confirmModalOkBtn');
+      okBtn.onclick = () => {
+        const cb = pendingConfirmCallback;
+        closeConfirmModal();
+        if (cb) cb();
+      };
+      document.getElementById('confirmModal').showModal();
+    }
+
+    function closeConfirmModal() {
+      pendingConfirmCallback = null;
+      document.getElementById('confirmModal').close();
+    }
+
+    // IndexedDB File Storage
     const IDB_NAME = 'MyWorkspaceFilesDB';
     const IDB_STORE = 'files';
     let currentPreviewBlobUrl = null;
@@ -2069,6 +2283,8 @@
       renderNextTasks();
       if (currentView === 'calendar') {
         renderCalendar();
+      } else if (currentView === 'docs') {
+        renderDocsArchive();
       }
     }
 
@@ -2077,18 +2293,27 @@
       currentView = view;
       const dashEl = document.getElementById('dashboardView');
       const calEl = document.getElementById('calendarView');
+      const docsEl = document.getElementById('docsView');
       const breadcrumb = document.getElementById('breadcrumbDisplay');
 
       document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
 
+      dashEl.classList.add('hidden');
+      calEl.classList.remove('active');
+      docsEl.classList.remove('active');
+
       if (view === 'calendar') {
-        dashEl.classList.add('hidden');
         calEl.classList.add('active');
         document.getElementById('nav-calendar').classList.add('active');
         breadcrumb.innerHTML = '나의 워크스페이스 <b>/</b> <strong>캘린더</strong>';
         renderCalendar();
+      } else if (view === 'docs') {
+        docsEl.classList.add('active');
+        document.getElementById('nav-upload').classList.add('active');
+        breadcrumb.innerHTML = '나의 워크스페이스 <b>/</b> <strong>자료 보관함</strong>';
+        populateDocsArchiveFilter();
+        renderDocsArchive();
       } else {
-        calEl.classList.remove('active');
         dashEl.classList.remove('hidden');
         const targetCat = cat || currentCategory || 'all';
         filterCategory(targetCat);
@@ -2131,7 +2356,7 @@
       document.getElementById('kpiDocs').textContent = documents.length;
     }
 
-    // 5. PROJECT CARDS RENDERER
+    // 5. PROJECT CARDS RENDERER (WITH DEEP INTEGRATED SEARCH & RECENT SORT)
     function renderProjects() {
       const container = document.getElementById('projectCardsGrid');
       container.innerHTML = '';
@@ -2142,10 +2367,28 @@
 
       let filtered = projects.filter(p => {
         const matchesCategory = currentCategory === 'all' || p.category === currentCategory;
-        const matchesSearch =
-          p.title.toLowerCase().includes(search) ||
-          (p.desc && p.desc.toLowerCase().includes(search)) ||
-          (p.subCategory && p.subCategory.toLowerCase().includes(search));
+
+        let matchesSearch = true;
+        if (search) {
+          const inBasic =
+            p.title.toLowerCase().includes(search) ||
+            (p.desc && p.desc.toLowerCase().includes(search)) ||
+            (p.subCategory && p.subCategory.toLowerCase().includes(search)) ||
+            (p.notes && p.notes.toLowerCase().includes(search));
+          const inTasks = (p.tasks || []).some(t =>
+            (t.text && t.text.toLowerCase().includes(search)) ||
+            (t.location && t.location.toLowerCase().includes(search)) ||
+            (t.phase && t.phase.toLowerCase().includes(search))
+          );
+          const inLogs = (p.logs || []).some(l =>
+            (l.content && l.content.toLowerCase().includes(search)) ||
+            (l.tag && l.tag.toLowerCase().includes(search))
+          );
+          const inDocs = documents.some(d =>
+            d.projectId === p.id && d.name && d.name.toLowerCase().includes(search)
+          );
+          matchesSearch = inBasic || inTasks || inLogs || inDocs;
+        }
 
         let matchesStatus = true;
         if (statusF === 'favorite') matchesStatus = p.isFavorite;
@@ -2161,6 +2404,8 @@
           if (!a.deadline) return 1;
           if (!b.deadline) return -1;
           return new Date(a.deadline) - new Date(b.deadline);
+        } else if (sortF === 'recent') {
+          return (b.updatedAt || 0) - (a.updatedAt || 0);
         }
         return 0;
       });
@@ -2199,6 +2444,7 @@
         const totalTasks = (p.tasks || []).length;
         const doneTasks = (p.tasks || []).filter(t => t.done).length;
         const projDocsCount = documents.filter(d => d.projectId === p.id).length;
+        const logsCount = (p.logs || []).length;
 
         card.innerHTML = `
           <div>
@@ -2215,10 +2461,11 @@
             <div class="proj-badges-inline">
               <span><i class="fa-regular fa-calendar-check"></i> 일정 ${doneTasks}/${totalTasks}</span>
               <span><i class="fa-regular fa-folder-open"></i> 자료 ${projDocsCount}건</span>
+              <span><i class="fa-regular fa-pen-to-square"></i> 로그 ${logsCount}건</span>
             </div>
             <div class="proj-meta">
               <span>${escapeHtml(p.subCategory || '업무')}</span>
-              <span>진행률 ${p.progress || 0}%</span>
+              <span>진행률 ${p.progress || 0}%${p.progressMode === 'manual' ? ' (수동)' : ''}</span>
             </div>
             <div class="progress-bar-wrap">
               <div class="progress-bar-fill" style="width: ${p.progress || 0}%;"></div>
@@ -2233,49 +2480,105 @@
       });
     }
 
-    // 6. DEADLINES ASIDE
+    // 6. DEADLINES & URGENT SCHEDULES ASIDE
+    function setDeadlineMode(mode) {
+      deadlineMode = mode;
+      document.getElementById('dlModeAll').classList.toggle('active', mode === 'all');
+      document.getElementById('dlModeProj').classList.toggle('active', mode === 'proj');
+      renderDeadlines();
+    }
+
     function renderDeadlines() {
       const container = document.getElementById('deadlineList');
       container.innerHTML = '';
 
-      const withDates = projects.filter(p => p.deadline && p.status !== '완료');
-      withDates.sort((a, b) => calculateDDay(a.deadline).diff - calculateDDay(b.deadline).diff);
+      let items = [];
 
-      if (withDates.length === 0) {
-        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">예정된 마감이 없습니다.</p>`;
+      projects.forEach(p => {
+        if (p.deadline && p.status !== '완료') {
+          items.push({
+            kind: '프로젝트 마감',
+            title: p.title,
+            date: p.deadline,
+            diff: calculateDDay(p.deadline).diff,
+            onClick: () => openProjectModal(p.id, 'info')
+          });
+        }
+        if (deadlineMode === 'all') {
+          (p.tasks || []).forEach(t => {
+            if (t.date && !t.done) {
+              const diff = calculateDDay(t.date).diff;
+              if (diff <= 14) {
+                items.push({
+                  kind: p.title,
+                  title: t.text,
+                  date: t.date,
+                  diff,
+                  onClick: () => openProjectModal(p.id, 'schedule')
+                });
+              }
+            }
+          });
+        }
+      });
+
+      if (deadlineMode === 'all') {
+        (standaloneEvents || []).forEach(ev => {
+          if (ev.date && !ev.done) {
+            const diff = calculateDDay(ev.date).diff;
+            if (diff <= 14) {
+              items.push({
+                kind: '일반 일정',
+                title: ev.title,
+                date: ev.date,
+                diff,
+                onClick: () => {
+                  calSelectedDate = ev.date;
+                  calCursor = new Date(ev.date + 'T00:00:00');
+                  navigateTo('calendar');
+                }
+              });
+            }
+          }
+        });
+      }
+
+      items.sort((a, b) => a.diff - b.diff);
+
+      if (items.length === 0) {
+        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">예정된 마감이나 임박 일정이 없습니다.</p>`;
         return;
       }
 
-      withDates.slice(0, 5).forEach(p => {
-        const d = new Date(p.deadline + 'T00:00:00');
+      items.slice(0, 6).forEach(it => {
+        const d = new Date(it.date + 'T00:00:00');
         const mo = d.getMonth() + 1;
         const dt = d.getDate();
-        const { diff } = calculateDDay(p.deadline);
 
         let ddayLabel = '';
-        let isOverdue = diff < 0;
-        if (diff < 0) ddayLabel = `${Math.abs(diff)}일 지남 · ${p.deadline}`;
-        else if (diff === 0) ddayLabel = `오늘 마감 · ${p.deadline}`;
-        else ddayLabel = `D-${diff} · ${p.deadline}`;
+        const isOverdue = it.diff < 0;
+        if (it.diff < 0) ddayLabel = `${Math.abs(it.diff)}일 지남 · ${it.kind}`;
+        else if (it.diff === 0) ddayLabel = `오늘 마감 · ${it.kind}`;
+        else ddayLabel = `D-${it.diff} · ${it.kind}`;
 
         const item = document.createElement('div');
         item.className = 'deadline-item';
-        item.onclick = () => openProjectModal(p.id);
+        item.onclick = it.onClick;
         item.innerHTML = `
           <div class="date-box">
             <small>${mo}월</small>
             <strong>${dt}</strong>
           </div>
           <div class="deadline-info">
-            <h4>${escapeHtml(p.title)}</h4>
-            <p class="${isOverdue ? 'overdue' : ''}">${ddayLabel}</p>
+            <h4>${escapeHtml(it.title)}</h4>
+            <p class="${isOverdue ? 'overdue' : ''}">${escapeHtml(ddayLabel)}</p>
           </div>
         `;
         container.appendChild(item);
       });
     }
 
-    // 7. RECENT DOCUMENTS ASIDE
+    // 7. RECENT DOCUMENTS ASIDE & FULL ARCHIVE VIEW
     function renderRecentDocs() {
       const container = document.getElementById('recentDocsList');
       container.innerHTML = '';
@@ -2298,11 +2601,12 @@
           }
         };
         const sizeLabel = doc.size ? ` · ${formatBytes(doc.size)}` : '';
+        const taskBadge = doc.taskLabel ? ` · [${doc.taskLabel}]` : '';
         item.innerHTML = `
           <span class="doc-type-icon ${typeClass}">${escapeHtml(doc.type)}</span>
           <div class="doc-info">
             <div class="doc-name">${escapeHtml(doc.name)}</div>
-            <div class="doc-meta">${linkedProj ? escapeHtml(linkedProj.title) : escapeHtml(doc.sub || '공통')} · ${escapeHtml(doc.date)}${sizeLabel}</div>
+            <div class="doc-meta">${linkedProj ? escapeHtml(linkedProj.title) : escapeHtml(doc.sub || '공통')}${escapeHtml(taskBadge)} · ${escapeHtml(doc.date)}${sizeLabel}</div>
           </div>
           ${!doc.url ? `<button class="icon-btn" onclick="event.stopPropagation(); downloadDocFile('${doc.id}')" title="다운로드" style="color:var(--primary);"><i class="fa-solid fa-download"></i></button>` : ''}
         `;
@@ -2310,7 +2614,84 @@
       });
     }
 
-    // 8. NEXT TASKS
+    function populateDocsArchiveFilter() {
+      const sel = document.getElementById('docsArchiveProjFilter');
+      if (!sel) return;
+      const prev = sel.value || 'all';
+      sel.innerHTML = `<option value="all">모든 프로젝트</option><option value="none">공통 보관함 (미지정)</option>` +
+        projects.map(p => `<option value="${p.id}">${escapeHtml(p.title)}</option>`).join('');
+      sel.value = prev;
+    }
+
+    function renderDocsArchive() {
+      const container = document.getElementById('docsArchiveList');
+      if (!container) return;
+
+      const q = (document.getElementById('docsArchiveSearch').value || '').trim().toLowerCase();
+      const projF = document.getElementById('docsArchiveProjFilter').value;
+      const typeF = document.getElementById('docsArchiveTypeFilter').value;
+
+      const filtered = documents.filter(d => {
+        const proj = projects.find(p => p.id === d.projectId);
+        const projTitle = proj ? proj.title : '';
+        const matchSearch = !q ||
+          (d.name && d.name.toLowerCase().includes(q)) ||
+          projTitle.toLowerCase().includes(q) ||
+          (d.taskLabel && d.taskLabel.toLowerCase().includes(q));
+
+        let matchProj = true;
+        if (projF === 'none') matchProj = !d.projectId;
+        else if (projF !== 'all') matchProj = d.projectId === projF;
+
+        let matchType = true;
+        if (typeF === 'link') matchType = d.type === 'LINK';
+        else if (typeF === 'note') matchType = d.type === 'NOTE';
+        else if (typeF === 'file') matchType = d.type !== 'LINK' && d.type !== 'NOTE';
+
+        return matchSearch && matchProj && matchType;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p style="padding:32px; text-align:center; color:var(--text-muted); border:1px dashed var(--border-color); border-radius:8px;">조건에 맞는 자료가 없습니다.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(d => {
+        const proj = projects.find(p => p.id === d.projectId);
+        const typeClass = d.type === 'LINK' ? 'link-type' : (d.type === 'NOTE' ? 'note-type' : '');
+        return `
+          <div class="schedule-row">
+            <span class="doc-type-icon ${typeClass}" style="margin-top:0;">${escapeHtml(d.type)}</span>
+            <div style="flex:1; min-width:160px;">
+              <div style="font-size:13px; font-weight:700;">
+                ${d.url
+                  ? `<a href="${escapeHtml(d.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:none;">${escapeHtml(d.name)} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px;"></i></a>`
+                  : `<span style="cursor:pointer;" onclick="previewDocFile('${d.id}')">${escapeHtml(d.name)}</span>`
+                }
+              </div>
+              <div style="font-size:11px; color:#94a3b8; margin-top:2px;">
+                ${proj ? `<span style="color:var(--primary); font-weight:700; cursor:pointer;" onclick="openProjectModal('${proj.id}', 'docs')">${escapeHtml(proj.title)}</span>` : '공통 보관함'}
+                ${d.taskLabel ? ` · 일정: ${escapeHtml(d.taskLabel)}` : ''}
+                · 등록일: ${escapeHtml(d.date)}${d.size ? ' · ' + formatBytes(d.size) : ''}
+              </div>
+            </div>
+            ${!d.url ? `<button class="btn sm" onclick="previewDocFile('${d.id}')"><i class="fa-regular fa-eye"></i> 미리보기</button>` : ''}
+            ${!d.url ? `<button class="btn sm" onclick="downloadDocFile('${d.id}')"><i class="fa-solid fa-download"></i> 다운로드</button>` : ''}
+            <button class="icon-btn" onclick="deleteProjectDoc('${d.id}')" title="자료 삭제"><i class="fa-regular fa-trash-can"></i></button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 8. NEXT TASKS (WITH FILTER MODES: PENDING / THIS WEEK / ALL)
+    function setNextTaskFilter(mode) {
+      nextTaskFilter = mode;
+      document.getElementById('taskFilterPending').classList.toggle('active', mode === 'pending');
+      document.getElementById('taskFilterWeek').classList.toggle('active', mode === 'week');
+      document.getElementById('taskFilterAll').classList.toggle('active', mode === 'all');
+      renderNextTasks();
+    }
+
     function renderNextTasks() {
       const container = document.getElementById('nextTasksContainer');
       container.innerHTML = '';
@@ -2324,8 +2705,17 @@
         }
       });
 
-      // Unchecked first, then dated earliest first
-      allTasks.sort((a, b) => {
+      const filtered = allTasks.filter(t => {
+        if (nextTaskFilter === 'pending') return !t.done;
+        if (nextTaskFilter === 'week') {
+          if (t.done || !t.date) return false;
+          const diff = calculateDDay(t.date).diff;
+          return diff <= 7;
+        }
+        return true;
+      });
+
+      filtered.sort((a, b) => {
         if (a.done !== b.done) return a.done ? 1 : -1;
         if (a.date && b.date) return a.date.localeCompare(b.date);
         if (a.date) return -1;
@@ -2333,23 +2723,30 @@
         return 0;
       });
 
-      if (allTasks.length === 0) {
-        container.innerHTML = `<p style="font-size: 12.5px; color: var(--text-muted); padding: 12px 0;">아직 등록된 작업이 없습니다.</p>`;
+      document.getElementById('nextTasksSummarySub').textContent = `총 ${filtered.length}건`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p style="font-size: 12.5px; color: var(--text-muted); padding: 12px 0;">조건에 해당하는 세부 일정이 없습니다.</p>`;
         return;
       }
 
-      allTasks.slice(0, 6).forEach(task => {
+      const limit = nextTaskFilter === 'all' ? filtered.length : 10;
+      filtered.slice(0, limit).forEach(task => {
         let datePill = '';
         if (task.date) {
           const { diff } = calculateDDay(task.date);
           const isOver = !task.done && diff < 0;
-          datePill = `<span class="task-date-pill ${isOver ? 'overdue' : ''}">${task.date}</span>`;
+          const rangeLabel = task.endDate && task.endDate !== task.date ? `${task.date}~${task.endDate.slice(5)}` : task.date;
+          const timeLabel = task.time ? ` ${task.time}` : '';
+          datePill = `<span class="task-date-pill ${isOver ? 'overdue' : ''}">${escapeHtml(rangeLabel + timeLabel)}</span>`;
         }
+        const locLabel = task.location ? `<span style="font-size:11px; color:var(--text-muted);"><i class="fa-solid fa-location-dot"></i> ${escapeHtml(task.location)}</span>` : '';
         const item = document.createElement('div');
         item.className = 'task-item';
         item.innerHTML = `
           <input type="checkbox" class="task-check" ${task.done ? 'checked' : ''} onchange="toggleTaskDone('${task.projId}', ${task.taskIndex})" />
           <span class="task-title ${task.done ? 'done' : ''}" onclick="openProjectModal('${task.projId}', 'schedule')">${escapeHtml(task.text)}</span>
+          ${locLabel}
           ${datePill}
           <span class="task-tag" onclick="openProjectModal('${task.projId}', 'schedule')">${escapeHtml(task.projTitle)}</span>
         `;
@@ -2358,6 +2755,11 @@
     }
 
     function recalcProjectProgress(p) {
+      if (p.progressMode === 'manual') {
+        p.progress = Math.max(0, Math.min(100, Number(p.progress) || 0));
+        p.progressNote = `${p.progress}% (수동)`;
+        return;
+      }
       if (!p.tasks || p.tasks.length === 0) {
         p.progress = 0;
         p.progressNote = '0%';
@@ -2373,6 +2775,7 @@
       if (p && p.tasks[taskIdx]) {
         p.tasks[taskIdx].done = !p.tasks[taskIdx].done;
         recalcProjectProgress(p);
+        touchProject(p);
         saveData();
         renderAll();
       }
@@ -2393,12 +2796,13 @@
       const p = projects.find(item => item.id === id);
       if (p) {
         p.isFavorite = !p.isFavorite;
+        touchProject(p);
         saveData();
         renderProjects();
       }
     }
 
-    // 10. PROJECT DETAIL MODAL (SCHEDULE COORDINATION + DOCS + INFO)
+    // 10. PROJECT DETAIL MODAL (SCHEDULE + DOCS + LOGS + INFO)
     function openProjectModal(id, initialTab) {
       activeModalProjId = id;
       if (initialTab) activeModalTab = initialTab;
@@ -2422,6 +2826,7 @@
       const body = document.getElementById('modalProjBody');
       const projDocs = documents.filter(d => d.projectId === p.id);
       const tasks = p.tasks || [];
+      const logs = p.logs || [];
 
       let tabBodyHtml = '';
 
@@ -2430,16 +2835,23 @@
           <div class="inline-add-box">
             <div style="font-size:12px; font-weight:800; margin-bottom:8px; color:var(--text-main);">+ 이 프로젝트에 세부 일정 / 할 일 추가</div>
             <div class="inline-row" style="margin-bottom:8px;">
-              <input type="text" id="newTaskTextInput" class="form-control" style="flex:1; min-width:180px;" placeholder="해야 할 일이나 회의·시험 일정을 입력하세요">
-              <input type="text" id="newTaskPhaseInput" class="form-control" style="width:95px;" placeholder="단계 (예: 시험)">
-              <input type="date" id="newTaskDateInput" class="form-control" style="width:140px;">
+              <input type="text" id="newTaskTextInput" class="form-control" style="flex:2; min-width:180px;" placeholder="해야 할 일이나 회의·시험 일정을 입력하세요 (Enter 등록)" onkeydown="if(event.key==='Enter') addProjectTask()">
+              <input type="text" id="newTaskPhaseInput" class="form-control" style="width:95px;" placeholder="단계 (예: 시험)" onkeydown="if(event.key==='Enter') addProjectTask()">
+            </div>
+            <div class="inline-row">
+              <span style="font-size:11px; font-weight:700; color:var(--text-muted);">시작일</span>
+              <input type="date" id="newTaskDateInput" class="form-control" style="width:132px;">
+              <span style="font-size:11px; font-weight:700; color:var(--text-muted);">종료일(선택)</span>
+              <input type="date" id="newTaskEndDateInput" class="form-control" style="width:132px;">
+              <input type="time" id="newTaskTimeInput" class="form-control" style="width:105px;" title="시간 (선택)">
+              <input type="text" id="newTaskLocInput" class="form-control" style="flex:1; min-width:110px;" placeholder="장소 (선택)" onkeydown="if(event.key==='Enter') addProjectTask()">
               <button class="btn primary sm" onclick="addProjectTask()"><i class="fa-solid fa-plus"></i> 추가</button>
             </div>
           </div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
               <h4 style="font-size:13px; font-weight:800;">세부 일정 목록 (${tasks.length}개)</h4>
-              <span style="font-size:11px; color:var(--text-muted);">날짜를 수정하면 캘린더에 바로 반영됩니다</span>
+              <span style="font-size:11px; color:var(--text-muted);">날짜·시간·장소를 수정하면 캘린더에 즉시 반영됩니다</span>
             </div>
             <div>
               ${tasks.length === 0
@@ -2447,9 +2859,12 @@
                 : tasks.map((t, i) => `
                   <div class="schedule-row">
                     <input type="checkbox" class="task-check" ${t.done ? 'checked' : ''} onchange="toggleTaskDone('${p.id}', ${i}); renderProjectModalContent();" />
-                    <span style="flex:1; font-size:12.5px; font-weight:600; ${t.done ? 'text-decoration:line-through; color:#94a3b8;' : ''}">${escapeHtml(t.text)}</span>
-                    ${t.phase ? `<span class="task-tag">${escapeHtml(t.phase)}</span>` : ''}
-                    <input type="date" value="${escapeHtml(t.date || '')}" onchange="updateProjectTaskDate('${p.id}', ${i}, this.value)" title="일정 날짜 조율" />
+                    <input type="text" value="${escapeHtml(t.text)}" style="flex:1; min-width:140px; font-weight:600; ${t.done ? 'text-decoration:line-through; color:#94a3b8;' : ''}" onchange="updateProjectTaskField('${p.id}', ${i}, 'text', this.value)" />
+                    <input type="text" value="${escapeHtml(t.phase || '')}" placeholder="단계" style="width:66px;" onchange="updateProjectTaskField('${p.id}', ${i}, 'phase', this.value)" />
+                    <input type="date" value="${escapeHtml(t.date || '')}" onchange="updateProjectTaskField('${p.id}', ${i}, 'date', this.value)" title="시작일" />
+                    <input type="date" value="${escapeHtml(t.endDate || '')}" onchange="updateProjectTaskField('${p.id}', ${i}, 'endDate', this.value)" title="종료일 (기간 일정)" />
+                    <input type="time" value="${escapeHtml(t.time || '')}" onchange="updateProjectTaskField('${p.id}', ${i}, 'time', this.value)" title="시간" />
+                    <input type="text" value="${escapeHtml(t.location || '')}" placeholder="장소" style="width:90px;" onchange="updateProjectTaskField('${p.id}', ${i}, 'location', this.value)" />
                     <button class="icon-btn" onclick="deleteProjectTask('${p.id}', ${i})" title="일정 삭제"><i class="fa-regular fa-trash-can"></i></button>
                   </div>
                 `).join('')
@@ -2458,18 +2873,23 @@
           </div>
         `;
       } else if (activeModalTab === 'docs') {
+        const taskOptionsHtml = `<option value="">(특정 세부 일정 연결 안 함)</option>` +
+          tasks.map(t => `<option value="${escapeHtml(t.text)}">${escapeHtml(t.text)}</option>`).join('');
         tabBodyHtml = `
           <div class="inline-add-box">
             <div style="font-size:12px; font-weight:800; margin-bottom:8px; color:var(--text-main);">+ 이 프로젝트 자료함에 자료 추가</div>
             <div class="inline-row" style="margin-bottom:8px;">
-              <input type="text" id="projDocTitleInput" class="form-control" style="flex:1; min-width:160px;" placeholder="자료 제목 또는 메모명">
-              <input type="url" id="projDocUrlInput" class="form-control" style="flex:1; min-width:160px;" placeholder="링크 URL (선택)">
+              <input type="text" id="projDocTitleInput" class="form-control" style="flex:1; min-width:150px;" placeholder="자료 제목 또는 메모명" onkeydown="if(event.key==='Enter') addDocToCurrentProject()">
+              <input type="url" id="projDocUrlInput" class="form-control" style="flex:1; min-width:150px;" placeholder="링크 URL (선택)" onkeydown="if(event.key==='Enter') addDocToCurrentProject()">
+            </div>
+            <div class="inline-row" style="margin-bottom:8px;">
+              <select id="projDocTaskSelect" class="form-control" style="flex:1; font-size:12px;">${taskOptionsHtml}</select>
               <button class="btn primary sm" onclick="addDocToCurrentProject()">링크/자료 추가</button>
             </div>
             <div class="inline-row">
               <button class="btn sm" onclick="document.getElementById('projModalFileInput').click()"><i class="fa-solid fa-paperclip"></i> PC 파일 선택해서 이 프로젝트에 등록</button>
               <input type="file" id="projModalFileInput" style="display:none;" onchange="handleProjectFileUpload(event)">
-              <span style="font-size:11px; color:var(--text-muted);">PDF, PPTX, HWPX, XLSX 등 파일명·날짜 저장</span>
+              <span style="font-size:11px; color:var(--text-muted);">위에서 세부 일정을 먼저 선택하면 파일이 해당 일정과 함께 연결됩니다</span>
             </div>
           </div>
           <div>
@@ -2478,7 +2898,7 @@
               ? '<p style="color:var(--text-muted); font-size:12px; padding:16px; text-align:center; border:1px dashed var(--border-color); border-radius:8px;">이 프로젝트에 연결된 자료가 아직 없습니다.</p>'
               : projDocs.map(d => `
                 <div class="schedule-row">
-                  <span class="doc-type-icon ${d.type === 'LINK' ? 'link-type' : ''}" style="margin-top:0;">${escapeHtml(d.type)}</span>
+                  <span class="doc-type-icon ${d.type === 'LINK' ? 'link-type' : (d.type === 'NOTE' ? 'note-type' : '')}" style="margin-top:0;">${escapeHtml(d.type)}</span>
                   <div style="flex:1; min-width:0;">
                     <div style="font-size:12.5px; font-weight:700; word-break:break-word;">
                       ${d.url
@@ -2486,7 +2906,9 @@
                         : `<span style="cursor:pointer;" onclick="previewDocFile('${d.id}')">${escapeHtml(d.name)}</span>`
                       }
                     </div>
-                    <div style="font-size:10.5px; color:#94a3b8;">등록일: ${escapeHtml(d.date)}${d.size ? ' · ' + formatBytes(d.size) : ''}</div>
+                    <div style="font-size:10.5px; color:#94a3b8;">
+                      등록일: ${escapeHtml(d.date)}${d.size ? ' · ' + formatBytes(d.size) : ''}${d.taskLabel ? ` · 연결 일정: <strong style="color:var(--text-sub);">${escapeHtml(d.taskLabel)}</strong>` : ''}
+                    </div>
                   </div>
                   ${!d.url ? `<button class="btn sm" onclick="previewDocFile('${d.id}')" title="미리보기"><i class="fa-regular fa-eye"></i></button>` : ''}
                   ${!d.url ? `<button class="btn sm" onclick="downloadDocFile('${d.id}')" title="다운로드"><i class="fa-solid fa-download"></i></button>` : ''}
@@ -2496,8 +2918,57 @@
             }
           </div>
         `;
+      } else if (activeModalTab === 'logs') {
+        tabBodyHtml = `
+          <div class="inline-add-box">
+            <div style="font-size:12px; font-weight:800; margin-bottom:8px; color:var(--text-main);">+ 날짜별 업무 로그 · 회의/시험 기록 추가</div>
+            <div class="inline-row" style="margin-bottom:8px;">
+              <input type="date" id="newLogDateInput" class="form-control" style="width:135px;" value="${toDateStr(new Date())}">
+              <select id="newLogTagInput" class="form-control" style="width:110px;">
+                <option value="회의/협의">회의/협의</option>
+                <option value="시험/분석">시험/분석</option>
+                <option value="보고/문서">보고/문서</option>
+                <option value="이슈/메모">이슈/메모</option>
+              </select>
+              <input type="text" id="newLogContentInput" class="form-control" style="flex:1; min-width:180px;" placeholder="회의 결과, 시험 수치, 주요 이슈를 기록하세요 (Enter 등록)" onkeydown="if(event.key==='Enter') addProjectLog()">
+              <button class="btn primary sm" onclick="addProjectLog()"><i class="fa-solid fa-plus"></i> 기록</button>
+            </div>
+          </div>
+          <div>
+            <h4 style="font-size:13px; font-weight:800; margin-bottom:8px;">누적 업무 타임라인 (${logs.length}건)</h4>
+            ${logs.length === 0
+              ? '<p style="color:var(--text-muted); font-size:12px; padding:16px; text-align:center; border:1px dashed var(--border-color); border-radius:8px;">아직 등록된 날짜별 업무 로그가 없습니다.</p>'
+              : logs.map((l, idx) => `
+                <div class="log-item">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <div>
+                      <span class="task-tag" style="background:#eff6ff; color:var(--primary);">${escapeHtml(l.tag || '기록')}</span>
+                      <strong style="font-size:11.5px; color:var(--text-sub); margin-left:6px;">${escapeHtml(l.date)}</strong>
+                    </div>
+                    <button class="icon-btn" onclick="deleteProjectLog(${idx})" title="로그 삭제"><i class="fa-regular fa-trash-can"></i></button>
+                  </div>
+                  <div style="font-size:12.5px; color:var(--text-main); line-height:1.5; white-space:pre-wrap;">${escapeHtml(l.content)}</div>
+                </div>
+              `).join('')
+            }
+          </div>
+        `;
       } else {
         tabBodyHtml = `
+          <div style="display:grid; grid-template-columns:1.4fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label>프로젝트명</label>
+              <input type="text" id="editProjTitle" class="form-control" value="${escapeHtml(p.title || '')}">
+            </div>
+            <div class="form-group">
+              <label>분야 (카테고리)</label>
+              <select id="editProjCategory" class="form-control">
+                <option value="work" ${p.category === 'work' ? 'selected' : ''}>업무 (연구기획/소재개발)</option>
+                <option value="study" ${p.category === 'study' ? 'selected' : ''}>Study (어학/자격증)</option>
+                <option value="life" ${p.category === 'life' ? 'selected' : ''}>일상</option>
+              </select>
+            </div>
+          </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
             <div class="form-group">
               <label>진행 상태</label>
@@ -2513,6 +2984,19 @@
               <input type="date" id="editProjDeadline" class="form-control" value="${escapeHtml(p.deadline || '')}">
             </div>
           </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label>진행률 산정 방식</label>
+              <select id="editProjProgressMode" class="form-control" onchange="document.getElementById('editProjManualWrap').style.display = this.value === 'manual' ? 'block' : 'none'">
+                <option value="auto" ${p.progressMode !== 'manual' ? 'selected' : ''}>세부 일정 완료율 자동 계산</option>
+                <option value="manual" ${p.progressMode === 'manual' ? 'selected' : ''}>수동으로 진행률(%) 직접 입력</option>
+              </select>
+            </div>
+            <div class="form-group" id="editProjManualWrap" style="display:${p.progressMode === 'manual' ? 'block' : 'none'};">
+              <label>수동 진행률 (0 ~ 100%)</label>
+              <input type="number" id="editProjManualProgress" class="form-control" min="0" max="100" value="${Number(p.progress) || 0}">
+            </div>
+          </div>
           <div class="form-group">
             <label>소분류 / 태그</label>
             <input type="text" id="editProjSub" class="form-control" value="${escapeHtml(p.subCategory || '')}">
@@ -2522,8 +3006,8 @@
             <textarea id="editProjDesc" class="form-control" rows="2">${escapeHtml(p.desc || '')}</textarea>
           </div>
           <div class="form-group">
-            <label>업무 메모 · 진행 기록</label>
-            <textarea id="editProjNotes" class="form-control" rows="4" placeholder="회의 내용, 담당자 연락처, 주요 이슈나 결정 사항을 기록하세요...">${escapeHtml(p.notes || '')}</textarea>
+            <label>기본 고정 메모 (담당자 연락처 · 핵심 요약)</label>
+            <textarea id="editProjNotes" class="form-control" rows="4" placeholder="담당자 연락처, 과제 번호, 핵심 목표 스펙 등 상시 참고할 내용을 기록하세요...">${escapeHtml(p.notes || '')}</textarea>
           </div>
           <div style="display:flex; justify-content:flex-end;">
             <button class="btn primary sm" onclick="saveProjectMetaEdits()"><i class="fa-solid fa-check"></i> 변경사항 저장</button>
@@ -2550,6 +3034,9 @@
           <button class="modal-tab-btn ${activeModalTab === 'docs' ? 'active' : ''}" onclick="switchProjectModalTab('docs')">
             <i class="fa-regular fa-folder-open"></i> 프로젝트 자료함 (${projDocs.length})
           </button>
+          <button class="modal-tab-btn ${activeModalTab === 'logs' ? 'active' : ''}" onclick="switchProjectModalTab('logs')">
+            <i class="fa-regular fa-pen-to-square"></i> 업무 로그 (${logs.length})
+          </button>
           <button class="modal-tab-btn ${activeModalTab === 'info' ? 'active' : ''}" onclick="switchProjectModalTab('info')">
             <i class="fa-solid fa-sliders"></i> 정보 · 메모 수정
           </button>
@@ -2565,40 +3052,79 @@
       const text = (document.getElementById('newTaskTextInput').value || '').trim();
       const phase = (document.getElementById('newTaskPhaseInput').value || '').trim();
       const date = document.getElementById('newTaskDateInput').value || '';
+      const endDate = document.getElementById('newTaskEndDateInput').value || '';
+      const time = document.getElementById('newTaskTimeInput').value || '';
+      const location = (document.getElementById('newTaskLocInput').value || '').trim();
 
       if (!text) {
         showToast('세부 일정 내용을 입력해 주세요.');
         return;
       }
       if (!p.tasks) p.tasks = [];
-      p.tasks.push({ text, done: false, date, phase });
+      p.tasks.push({ text, done: false, date, endDate, time, location, phase });
       recalcProjectProgress(p);
+      touchProject(p);
       saveData();
       renderAll();
       renderProjectModalContent();
       showToast('프로젝트 세부 일정이 추가되었습니다.');
     }
 
-    function updateProjectTaskDate(projId, taskIdx, newDate) {
+    function updateProjectTaskField(projId, taskIdx, field, value) {
       const p = projects.find(item => item.id === projId);
       if (p && p.tasks && p.tasks[taskIdx]) {
-        p.tasks[taskIdx].date = newDate;
+        p.tasks[taskIdx][field] = value;
+        touchProject(p);
         saveData();
         renderAll();
-        showToast('세부 일정 날짜가 변경되었습니다.');
+        showToast('세부 일정이 수정되었습니다.');
       }
     }
 
     function deleteProjectTask(projId, taskIdx) {
       const p = projects.find(item => item.id === projId);
-      if (p && p.tasks) {
+      if (!p || !p.tasks || !p.tasks[taskIdx]) return;
+      askConfirm(`'${p.tasks[taskIdx].text}' 세부 일정을 삭제하시겠습니까?`, () => {
         p.tasks.splice(taskIdx, 1);
         recalcProjectProgress(p);
+        touchProject(p);
+        saveData();
+        renderAll();
+        if (activeModalProjId === projId) renderProjectModalContent();
+        showToast('세부 일정이 삭제되었습니다.');
+      });
+    }
+
+    function addProjectLog() {
+      const p = projects.find(item => item.id === activeModalProjId);
+      if (!p) return;
+      const date = document.getElementById('newLogDateInput').value || toDateStr(new Date());
+      const tag = document.getElementById('newLogTagInput').value || '기록';
+      const content = (document.getElementById('newLogContentInput').value || '').trim();
+      if (!content) {
+        showToast('기록할 업무 로그 내용을 입력해 주세요.');
+        return;
+      }
+      if (!p.logs) p.logs = [];
+      p.logs.unshift({ id: 'log_' + Date.now(), date, tag, content });
+      touchProject(p);
+      saveData();
+      renderAll();
+      renderProjectModalContent();
+      showToast('업무 로그가 기록되었습니다.');
+    }
+
+    function deleteProjectLog(logIdx) {
+      const p = projects.find(item => item.id === activeModalProjId);
+      if (!p || !p.logs || !p.logs[logIdx]) return;
+      askConfirm('선택한 업무 로그를 삭제하시겠습니까?', () => {
+        p.logs.splice(logIdx, 1);
+        touchProject(p);
         saveData();
         renderAll();
         renderProjectModalContent();
-        showToast('세부 일정이 삭제되었습니다.');
-      }
+        showToast('업무 로그가 삭제되었습니다.');
+      });
     }
 
     function addDocToCurrentProject() {
@@ -2606,6 +3132,7 @@
       if (!p) return;
       const name = (document.getElementById('projDocTitleInput').value || '').trim();
       const url = (document.getElementById('projDocUrlInput').value || '').trim();
+      const taskLabel = document.getElementById('projDocTaskSelect') ? document.getElementById('projDocTaskSelect').value : '';
       if (!name) {
         showToast('자료 제목을 입력해 주세요.');
         return;
@@ -2617,8 +3144,10 @@
         date: toDateStr(new Date()),
         sub: p.subCategory || '업무',
         projectId: p.id,
+        taskLabel,
         url
       });
+      touchProject(p);
       saveData();
       renderAll();
       renderProjectModalContent();
@@ -2631,6 +3160,7 @@
       if (!file || !p) return;
       const docId = 'doc_' + Date.now();
       const ext = file.name.split('.').pop().toUpperCase();
+      const taskLabel = document.getElementById('projDocTaskSelect') ? document.getElementById('projDocTaskSelect').value : '';
       try {
         await saveFileBlobToDB(docId, file);
       } catch (err) {
@@ -2644,8 +3174,10 @@
         date: toDateStr(new Date()),
         sub: p.subCategory || '업무',
         projectId: p.id,
+        taskLabel,
         url: ''
       });
+      touchProject(p);
       saveData();
       renderAll();
       renderProjectModalContent();
@@ -2654,22 +3186,39 @@
     }
 
     function deleteProjectDoc(docId) {
-      documents = documents.filter(d => d.id !== docId);
-      deleteFileBlobFromDB(docId);
-      saveData();
-      renderAll();
-      renderProjectModalContent();
-      showToast('자료가 삭제되었습니다.');
+      const doc = documents.find(d => d.id === docId);
+      if (!doc) return;
+      askConfirm(`'${doc.name}' 자료를 삭제하시겠습니까?`, () => {
+        documents = documents.filter(d => d.id !== docId);
+        deleteFileBlobFromDB(docId);
+        saveData();
+        renderAll();
+        if (activeModalProjId) renderProjectModalContent();
+        showToast('자료가 삭제되었습니다.');
+      });
     }
 
     function saveProjectMetaEdits() {
       const p = projects.find(item => item.id === activeModalProjId);
       if (!p) return;
+      const newTitle = (document.getElementById('editProjTitle').value || '').trim();
+      if (!newTitle) {
+        showToast('프로젝트명을 비워둘 수 없습니다.');
+        return;
+      }
+      p.title = newTitle;
+      p.category = document.getElementById('editProjCategory').value;
       p.status = document.getElementById('editProjStatus').value;
       p.deadline = document.getElementById('editProjDeadline').value;
+      p.progressMode = document.getElementById('editProjProgressMode').value;
+      if (p.progressMode === 'manual') {
+        p.progress = Math.max(0, Math.min(100, Number(document.getElementById('editProjManualProgress').value) || 0));
+      }
+      recalcProjectProgress(p);
       p.subCategory = document.getElementById('editProjSub').value.trim() || '업무';
       p.desc = document.getElementById('editProjDesc').value.trim();
       p.notes = document.getElementById('editProjNotes').value;
+      touchProject(p);
       saveData();
       renderAll();
       renderProjectModalContent();
@@ -2683,11 +3232,15 @@
 
     function deleteCurrentProject() {
       if (!activeModalProjId) return;
-      projects = projects.filter(p => p.id !== activeModalProjId);
-      saveData();
-      closeProjectModal();
-      renderAll();
-      showToast('프로젝트가 삭제되었습니다.');
+      const p = projects.find(item => item.id === activeModalProjId);
+      if (!p) return;
+      askConfirm(`'${p.title}' 프로젝트를 정말 삭제하시겠습니까?`, () => {
+        projects = projects.filter(item => item.id !== activeModalProjId);
+        saveData();
+        closeProjectModal();
+        renderAll();
+        showToast('프로젝트가 삭제되었습니다.');
+      });
     }
 
     // 11. NEW PROJECT MODAL
@@ -2722,11 +3275,14 @@
         subCategory: sub,
         stageCount: 4,
         progress: 0,
+        progressMode: 'auto',
         progressNote: '0%',
         status,
         deadline,
         isFavorite: false,
         notes: '',
+        updatedAt: Date.now(),
+        logs: [],
         tasks: []
       };
 
@@ -2742,16 +3298,32 @@
       const sel = document.getElementById('uploadTargetProject');
       sel.innerHTML = `<option value="">(공통 보관함 - 프로젝트 미지정)</option>` +
         projects.map(p => `<option value="${p.id}">${escapeHtml(p.title)}</option>`).join('');
+      populateUploadTaskOptions();
       document.getElementById('uploadDocTitle').value = '';
       document.getElementById('uploadDocUrl').value = '';
       document.getElementById('uploadModal').showModal();
     }
+
+    function populateUploadTaskOptions() {
+      const projId = document.getElementById('uploadTargetProject').value;
+      const taskSel = document.getElementById('uploadTargetTask');
+      if (!taskSel) return;
+      const proj = projects.find(p => p.id === projId);
+      if (!proj || !proj.tasks || proj.tasks.length === 0) {
+        taskSel.innerHTML = `<option value="">(전체 프로젝트 공통)</option>`;
+        return;
+      }
+      taskSel.innerHTML = `<option value="">(전체 프로젝트 공통)</option>` +
+        proj.tasks.map(t => `<option value="${escapeHtml(t.text)}">${escapeHtml(t.text)}</option>`).join('');
+    }
+
     function closeUploadModal() { document.getElementById('uploadModal').close(); }
 
     async function handleFileSelect(e) {
       const file = e.target.files[0];
       if (!file) return;
       const projId = document.getElementById('uploadTargetProject').value;
+      const taskLabel = document.getElementById('uploadTargetTask') ? document.getElementById('uploadTargetTask').value : '';
       const proj = projects.find(p => p.id === projId);
       const docId = 'doc_' + Date.now();
       const ext = file.name.split('.').pop().toUpperCase();
@@ -2770,8 +3342,10 @@
         date: toDateStr(new Date()),
         sub: proj ? proj.title : '업무',
         projectId: projId,
+        taskLabel,
         url: ''
       });
+      if (proj) touchProject(proj);
       saveData();
       renderAll();
       closeUploadModal();
@@ -2783,6 +3357,7 @@
       const name = document.getElementById('uploadDocTitle').value.trim();
       const url = document.getElementById('uploadDocUrl').value.trim();
       const projId = document.getElementById('uploadTargetProject').value;
+      const taskLabel = document.getElementById('uploadTargetTask') ? document.getElementById('uploadTargetTask').value : '';
       const proj = projects.find(p => p.id === projId);
 
       if (!name) {
@@ -2796,15 +3371,34 @@
         date: toDateStr(new Date()),
         sub: proj ? proj.title : '업무',
         projectId: projId,
+        taskLabel,
         url
       });
+      if (proj) touchProject(proj);
       saveData();
       renderAll();
       closeUploadModal();
       showToast('자료가 등록되었습니다.');
     }
 
-    // 13. CALENDAR ENGINE
+    // 13. CALENDAR ENGINE (SUPPORTS MULTI-DAY RANGE & INLINE EDITING)
+    function expandDateRange(startStr, endStr, callback) {
+      if (!startStr) return;
+      if (!endStr || endStr <= startStr) {
+        callback(startStr, false);
+        return;
+      }
+      const start = new Date(startStr + 'T00:00:00');
+      const end = new Date(endStr + 'T00:00:00');
+      let cur = new Date(start);
+      let safety = 0;
+      while (cur <= end && safety < 90) {
+        callback(toDateStr(cur), true);
+        cur.setDate(cur.getDate() + 1);
+        safety++;
+      }
+    }
+
     function collectCalendarEvents() {
       const map = {};
       const pushEvent = (dateStr, ev) => {
@@ -2816,8 +3410,12 @@
       projects.forEach(p => {
         if (p.deadline) {
           pushEvent(p.deadline, {
+            key: `dl_${p.id}`,
             kind: p.status === '완료' ? 'done' : 'deadline',
             title: `[마감] ${p.title}`,
+            rawTitle: p.title,
+            date: p.deadline,
+            endDate: '',
             projId: p.id,
             projTitle: p.title,
             done: p.status === '완료'
@@ -2825,16 +3423,23 @@
         }
         (p.tasks || []).forEach((t, idx) => {
           if (t.date) {
-            pushEvent(t.date, {
-              kind: t.done ? 'done' : 'task',
-              title: t.text,
-              time: t.time || '',
-              location: t.location || '',
-              projId: p.id,
-              projTitle: p.title,
-              phase: t.phase || '',
-              taskIdx: idx,
-              done: !!t.done
+            expandDateRange(t.date, t.endDate, (dStr, isMulti) => {
+              pushEvent(dStr, {
+                key: `task_${p.id}_${idx}`,
+                kind: t.done ? 'done' : 'task',
+                title: t.text,
+                rawTitle: t.text,
+                date: t.date,
+                endDate: t.endDate || '',
+                isMulti,
+                time: t.time || '',
+                location: t.location || '',
+                projId: p.id,
+                projTitle: p.title,
+                phase: t.phase || '',
+                taskIdx: idx,
+                done: !!t.done
+              });
             });
           }
         });
@@ -2842,15 +3447,22 @@
 
       (standaloneEvents || []).forEach(ev => {
         if (ev.date) {
-          pushEvent(ev.date, {
-            kind: ev.done ? 'done' : 'general',
-            title: ev.title,
-            time: ev.time || '',
-            location: ev.location || '',
-            projId: '',
-            projTitle: '일반 일정',
-            eventId: ev.id,
-            done: !!ev.done
+          expandDateRange(ev.date, ev.endDate, (dStr, isMulti) => {
+            pushEvent(dStr, {
+              key: `ev_${ev.id}`,
+              kind: ev.done ? 'done' : 'general',
+              title: ev.title,
+              rawTitle: ev.title,
+              date: ev.date,
+              endDate: ev.endDate || '',
+              isMulti,
+              time: ev.time || '',
+              location: ev.location || '',
+              projId: '',
+              projTitle: '일반 일정',
+              eventId: ev.id,
+              done: !!ev.done
+            });
           });
         }
       });
@@ -2939,17 +3551,50 @@
           : ev.kind === 'general'
             ? '일반 일정'
             : (ev.phase ? escapeHtml(ev.phase) : '세부 일정');
+
         const metaParts = [];
+        if (ev.endDate && ev.endDate > ev.date) {
+          metaParts.push(`<span><i class="fa-regular fa-calendar"></i> ${escapeHtml(ev.date)} ~ ${escapeHtml(ev.endDate)}</span>`);
+        }
         if (ev.time) metaParts.push(`<span><i class="fa-regular fa-clock"></i> ${escapeHtml(ev.time)}</span>`);
         if (ev.location) metaParts.push(`<span><i class="fa-solid fa-location-dot"></i> ${escapeHtml(ev.location)}</span>`);
 
-        const titleHtml = ev.projId
-          ? `<div class="cal-detail-title" onclick="openProjectModal('${ev.projId}', 'schedule')">${escapeHtml(ev.title)}</div>`
-          : `<div style="display:flex; align-items:center; gap:8px;">
-               <input type="checkbox" class="task-check" ${ev.done ? 'checked' : ''} onchange="toggleStandaloneEvent('${ev.eventId}')" />
-               <span style="flex:1; font-weight:800; color:var(--text-main); ${ev.done ? 'text-decoration:line-through; color:#94a3b8;' : ''}">${escapeHtml(ev.title)}</span>
-               <button class="icon-btn" onclick="deleteStandaloneEvent('${ev.eventId}')" title="일정 삭제"><i class="fa-regular fa-trash-can"></i></button>
-             </div>`;
+        if (editingCalItemKey === ev.key && ev.kind !== 'deadline') {
+          return `
+            <div class="cal-detail-item" style="background:#ffffff; border-color:var(--primary);">
+              <div style="font-size:11px; font-weight:800; color:var(--primary); margin-bottom:6px;">일정 직접 수정</div>
+              <input type="text" id="calEditTitle" class="form-control" style="margin-bottom:6px; padding:5px 8px; font-size:12px;" value="${escapeHtml(ev.rawTitle)}" />
+              <div class="inline-row" style="margin-bottom:6px;">
+                <input type="date" id="calEditDate" class="form-control" style="flex:1; padding:4px 6px; font-size:11px;" value="${escapeHtml(ev.date)}" />
+                <input type="date" id="calEditEndDate" class="form-control" style="flex:1; padding:4px 6px; font-size:11px;" value="${escapeHtml(ev.endDate || '')}" title="종료일" />
+              </div>
+              <div class="inline-row" style="margin-bottom:8px;">
+                <input type="time" id="calEditTime" class="form-control" style="flex:1; padding:4px 6px; font-size:11px;" value="${escapeHtml(ev.time || '')}" />
+                <input type="text" id="calEditLoc" class="form-control" style="flex:1.2; padding:4px 6px; font-size:11px;" placeholder="장소" value="${escapeHtml(ev.location || '')}" />
+              </div>
+              <div style="display:flex; justify-content:flex-end; gap:6px;">
+                <button class="btn sm" onclick="cancelCalInlineEdit()">취소</button>
+                <button class="btn primary sm" onclick="saveCalInlineEdit('${ev.projId}', ${ev.taskIdx ?? -1}, '${ev.eventId || ''}')">저장</button>
+              </div>
+            </div>
+          `;
+        }
+
+        const rowControls = ev.kind === 'deadline'
+          ? `<div class="cal-detail-title" onclick="openProjectModal('${ev.projId}', 'info')">${escapeHtml(ev.title)}</div>`
+          : ev.projId
+            ? `<div style="display:flex; align-items:center; gap:6px;">
+                 <input type="checkbox" class="task-check" ${ev.done ? 'checked' : ''} onchange="toggleTaskDone('${ev.projId}', ${ev.taskIdx})" />
+                 <span class="cal-detail-title" style="flex:1; ${ev.done ? 'text-decoration:line-through; color:#94a3b8;' : ''}" onclick="openProjectModal('${ev.projId}', 'schedule')">${escapeHtml(ev.title)}</span>
+                 <button class="icon-btn edit" onclick="startCalInlineEdit('${ev.key}')" title="일정 수정"><i class="fa-solid fa-pen"></i></button>
+                 <button class="icon-btn" onclick="deleteProjectTask('${ev.projId}', ${ev.taskIdx})" title="일정 삭제"><i class="fa-regular fa-trash-can"></i></button>
+               </div>`
+            : `<div style="display:flex; align-items:center; gap:6px;">
+                 <input type="checkbox" class="task-check" ${ev.done ? 'checked' : ''} onchange="toggleStandaloneEvent('${ev.eventId}')" />
+                 <span style="flex:1; font-weight:800; color:var(--text-main); ${ev.done ? 'text-decoration:line-through; color:#94a3b8;' : ''}">${escapeHtml(ev.title)}</span>
+                 <button class="icon-btn edit" onclick="startCalInlineEdit('${ev.key}')" title="일정 수정"><i class="fa-solid fa-pen"></i></button>
+                 <button class="icon-btn" onclick="deleteStandaloneEvent('${ev.eventId}')" title="일정 삭제"><i class="fa-regular fa-trash-can"></i></button>
+               </div>`;
 
         return `
           <div class="cal-detail-item">
@@ -2959,15 +3604,65 @@
               </span>
               <span style="font-size:10.5px; color:var(--text-muted);">${escapeHtml(ev.projTitle)}</span>
             </div>
-            ${titleHtml}
+            ${rowControls}
             ${metaParts.length ? `<div class="cal-meta-row">${metaParts.join('')}</div>` : ''}
           </div>
         `;
       }).join('');
     }
 
+    function startCalInlineEdit(key) {
+      editingCalItemKey = key;
+      renderCalendar();
+    }
+
+    function cancelCalInlineEdit() {
+      editingCalItemKey = null;
+      renderCalendar();
+    }
+
+    function saveCalInlineEdit(projId, taskIdx, eventId) {
+      const newTitle = (document.getElementById('calEditTitle').value || '').trim();
+      const newDate = document.getElementById('calEditDate').value || calSelectedDate;
+      const newEndDate = document.getElementById('calEditEndDate').value || '';
+      const newTime = document.getElementById('calEditTime').value || '';
+      const newLoc = (document.getElementById('calEditLoc').value || '').trim();
+
+      if (!newTitle) {
+        showToast('일정 제목을 입력해 주세요.');
+        return;
+      }
+
+      if (projId && taskIdx >= 0) {
+        const p = projects.find(item => item.id === projId);
+        if (p && p.tasks && p.tasks[taskIdx]) {
+          p.tasks[taskIdx].text = newTitle;
+          p.tasks[taskIdx].date = newDate;
+          p.tasks[taskIdx].endDate = newEndDate;
+          p.tasks[taskIdx].time = newTime;
+          p.tasks[taskIdx].location = newLoc;
+          touchProject(p);
+        }
+      } else if (eventId) {
+        const ev = standaloneEvents.find(item => item.id === eventId);
+        if (ev) {
+          ev.title = newTitle;
+          ev.date = newDate;
+          ev.endDate = newEndDate;
+          ev.time = newTime;
+          ev.location = newLoc;
+        }
+      }
+
+      editingCalItemKey = null;
+      saveData();
+      renderAll();
+      showToast('일정이 수정되었습니다.');
+    }
+
     function selectCalDate(dateStr) {
       calSelectedDate = dateStr;
+      editingCalItemKey = null;
       renderCalendar();
     }
 
@@ -2993,6 +3688,7 @@
       const text = (document.getElementById('calQuickTaskInput').value || '').trim();
       const time = document.getElementById('calQuickTimeInput').value || '';
       const location = (document.getElementById('calQuickLocInput').value || '').trim();
+      const endDate = document.getElementById('calQuickEndDateInput').value || '';
 
       if (!text) {
         showToast('일정 내용을 입력해 주세요.');
@@ -3003,6 +3699,7 @@
         standaloneEvents.push({
           id: 'ev_' + Date.now(),
           date: calSelectedDate,
+          endDate,
           time,
           location,
           title: text,
@@ -3015,14 +3712,16 @@
           return;
         }
         if (!p.tasks) p.tasks = [];
-        p.tasks.push({ text, done: false, date: calSelectedDate, time, location, phase: '일정' });
+        p.tasks.push({ text, done: false, date: calSelectedDate, endDate, time, location, phase: '일정' });
         recalcProjectProgress(p);
+        touchProject(p);
       }
 
       saveData();
       document.getElementById('calQuickTaskInput').value = '';
       document.getElementById('calQuickTimeInput').value = '';
       document.getElementById('calQuickLocInput').value = '';
+      document.getElementById('calQuickEndDateInput').value = '';
       renderAll();
       showToast(`${calSelectedDate} 일정에 추가되었습니다.`);
     }
@@ -3037,10 +3736,14 @@
     }
 
     function deleteStandaloneEvent(eventId) {
-      standaloneEvents = standaloneEvents.filter(item => item.id !== eventId);
-      saveData();
-      renderAll();
-      showToast('일반 일정이 삭제되었습니다.');
+      const ev = standaloneEvents.find(item => item.id === eventId);
+      if (!ev) return;
+      askConfirm(`'${ev.title}' 일반 일정을 삭제하시겠습니까?`, () => {
+        standaloneEvents = standaloneEvents.filter(item => item.id !== eventId);
+        saveData();
+        renderAll();
+        showToast('일반 일정이 삭제되었습니다.');
+      });
     }
 
     // 14. STANDALONE HTML DOWNLOADER & CLIPBOARD BACKUP
